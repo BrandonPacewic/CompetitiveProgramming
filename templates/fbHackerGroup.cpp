@@ -13,6 +13,7 @@ void assertListType() { cerr << '#' << dbg_count << " __LIST_ARGS__: ("; dbg_cou
 bool findType(string type) { for (auto i: data_type) { if (i == type) return true; } return false; }
 template<typename Arr> void testListInt(Arr List) { assert(findType(typeid(List).name())); assertListType(); for (int i: List) { cout << ' ' << i; } cerr << " )" << endl; }
 
+
 void runCase(int tc) {
     //case code here
 
