@@ -33,9 +33,9 @@ void runCase(int tc) {
     int count = 0;
     for (int i = 1; i <= n; i++) {
         int index = find(i, list);
-        testArgs(index);
-        if (i != index - 1) {
-            reverse(list.begin() + i - 1, list.end());
+        testArgs(index, i);
+        if (i - 1 != index) {
+            reverse(list.begin() + i, list.end());
             count++;
             testListInt(list);
         } else 

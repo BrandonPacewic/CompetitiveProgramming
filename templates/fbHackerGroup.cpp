@@ -23,8 +23,8 @@ int main() {
     int tc;
     cin >> tc;
 
-    for (int i = 1; i <= tc; i++) {
-        runCase(i);
+    for (int case_num = 1; case_num <= tc; case_num++) {
+        runCase(case_num);
         cerr << flush;
     }
 }
