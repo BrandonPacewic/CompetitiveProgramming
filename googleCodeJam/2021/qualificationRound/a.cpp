@@ -17,7 +17,7 @@ template<typename Arr> void testListInt(Arr List) { assert(findType(typeid(List)
 
 void runCase(int tc) {
     int n;
-    cin >> n;
+    cin >> n;   
 
     vector<int> list(n, 0);
 
