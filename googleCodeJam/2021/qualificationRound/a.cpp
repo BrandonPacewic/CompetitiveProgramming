@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -13,13 +14,6 @@ bool findType(string type) { for (auto i: data_type) { if (i == type) return tru
 template<typename Arr> void testListInt(Arr List) { assert(findType(typeid(List).name())); assertListType(); for (int i: List) { cout << ' ' << i; } cerr << " )" << endl; }
 
 
-int find(const int target, vector<int> list) {
-    for (int i = 0; i < list.size(); i++)
-        if (list[i] == target)
-            return i;
-    
-    return -1;
-}
 
 void runCase(int tc) {
     int n;
@@ -30,20 +24,14 @@ void runCase(int tc) {
     for (auto &i: list)
         cin >> i;
 
-    int count = 0;
-    for (int i = 1; i <= n; i++) {
-        int index = find(i, list);
-        testArgs(index, i);
-        if (i - 1 != index) {
-            reverse(list.begin() + i, list.end());
-            count++;
-            testListInt(list);
-        } else 
-            count++;
-
+    int cost = 0;
+    for (int i = 0; i < n - 1; i++) {
+        int index = int(min_element(list.begin() + i, list.end()) - list.begin());
+        reverse(list.begin() + i, list.begin() + index + 1);
+        cost += index - i + 1;
     }
 
-    cout << "Case #" << tc << ": " << count <<  '\n';
+    cout << "Case #" << tc << ": " << cost <<  '\n';
 }
 
 int main() {
