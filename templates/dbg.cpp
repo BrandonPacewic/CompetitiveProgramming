@@ -12,3 +12,5 @@ template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { ce
 #else
 #define testArgs (...)
 #endif
+
+template<typename Chars> void testListChar(Chars List) { if (!DBG_MODE) return; cerr << '#' << dbg_count << "__LIST_ARGS__: ("; dbg_count += 1ll; for (char i: List) { cout << ' ' << i; } cerr << " )" << endl; }
