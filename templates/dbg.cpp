@@ -2,15 +2,14 @@
 using namespace std;
 
 //dbg
-const bool DBG_MODE = false; 
+#define DBG_MODE
 long long dbg_count = 0ll;
-template<typename Ints> void testList(Ints List) { if (!DBG_MODE) return; cerr << '#' << dbg_count << " __LIST_ARGS__: ("; dbg_count += 1ll; for (int i: List) { cout << ' ' << i; } cerr << " )" << endl; }
 void DBG_OUT() { cerr << endl; dbg_count += 1ll; }
 template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
-#if DBG_MODE
+#ifdef DBG_MODE
+template<typename T_Ints> void testList(T_Ints List) { cerr << '#' << dbg_count << " __LIST_ARGS__: ("; dbg_count += 1ll; for (int i = 0; i < List.size(); i++) { cout << List[i] << (i < List.size() - 1 ? ", " : ")\n"); } }
 #define testArgs(...) cerr << '#' << dbg_count << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", DBG_OUT(__VA_ARGS__)
 #else
-#define testArgs (...)
+template<typename T_Ints> void testList(T_Ints List) { return; }
+#define testArgs(...)
 #endif
-
-template<typename Chars> void testListChar(Chars List) { if (!DBG_MODE) return; cerr << '#' << dbg_count << "__LIST_ARGS__: ("; dbg_count += 1ll; for (char i: List) { cout << ' ' << i; } cerr << " )" << endl; }
