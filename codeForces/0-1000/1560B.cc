@@ -15,17 +15,25 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #endif
 
 
+//https://codeforces.com/problemset/problem/1560/B
 void runCase() {
-    //case code here
+    int a, b, c;
+    cin >> a >> b >> c;
 
-    cout << "balls" << '\n';
+    int size = a - b < 0 ? (b - a) * 2 : (a - b) * 2;
+    if (a > size || b > size || c > size) {
+        cout << "-1\n";
+        return;
+    }
+
+    cout << (c + (size / 2) > size ? c - (size / 2) : c + (size / 2)) <<  '\n';
 }
 
 int main() {
     int test_cases;
     cin >> test_cases;
 
-    for (int tc = 1; test_cases <= tc; tc++) {
+    for (int tc = 1; tc <= test_cases; tc++) {
         runCase();
         cerr << flush;
     }
