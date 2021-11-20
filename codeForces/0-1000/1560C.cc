@@ -15,10 +15,22 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #endif
 
 
+//https://codeforces.com/problemset/problem/1560/C
 void runCase() {
-    //case code here
+    int k;
+    cin >> k;
 
-    cout << '\n';
+    int a = 1, x = 1, i = 1;
+
+    while (k >= x + a) {
+        x += a;
+        a += 2;
+        i += 1;
+    }
+
+    int m = k - x + 1;
+
+    cout << (m <= i ? m : i) << ' ' << (m <= i ? i : i - (m - i)) << '\n';
 }
 
 int main() {
