@@ -25,7 +25,7 @@ int main() {
     int test_cases;
     cin >> test_cases;
 
-    for (int tc = 1; test_cases <= tc; tc++) {
+    for (int tc = 1; tc <= test_cases; tc++) {
         runCase(tc);
         cerr << flush;
     }

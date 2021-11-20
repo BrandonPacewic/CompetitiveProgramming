@@ -18,7 +18,7 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 void runCase() {
     //case code here
 
-    cout << '\n';
+    cout << "balls" << '\n';
 }
 
 int main() {
