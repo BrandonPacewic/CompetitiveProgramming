@@ -18,14 +18,14 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 void runCase() {
     //case code here
 
-    cout << "balls" << '\n';
+    cout << '\n';
 }
 
 int main() {
     int test_cases;
     cin >> test_cases;
 
-    for (int tc = 1; test_cases <= tc; tc++) {
+    for (int tc = 1; tc <= test_cases; tc++) {
         runCase();
         cerr << flush;
     }

@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <sstream>
 using namespace std;
 
 //dbg
@@ -15,13 +16,14 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #endif
 
 
+//https://codeforces.com/problemset/problem/1560/A
 void runCase() {
     int k;
     cin >> k;
 
     vector<int> ARGS;
     for (int i = 0; true; i++) {
-        if (i % 3 != 0) 
+        if (i % 3 != 0 && i % 10 != 3) 
             ARGS.push_back(i);
 
         if (k == ARGS.size())
@@ -34,7 +36,6 @@ void runCase() {
 int main() {
     int test_cases;
     cin >> test_cases;
-    testArgs(test_cases);
 
     for (int tc = 1; tc <= test_cases; tc++) {
         runCase();
