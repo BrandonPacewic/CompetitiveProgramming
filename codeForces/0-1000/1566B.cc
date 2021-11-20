@@ -16,9 +16,19 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 
 
 void runCase() {
-    //case code here
+    string S;
+    cin >> S;
 
-    cout << '\n';
+    int zeros = count(S.begin(), S.end(), '0');
+    if (zeros == 0) {
+        cout << "0\n";
+        return;
+    }
+
+    int first = S.find('0');
+    int last = S.rfind('0');
+
+    cout << (last - first + 1 == zeros ? 1 : 2) << '\n';
 }
 
 int main() {
