@@ -16,9 +16,10 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 
 
 void runCase() {
-    //case code here
+    int N, S;
+    cin >> N >> S;
 
-    cout << '\n';
+    cout << S / (N / 2 + 1) << '\n';
 }
 
 int main() {
