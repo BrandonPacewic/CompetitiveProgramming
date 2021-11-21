@@ -15,6 +15,7 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #endif
 
 
+//https://codeforces.com/problemset/problem/1566/B
 void runCase() {
     string S;
     cin >> S;
