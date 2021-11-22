@@ -17,13 +17,21 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 
 template<typename T_List>
 void printList(T_List List, bool space = true, bool new_line = true) {
-    for (int i = 0; i < List.size(); i++) {
+    int k = 0;
+
+    while (List[k] == 0)
+        k++;
+
+    for (int i = k; i < List.size(); i++) {
         cout << List[i];
         
         if (space)
             cout << ' ';
         
-        cout << (new_line && i == List.size() - 1 ? '\n' : ' '); 
+        if (new_line && i == List.size() - 1)
+            cout << '\n';
+        else if (i == List.size() - 1) 
+            cout << ' ';
     }
 }
 
