@@ -19,7 +19,6 @@ const string VOWELS = "AEIOU";
 
 void runCase(int tc) {
 
-
     auto slove = [&](char find, int type) -> int {
         for (auto i : VOWELS)
             if (i == find)
@@ -29,8 +28,8 @@ void runCase(int tc) {
     };
 
     auto count = [&](string S) -> int {
-        int count = 0;
-        int type = 0;
+        int count = 0, type = 0;
+        bool same = true;
 
         for (auto i : VOWELS)
             if (S[0] == i)
@@ -38,11 +37,11 @@ void runCase(int tc) {
 
         for (int i = 0; i < S.length(); i++)
             if (!slove(S[i], type)) {
-                int type = -1;
+                same = false;
                 break;
             }
 
-        return type;
+        return same ? S.length() : -1;
     };
 
     string S;
