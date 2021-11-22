@@ -14,19 +14,12 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #define testArgs(...)
 #endif
 
-
 void runCase() {
     //case code here
 
-    cout << '\n';
+
 }
 
 int main() {
-    int test_cases;
-    cin >> test_cases;
-
-    for (int tc = 1; test_cases <= tc; tc++) {
-        runCase();
-        cerr << flush;
-    }
+    runCase();
 }
