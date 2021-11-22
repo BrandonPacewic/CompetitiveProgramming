@@ -19,7 +19,8 @@ const string VOWELS = "AEIOU";
 
 void runCase(int tc) {
 
-    auto slove = [](char find, int type) -> int {
+
+    auto slove = [&](char find, int type) -> int {
         for (auto i : VOWELS)
             if (i == find)
                 return type ? 1 : 0;
@@ -27,8 +28,30 @@ void runCase(int tc) {
         return !type ? 1 : 0;
     };
 
+    auto count = [&](string S) -> int {
+        int count = 0;
+        int type = 0;
+
+        for (auto i : VOWELS)
+            if (S[0] == i)
+                type = 1;
+
+        for (int i = 0; i < S.length(); i++)
+            if (!slove(S[i], type)) {
+                int type = -1;
+                break;
+            }
+
+        return type;
+    };
+
     string S;
     cin >> S;
+
+    if (count(S) == S.length()) {
+        cout << "Case #" << tc << ": " << S.length() << '\n';
+        return;
+    }
 
     vector<int> x(S.length(), 0);
     for (int k = 0; k < x.size(); k++){
@@ -37,13 +60,14 @@ void runCase(int tc) {
     int type = 0;
     for (auto i : VOWELS)
         if (i == target) 
-            type++;
+            type = 1;
         
         int count = 0;
         for (int i = 0; i < S.length(); i++) 
             if (S[i] != target) 
                 count += !slove(S[i], type) ? 1 : 2;
-        x[k] = count;
+
+            x[k] = count;
     }
 
     cout << "Case #" << tc << ": " << *min_element(x.begin(), x.end()) <<  '\n';
