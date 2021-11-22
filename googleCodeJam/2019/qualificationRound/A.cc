@@ -15,10 +15,35 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #endif
 
 
-void runCase(int tc) {
-    //case code here
+template<typename T_List>
+void printList(T_List List, bool space = true, bool new_line = true) {
+    for (int i = 0; i < List.size(); i++) {
+        cout << List[i];
+        
+        if (space)
+            cout << ' ';
+        
+        cout << (new_line && i == List.size() - 1 ? '\n' : ' '); 
+    }
+}
 
-    cout << "Case #" << tc << ": " << '\n';
+void runCase(int tc) {
+    string N;
+    cin >> N;
+
+    vector<int> A(N.length()), B(N.length());
+    for (int i = 0; i < N.length(); i++) {
+        if (N[i] == '4') {
+            A[i] = 2;
+            B[i] = 2;
+        } else {
+            A[i] = N[i] - '0';
+        }
+    }
+
+    cout << "Case #" << tc << ": ";
+    printList(A, false, false);
+    printList(B, false, true);
 }
 
 int main() {
