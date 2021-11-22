@@ -15,10 +15,38 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #endif
 
 
-void runCase(int tc) {
-    //case code here
+const string VOWELS = "AEIOU";
 
-    cout << "Case #" << tc << ": " << '\n';
+void runCase(int tc) {
+
+    auto slove = [](char find, int type) -> int {
+        for (auto i : VOWELS)
+            if (i == find)
+                return type ? 1 : 0;
+        
+        return !type ? 1 : 0;
+    };
+
+    string S;
+    cin >> S;
+
+    vector<int> x(S.length(), 0);
+    for (int k = 0; k < x.size(); k++){
+
+    char target = S[k];
+    int type = 0;
+    for (auto i : VOWELS)
+        if (i == target) 
+            type++;
+        
+        int count = 0;
+        for (int i = 0; i < S.length(); i++) 
+            if (S[i] != target) 
+                count += !slove(S[i], type) ? 1 : 2;
+        x[k] = count;
+    }
+
+    cout << "Case #" << tc << ": " << *min_element(x.begin(), x.end()) <<  '\n';
 }
 
 int main() {
