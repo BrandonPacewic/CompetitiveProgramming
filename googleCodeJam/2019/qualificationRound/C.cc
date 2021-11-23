@@ -15,8 +15,33 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #endif
 
 
+bool testPrime(int64_t test) {
+
+    if (test == 0 || test == 1)
+        return false;
+
+    for (int64_t i = 2; i <= test / int64_t(2); i++)
+        if (i % test == 0)
+            return false;
+
+    return true;
+}
+
 void runCase(int tc) {
-    //case code here
+    int64_t N;
+    int L;
+    cin >> N >> L;
+
+    vector<int64_t> A;
+    for (int64_t i = N; i >= 0; i--) {
+        if (testPrime(i))
+            A.push_back(i);
+        if (A.size() == 26)
+            break;
+    }
+
+    
+
 
     cout << "Case #" << tc << ": " << '\n';
 }
