@@ -1,5 +1,5 @@
-template<typename T> bool findInList(T List, T find) {
-    for (T i : List)
+template<typename T_List, typename Type> bool findInList(T_List List, Type find) {
+    for (Type i : List)
         if (i == find)
             return true;
     return false;
