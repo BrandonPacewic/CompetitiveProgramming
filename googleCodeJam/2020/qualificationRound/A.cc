@@ -15,8 +15,8 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #endif
 
 
-template<typename T> bool findInList(T List, T find) {
-    for (T i : List)
+template<typename T_List, typename Type> bool findInList(T_List List, Type find) {
+    for (Type i : List)
         if (i == find)
             return true;
     return false;
@@ -24,7 +24,7 @@ template<typename T> bool findInList(T List, T find) {
 
 void runCase(int tc) {
 
-    auto compute = [](vector<vector<int>> matrix) -> int {
+    auto trace = [](vector<vector<int>> matrix) -> int {
         int total = 0;
         for (int i = 0; i < matrix.size(); i++)
             total += matrix[i][i];
@@ -41,11 +41,37 @@ void runCase(int tc) {
             cin >> k;
     }
 
+    int rows = 0;
     for (int i = 0; i < N; i++) {
 
+        vector<int> used;
+        for (auto k : matrix[i]) {
+
+            if (findInList(used, k)) {
+                rows++;
+                break;
+            } else {
+                used.push_back(k);
+            }
+        }
     }
 
-    cout << "Case #" << tc << ": " << '\n';
+    int columns = 0;
+    for (int i = 0; i < N; i++) {
+
+        vector<int> used;
+        for (int k = 0; k < N; k++) {
+
+            if (findInList(used, matrix[k][i])) {
+                columns++;
+                break;
+            } else {
+                used.push_back(matrix[k][i]);
+            }
+        }
+    }
+
+    cout << "Case #" << tc << ": " << trace(matrix) << ' ' << rows << ' ' << columns << '\n';
 }
 
 int main() {
