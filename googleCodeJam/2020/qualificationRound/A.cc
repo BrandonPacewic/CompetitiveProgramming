@@ -15,6 +15,13 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #endif
 
 
+template<typename T> bool findInList(T List, T find) {
+    for (T i : List)
+        if (i == find)
+            return true;
+    return false;
+}
+
 void runCase(int tc) {
 
     auto compute = [](vector<vector<int>> matrix) -> int {
