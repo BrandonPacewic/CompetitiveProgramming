@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -15,10 +16,82 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #endif
 
 
-void runCase(int tc) {
-    //case code here
+template<typename T_Pairs>
+void printPairs(T_Pairs pairs, bool pairSpacing = true, bool newPairSpace = true, bool newLine = true) {
+    for (int i = 0; i < pairs.size(); i++) {
+        cout << pairs[i].first;
 
-    cout << "Case #" << tc << ": " << '\n';
+        if (pairSpacing)
+            cout << ' ';
+
+        cout << pairs[i].second;
+
+        if (pairs[i].second != ' ')
+            cout << (newPairSpace ? ' ' : '\n');
+    }
+
+    if (newLine)
+        cout << '\n';
+}   
+
+const int NVL = int(1e9) + 5;
+
+void runCase(int tc) {
+    int N;
+    cin >> N;
+    vector<int> p(N);
+
+    for (auto &i : p)
+        cin >> i;
+
+    vector<pair<char, char>> ans;
+
+    if (N == 2) {
+        if (p[0] != p[1]) {
+            pair<int, char> remove(abs(p[0] - p[1]), p[0] > p[1] ? 'A' : 'B');
+            ans.push_back(pair<char, char> (remove.second, remove.first == 2 ? remove.second : ' '));
+        }
+
+        for (int i = 0; i < min(p[0], p[1]); i++)
+            ans.push_back(pair<char, char> ('A', 'B'));
+    
+    } else {
+        
+        pair<int, int> currentMax(-NVL, -1);
+        for (int i = 0; i < N; i++) {
+            if (p[i] > currentMax.first) {
+                currentMax.first = p[i];
+                currentMax.second = i;
+            }
+        }
+
+        char pos_char = currentMax.second == 0 ? 'A' : currentMax.second == 1 ? 'B' : 'C';
+        int nextHighest = currentMax.second == 0 ? max(p[1], p[2]) : currentMax.second == 1 ? max(p[0], p[2]) : max(p[0], p[1]);
+
+        if (currentMax.first - nextHighest != 0)
+            ans.push_back(pair<char, char> (pos_char, currentMax.first - nextHighest == 2 ? pos_char : ' '));
+        
+        int index_min = 0;
+        for (int i = 0; i < N; i++) {
+            if (p[index_min] > p[i])
+                index_min = i;
+        }
+
+        pos_char = index_min == 0 ? 'A' : index_min == 1 ? 'B' : 'C';
+        for (int i = 0; i < p[index_min];) {
+            ans.push_back(pair<char, char> (pos_char, p[index_min] - 2 >= 0 ? pos_char : ' '));
+            i += p[index_min] - 2 >= 0 ? 2 : 1;
+        }
+
+        pair<char, char> reduce(index_min == 0 ? 'B' : 'A', index_min < 2 ? 'C' : 'B');
+        int finalVal = index_min == 0 ? min(p[1], p[2]) : index_min == 1 ? min(p[0], p[2]) : min(p[0], p[1]); 
+        for (int i = 0; i < finalVal; i++)
+            ans.push_back(reduce);
+    }
+
+
+    cout << "Case #" << tc << ": ";
+    printPairs(ans, false);
 }
 
 int main() {
