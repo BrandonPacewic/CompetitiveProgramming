@@ -2,7 +2,7 @@
 using namespace std;
 
 //dbg
-#define DBG_MODE
+// #define DBG_MODE
 int64_t DBG_COUNT = 0;
 void DBG_OUT() { cerr << endl; DBG_COUNT++; }
 template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
@@ -16,6 +16,20 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 
 
 const int INF = int(1e9) + 5;
+
+struct event {
+    int start;
+    int end;
+    int index;
+};
+
+
+bool compair(event a, event b) {
+    if (a.start < b.start)
+        return 1;
+    else 
+        return 0;
+}
 
 template<typename T_List>
 void printList(T_List List, bool space = true, bool new_line = true) {
@@ -36,25 +50,29 @@ void runCase(int tc) {
     int N;
     cin >> N;
 
-    vector<pair<int, int>> SE(N);
+    vector<event> SE(N);
 
-    for (auto &i : SE) {
-        cin >> i.first;
-        cin >> i.second;
+    for (int i = 0; i < N; i++) {
+        cin >> SE[i].start;
+        cin >> SE[i].end;
+        SE[i].index = i;
     }
 
-    int J_end = -INF, C_end = -INF;
-    vector<char> ANS;
-    for (auto i : SE) {
-        testArgs(i.first, i.second);
+    sort(SE.begin(), SE.end(), compair);
 
-        if (i.first >= J_end) {
-            J_end = i.second;
-            ANS.push_back('J');
+
+    int J_end = -INF, C_end = -INF;
+    vector<char> ANS(N);
+    for (auto i : SE) {
+        testArgs(i.start, i.end);
+
+        if (i.start >= J_end) {
+            J_end = i.end;
+            ANS[i.index] = 'J';
             continue;
-        } else if (i.first >= C_end) {
-            C_end = i.second;
-            ANS.push_back('C');
+        } else if (i.start >= C_end) {
+            C_end = i.end;
+            ANS[i.index] = 'C';
             continue;
         } else {
             cout << "Case #" << tc << ": IMPOSSIBLE" << '\n';
