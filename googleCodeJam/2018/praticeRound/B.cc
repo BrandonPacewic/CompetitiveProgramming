@@ -21,6 +21,7 @@ template<typename T_Pairs> void testPairs(T_Pairs Pairs) { cerr << '#' << DBG_CO
 template<typename T_Pairs> void testPairs(T_Pairs Pairs) { return; }
 #endif
 
+
 const int NVL = int(1e9) + 5;
 const string ALPH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -51,7 +52,6 @@ void printPairs(T_Pairs pairs, const bool pairSpacing = true, const bool account
         cout << '\n';
 }   
 
-
 void runCase(int tc) {
     int N;
     cin >> N;
@@ -68,17 +68,10 @@ void runCase(int tc) {
             reduce.first = i;
     }
 
-    testList(p);
-
     reduce.second = p[reduce.first];
     p[reduce.first] = -NVL;
 
-    // testList(p);
-    // testArgs(reduce.first, reduce.second);
-
     int target = local_max(p, N);
-    p[reduce.first] = target;
-    // testArgs(target);
     p[reduce.first] = target;
     for (int i = reduce.second; i > target; i -= 2) {
             ans.push_back(pair<char, char> (ALPH[reduce.first], i - 2 >= target ? ALPH[reduce.first] : ' '));
@@ -87,6 +80,7 @@ void runCase(int tc) {
 
     for (int i = 0; i < N - 2; i++) {
         testList(p);
+        testPairs(ans);
 
         for (int k = 0; k < N; k++)
             if (p[k] <= reduce.second && p[k] != -NVL) {
@@ -99,16 +93,11 @@ void runCase(int tc) {
         for (int k = reduce.second; k > 0; k -= 2) 
             ans.push_back(pair<char, char> (ALPH[reduce.first], k - 2 >= 0 ? ALPH[reduce.first] : ' '));
         
-        testPairs(ans);
         p[reduce.first] = -NVL;
         reduce.second = NVL;
     }
 
-    testList(p);
-    testArgs(target);   
-
     reduce.first = reduce.second = -NVL;
-
     for (int i = 0; i < N; i++) {
         if (p[i] == target)
             reduce.first == -NVL ? reduce.first = i : reduce.second = i;
