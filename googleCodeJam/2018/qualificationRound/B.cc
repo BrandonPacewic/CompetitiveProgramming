@@ -102,6 +102,7 @@ void runCase(int tc) {
         
         testPairs(ans);
         p[reduce.first] = -NVL;
+        reduce.second = NVL;
     }
 
     testList(p);
