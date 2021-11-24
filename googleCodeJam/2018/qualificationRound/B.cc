@@ -3,7 +3,7 @@
 using namespace std;
 
 //dbg
-#define DBG_MODE
+// #define DBG_MODE
 int64_t DBG_COUNT = 0;
 void DBG_OUT() { cerr << endl; DBG_COUNT++; }
 template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
@@ -78,9 +78,11 @@ void runCase(int tc) {
         }
 
         pos_char = index_min == 0 ? 'A' : index_min == 1 ? 'B' : 'C';
-        for (int i = 0; i < p[index_min];) {
-            ans.push_back(pair<char, char> (pos_char, p[index_min] - 2 >= 0 ? pos_char : ' '));
-            i += p[index_min] - 2 >= 0 ? 2 : 1;
+        int current_min = p[index_min];
+        for (int i = 0; i < current_min; i += 2) {
+            testArgs(i, p[index_min]);
+            ans.push_back(pair<char, char> (pos_char, p[index_min] - 2 < 0 ? ' ' : pos_char));
+            p[index_min] -= 2;
         }
 
         pair<char, char> reduce(index_min == 0 ? 'B' : 'A', index_min < 2 ? 'C' : 'B');
