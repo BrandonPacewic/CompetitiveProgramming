@@ -15,9 +15,25 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #define testArgs(...)
 #endif
 
+//dbg pairs
+#ifdef DBG_MODE
+template<typename T_Pairs> void testPairs(T_Pairs Pairs) { cerr << '#' << DBG_COUNT << " __PAIR_ARGS__: ("; DBG_COUNT++; for (int i = 0; i < Pairs.size(); i++) { cout << Pairs[i].first << '-' << Pairs[i].second << (i < Pairs.size() - 1 ? ", " : ")\n"); } } 
+#else
+template<typename T_Pairs> void testPairs(T_Pairs Pairs) { return; }
+#endif
 
+const int NVL = int(1e9) + 5;
+const string ALPH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-//needs to account for more than 3 parties at once
+//max function
+int local_max(vector<int> x, const int size) {
+    int y = -NVL;
+    for (int i = 0; i < size; i++) 
+        if (x[i] > y) 
+            y = x[i];
+    return(y);
+}
+
 template<typename T_Pairs>
 void printPairs(T_Pairs pairs, const bool pairSpacing = true, const bool accountForWhiteSpace = false, const bool newPairSpace = true, const bool newLine = true) {
     for (int i = 0; i < pairs.size(); i++) {
@@ -36,7 +52,6 @@ void printPairs(T_Pairs pairs, const bool pairSpacing = true, const bool account
         cout << '\n';
 }   
 
-const int NVL = int(1e9) + 5;
 
 void runCase(int tc) {
     int N;
@@ -48,51 +63,65 @@ void runCase(int tc) {
 
     vector<pair<char, char>> ans;
 
-    if (N == 2) {
-        if (p[0] != p[1]) {
-            pair<int, char> remove(abs(p[0] - p[1]), p[0] > p[1] ? 'A' : 'B');
-            ans.push_back(pair<char, char> (remove.second, remove.first == 2 ? remove.second : ' '));
-        }
-
-        for (int i = 0; i < min(p[0], p[1]); i++)
-            ans.push_back(pair<char, char> ('A', 'B'));
-    
-    } else {
-        
-        pair<int, int> currentMax(-NVL, -1);
-        for (int i = 0; i < N; i++) {
-            if (p[i] > currentMax.first) {
-                currentMax.first = p[i];
-                currentMax.second = i;
-            }
-        }
-
-        char pos_char = currentMax.second == 0 ? 'A' : currentMax.second == 1 ? 'B' : 'C';
-        int nextHighest = currentMax.second == 0 ? max(p[1], p[2]) : currentMax.second == 1 ? max(p[0], p[2]) : max(p[0], p[1]);
-
-        if (currentMax.first - nextHighest != 0)
-            ans.push_back(pair<char, char> (pos_char, currentMax.first - nextHighest == 2 ? pos_char : ' '));
-        
-        int index_min = 0;
-        for (int i = 0; i < N; i++) {
-            if (p[index_min] > p[i])
-                index_min = i;
-        }
-
-        pos_char = index_min == 0 ? 'A' : index_min == 1 ? 'B' : 'C';
-        int current_min = p[index_min];
-        for (int i = 0; i < current_min; i += 2) {
-            testArgs(i, p[index_min]);
-            ans.push_back(pair<char, char> (pos_char, p[index_min] - 2 < 0 ? ' ' : pos_char));
-            p[index_min] -= 2;
-        }
-
-        pair<char, char> reduce(index_min == 0 ? 'B' : 'A', index_min < 2 ? 'C' : 'B');
-        int finalVal = index_min == 0 ? min(p[1], p[2]) : index_min == 1 ? min(p[0], p[2]) : min(p[0], p[1]); 
-        for (int i = 0; i < finalVal; i++)
-            ans.push_back(reduce);
+    pair<int, int> reduce(0, -NVL);
+    for (int i = 1; i < N; i++) {
+        if (p[i] > p[reduce.first])
+            reduce.first = i;
     }
 
+    testList(p);
+
+    reduce.second = p[reduce.first];
+    p[reduce.first] = -NVL;
+
+    // testList(p);
+    // testArgs(reduce.first, reduce.second);
+
+    int target = local_max(p, N);
+    p[reduce.first] = target;
+    // testArgs(target);
+    p[reduce.first] = target;
+    for (int i = reduce.second; i > target; i -= 2) {
+            ans.push_back(pair<char, char> (ALPH[reduce.first], i - 2 >= target ? ALPH[reduce.first] : ' '));
+            testArgs(i - 2, target);
+    }
+
+    for (int i = 0; i < N - 2; i++) {
+        testList(p);
+
+        for (int k = 0; k < N; k++)
+            if (p[k] <= reduce.second && p[k] != -NVL) {
+                reduce.second = p[k];
+                reduce.first = k;
+            }
+
+        testArgs(reduce.first, reduce.second);
+
+        for (int k = reduce.second; k > 0; k -= 2) 
+            ans.push_back(pair<char, char> (ALPH[reduce.first], k - 2 >= 0 ? ALPH[reduce.first] : ' '));
+        
+        testPairs(ans);
+        p[reduce.first] = -NVL;
+    }
+
+    testList(p);
+    testArgs(target);   
+
+    reduce.first = reduce.second = -NVL;
+
+    for (int i = 0; i < N; i++) {
+        if (p[i] == target)
+            reduce.first == -NVL ? reduce.first = i : reduce.second = i;
+        
+        if (reduce.first != -NVL && reduce.second != -NVL)
+            break;
+    }
+
+    assert(reduce.first != -NVL && reduce.second != -NVL);
+
+    for (int i = 0; i < target; i++) 
+        ans.push_back(pair<char, char> (ALPH[reduce.first], ALPH[reduce.second]));
+    
 
     cout << "Case #" << tc << ": ";
     printPairs(ans, false, true);
