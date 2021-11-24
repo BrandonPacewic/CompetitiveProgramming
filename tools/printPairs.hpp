@@ -1,5 +1,5 @@
 template<typename T_Pairs>
-void printPairs(T_Pairs pairs, bool pairSpacing = true, bool newPairSpace = true, bool newLine = true) {
+void printPairs(T_Pairs pairs, const bool pairSpacing = true, const bool accountForWhiteSpace = false, const bool newPairSpace = true, const bool newLine = true) {
     for (int i = 0; i < pairs.size(); i++) {
         cout << pairs[i].first;
 
@@ -8,7 +8,10 @@ void printPairs(T_Pairs pairs, bool pairSpacing = true, bool newPairSpace = true
 
         cout << pairs[i].second;
 
-        cout << (newPairSpace ? ' ' : '\n');
+        if (pairs[i].second != ' ' && accountForWhiteSpace)
+            cout << (newPairSpace ? ' ' : '\n');
+        else 
+            cout << (newPairSpace ? ' ' : '\n');
     }
 
     if (newLine)

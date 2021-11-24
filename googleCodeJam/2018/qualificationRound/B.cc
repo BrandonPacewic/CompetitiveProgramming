@@ -17,7 +17,7 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 
 
 template<typename T_Pairs>
-void printPairs(T_Pairs pairs, bool pairSpacing = true, bool newPairSpace = true, bool newLine = true) {
+void printPairs(T_Pairs pairs, const bool pairSpacing = true, const bool accountForWhiteSpace = false, const bool newPairSpace = true, const bool newLine = true) {
     for (int i = 0; i < pairs.size(); i++) {
         cout << pairs[i].first;
 
@@ -26,7 +26,9 @@ void printPairs(T_Pairs pairs, bool pairSpacing = true, bool newPairSpace = true
 
         cout << pairs[i].second;
 
-        if (pairs[i].second != ' ')
+        if (pairs[i].second != ' ' && accountForWhiteSpace)
+            cout << (newPairSpace ? ' ' : '\n');
+        else 
             cout << (newPairSpace ? ' ' : '\n');
     }
 
@@ -93,7 +95,7 @@ void runCase(int tc) {
 
 
     cout << "Case #" << tc << ": ";
-    printPairs(ans, false);
+    printPairs(ans, false, true);
 }
 
 int main() {
