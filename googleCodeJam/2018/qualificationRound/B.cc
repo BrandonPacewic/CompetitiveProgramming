@@ -26,9 +26,7 @@ void printPairs(T_Pairs pairs, const bool pairSpacing = true, const bool account
 
         cout << pairs[i].second;
 
-        if (pairs[i].second != ' ' && accountForWhiteSpace)
-            cout << (newPairSpace ? ' ' : '\n');
-        else 
+        if (!(pairs[i].second == ' ' && accountForWhiteSpace))
             cout << (newPairSpace ? ' ' : '\n');
     }
 
