@@ -1,5 +1,6 @@
+//MERGE SORT O(N log N)
 template<typename T_List>
-void merge(T_List *array, int leftIndex, int middleIndex, int rightIndex) {
+void merge(T_List &array, int leftIndex, int middleIndex, int rightIndex) {
    
    //size of left and right sub-arrays
    int nl = middleIndex - leftIndex + 1, nr = rightIndex - middleIndex;
@@ -41,7 +42,7 @@ void merge(T_List *array, int leftIndex, int middleIndex, int rightIndex) {
 }
 
 template<typename T_List>
-void mergeSort(T_List *array, int leftIndex, int rightIndex) {
+void mergeSort(T_List &array, int leftIndex, int rightIndex) {
    if (leftIndex < rightIndex) {
       int middleOfArray = leftIndex + (rightIndex - leftIndex) / 2;
       
