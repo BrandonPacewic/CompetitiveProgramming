@@ -24,7 +24,7 @@ void runCase(int tc) {
     for (int i = 0; i < S.length() / 2; i++) 
         if (S[i] != S[S.length() - i - 1])
             score++;    
-    
+
     int changes;
     if (score == K)
         changes = 0;
