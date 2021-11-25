@@ -16,9 +16,22 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 
 
 void runCase(int tc) {
-    //case code here
+    int N, K;
+    string S;
+    cin >> N >> K >> S;
 
-    cout << "Case #" << tc << ": " << '\n';
+    int score = 0;
+    for (int i = 0; i < S.length() / 2; i++) 
+        if (S[i] != S[S.length() - i - 1])
+            score++;    
+    
+    int changes;
+    if (score == K)
+        changes = 0;
+    else
+        changes = abs(score - K);
+
+    cout << "Case #" << tc << ": " << changes << '\n';
 }
 
 int main() {
