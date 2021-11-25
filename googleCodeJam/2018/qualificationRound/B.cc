@@ -16,9 +16,33 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 
 
 void runCase(int tc) {
-    //case code here
+    int N;
+    cin >> N;
+    vector<int> a(N);
 
-    cout << "Case #" << tc << ": " << '\n';
+    for (auto &i : a)
+        cin >> i;
+    
+    bool done = false;
+    while (done == false) {
+        done = true;
+        for (int i = 0; i < N - 2; i++)
+            if (a[i] > a[i + 2]) {
+                reverse(a.begin() + i, a.begin() + i + 3);
+                done = false;
+            }
+    }
+
+    testList(a);
+
+    for (int i = 0; i < N - 1; i++) {
+        if (a[i] > a[i + 1]) {
+            cout << "Case #" << tc << ": " << i << '\n';
+            return;        
+        }
+    }
+
+    cout << "Case #" << tc << ": OK" << '\n';
 }
 
 int main() {
