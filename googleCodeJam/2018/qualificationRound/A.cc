@@ -2,7 +2,7 @@
 using namespace std;
 
 //dbg
-#define DBG_MODE
+// #define DBG_MODE
 int64_t DBG_COUNT = 0;
 void DBG_OUT() { cerr << endl; DBG_COUNT++; }
 template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
@@ -15,19 +15,18 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #endif
 
 
-
-
 void runCase(int tc) {
     int D;
     string P;
     cin >> D >> P;
 
+
     if (count(P.begin(), P.end(), 'S') > D) {
         cout << "Case #" << tc << ": IMPOSSIBLE" << '\n';
         return;    
     }
-
-    auto count = [](string P) -> int {
+    
+    auto countDamage = [&](string P) -> int {
         int damage = 0, charge = 1;
         for (auto i : P) 
             if (i == 'S')
@@ -35,12 +34,22 @@ void runCase(int tc) {
             else
                 charge *= 2; 
         
+        testArgs(damage);
         return damage;
     };
 
-    
+    int swaps = 0;
+    while (D < countDamage(P) && DBG_COUNT < 45) {
+        for (int i = P.length() - 1; i >= 0; i--) 
+            if (P[i - 1] == 'C' && P[i] == 'S') {
+                swap(P[i - 1], P[i]);
+                break;
+            }
+        swaps++;
+        testArgs(P);
+    }
 
-    cout << "Case #" << tc << ": " << '\n';
+    cout << "Case #" << tc << ": " << swaps << '\n';
 }
 
 int main() {
