@@ -86,14 +86,14 @@ void runCase(int tc) {
 
                 testArgs(up, dw, le, ri);
 
-                if (up <= le / 2 && up != 1) count++; 
-                if (up <= ri / 2 && up != 1) count++; 
-                if (dw <= le / 2 && dw != 1) count++; 
-                if (dw <= ri / 2 && dw != 1) count++; 
-                if (le <= up / 2 && le != 1) count++; 
-                if (le <= dw / 2 && le != 1) count++; 
-                if (ri <= up / 2 && ri != 1) count++; 
-                if (ri <= dw / 2 && ri != 1) count++;
+                if (up >= le / 2 && up != 1 && le / 2 != 1) count++; 
+                if (up >= ri / 2 && up != 1 && ri / 2 != 1) count++; 
+                if (dw >= le / 2 && dw != 1 && dw / 2 != 1) count++; 
+                if (dw >= ri / 2 && dw != 1 && ri / 2 != 1) count++; 
+                if (le >= up / 2 && le != 1 && up / 2 != 1) count++; 
+                if (le >= dw / 2 && le != 1 && dw / 2 != 1) count++; 
+                if (ri >= up / 2 && ri != 1 && up / 2 != 1) count++; 
+                if (ri >= dw / 2 && ri != 1 && dw / 2 != 1) count++;
                 
                 testArgs(count);
             }
