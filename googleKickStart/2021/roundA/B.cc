@@ -49,13 +49,13 @@ void runCase(int tc) {
     for (int i = 0; i < R; i++) {
         for (int k = 0; k < C; k++) {
             if(checkEdge(M, pair<int, int> (i, k))) {
-                int up = 0, dw = 0, le = 0, ri = 0;
+                vector<int> segment(4, 0);
                 testArgs(i, k);
 
                 for (int j = 0; i - j >= 0; j++) {
                     //testargs(j);
                     if (M[i - j][k]) 
-                        up++;
+                        segment[0]++;
                     else
                         break;
                 }
@@ -63,7 +63,7 @@ void runCase(int tc) {
                 for (int j = 0; i + j <= R - 1; j++) {
                     //testargs(j);
                     if (M[i + j][k])
-                        dw++;
+                        segment[1]++;
                     else 
                         break;
                 }
@@ -71,7 +71,7 @@ void runCase(int tc) {
                 for (int j = 0; k - j >= 0; j++) {
                     //testargs(j);
                     if (M[i][k - j])
-                        le++;
+                        segment[2]++;
                     else
                         break;
                 }
@@ -79,22 +79,24 @@ void runCase(int tc) {
                 for (int j = 0; k + j <= C - 1; j++) {
                     //testargs(j);
                     if (M[i][k + j])
-                        ri++;
+                        segment[3]++;
                     else
                         break;
                 }
 
-                testArgs(up, dw, le, ri);
+                testList(segment);
 
-                if (up >= le / 2 && up != 1 && le / 2 != 1) count++; 
-                if (up >= ri / 2 && up != 1 && ri / 2 != 1) count++; 
-                if (dw >= le / 2 && dw != 1 && dw / 2 != 1) count++; 
-                if (dw >= ri / 2 && dw != 1 && ri / 2 != 1) count++; 
-                if (le >= up / 2 && le != 1 && up / 2 != 1) count++; 
-                if (le >= dw / 2 && le != 1 && dw / 2 != 1) count++; 
-                if (ri >= up / 2 && ri != 1 && up / 2 != 1) count++; 
-                if (ri >= dw / 2 && ri != 1 && dw / 2 != 1) count++;
-                
+                for (int t = 0; t < 4; t++)
+                    for (int m = 0; m < 4; m++) {
+                        if (t == m)
+                            continue;
+                        
+                        if (segment[t] / 2 <= segment[m] && segment[t] > 3) {
+                            count++;
+                            testArgs("thing found", segment[t] / 2, segment[m]);
+                        }
+                    }
+
                 testArgs(count);
             }
         }
