@@ -15,10 +15,90 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 #endif
 
 
-void runCase(int tc) {
-    //case code here
+bool checkEdge(vector<vector<int>> M, pair<int, int> L) {
+    if (!M[L.first][L.second])
+        return 0;
 
-    cout << "Case #" << tc << ": " << '\n';
+    if (L.first - 1 < 0 && M[L.first + 1][L.second]) {
+        testArgs("this");
+        return 1;
+    } else if (L.first + 1 > M.size() && M[L.first - 1][L.second]) {
+        testArgs("one");
+        return 1;
+    } else if (L.second - 1 < 0 && M[L.first][L.second + 1]) {
+        testArgs("is");
+        return 1;
+    } else if (L.second + 1 > M[0].size() && M[L.first][L.second - 1]) {
+        testArgs("the");
+        return 1;
+    } else if ((M[L.first - 1][L.second] != M[L.first + 1][L.second]) || (M[L.first][L.second - 1] != M[L.first][L.second + 1])) {
+        testArgs("best");
+        return 1;
+    }
+
+    testArgs("again");
+    return 0;
+}
+
+void runCase(int tc) {
+    int R, C;
+    cin >> R >> C;
+    vector<vector<int>> M(R, vector<int> (C));
+
+    for (auto &i : M)
+        for (auto &k : i)
+            cin >> k;
+    
+    int count = 0;
+    //find a end square pivot
+    for (int i = 0; i < R; i++) {
+        for (int k = 0; k < C; k++) {
+            if(checkEdge(M, pair<int, int> (i, k))) {
+                int up = 0, dw = 0, le = 0, ri = 0;
+
+                // for (int j = 0; i - j < 0; j++) {
+                //     if (M[i - j][k]) 
+                //         up++;
+                //     else
+                //         break;
+                // }
+                
+                // for (int j = 0; i + j > R - 1; j++) {
+                //     if (M[i + j][k])
+                //         dw++;
+                //     else 
+                //         break;
+                // }
+
+                // for (int j = 0; k - j < 0; j++) {
+                //     if (M[i][k - j])
+                //         le++;
+                //     else
+                //         break;
+                // }
+
+                // for (int j = 0; k + j > C - 1; j++) {
+                //     if (M[i][k + j])
+                //         ri++;
+                //     else
+                //         break;
+                // }
+
+                // if (up >= le / 2) count++; 
+                // if (up >= ri / 2) count++; 
+                // if (dw >= le / 2) count++; 
+                // if (dw >= ri / 2) count++; 
+                // if (le >= up / 2) count++; 
+                // if (le >= dw / 2) count++; 
+                // if (ri >= up / 2) count++; 
+                // if (ri >= dw / 2) count++;
+                
+                // testArgs(count);
+            }
+        }
+    }
+
+    cout << "Case #" << tc << ": " << count << '\n';
 }
 
 int main() {
