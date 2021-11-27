@@ -63,7 +63,7 @@ void runCase(int tc) {
                 for (int j = 0; i + j <= R - 1; j++) {
                     //testargs(j);
                     if (M[i + j][k])
-                        segment[1]++;
+                        segment[2]++;
                     else 
                         break;
                 }
@@ -71,7 +71,7 @@ void runCase(int tc) {
                 for (int j = 0; k - j >= 0; j++) {
                     //testargs(j);
                     if (M[i][k - j])
-                        segment[2]++;
+                        segment[1]++;
                     else
                         break;
                 }
@@ -88,10 +88,10 @@ void runCase(int tc) {
 
                 for (int t = 0; t < 4; t++)
                     for (int m = 0; m < 4; m++) {
-                        if (t == m)
+                        if (t == m || (t % 2 == 0 && m % 2 == 0) || (t % 2 != 0 && m % 2 != 0))
                             continue;
                         
-                        if (segment[t] / 2 <= segment[m] && segment[t] > 3) {
+                        if (segment[t] / 2 <= segment[m] && segment[t] > 3 && segment[m] != 1) {
                             count++;
                             testArgs("thing found", segment[t] / 2, segment[m]);
                         }
