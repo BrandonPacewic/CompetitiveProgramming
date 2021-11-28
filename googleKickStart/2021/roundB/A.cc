@@ -16,12 +16,29 @@ template<typename T_List> void testList(T_List List) { return; }
 
 
 void runCase() {
-    //case code here
+    int N;
+    string S;
+    cin >> N >> S;
 
+    for (int i = 0; i < N; i++) {
+        int count = 1;
+        
+        for (int k = i; k > 0; k--) {
+            if (S[k] - '0' > S[k - 1] - '0') {
+                testArgs(S[k] - '0', S[k - 1] - '0');
+                count++;
+            }
+        }
+
+        cout << count << ' ';
+        count = 1;
+    }
+
+    cout << '\n';
 }
 
 
-#define TEXT_IO
+// #define TEXT_IO
 int main() {
     #ifdef TEXT_IO
     freopen("in.txt", "r", stdin);
