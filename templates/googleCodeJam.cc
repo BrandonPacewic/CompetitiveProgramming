@@ -24,8 +24,8 @@ void runCase() {
 #define TEXT_IO
 int main() {
     #ifdef TEXT_IO
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
+    freopen("in.txt", "r", stdin);
+    freopen("ou.txt", "w", stdout);
     printf("Don't Forget to Submit Without DBG Enabled\n\n");
     #endif
 
