@@ -2,7 +2,6 @@
 using namespace std;
 
 //dbg
-#define DBG_MODE
 int64_t DBG_COUNT = 0;
 void DBG_OUT() { cerr << endl; DBG_COUNT++; }
 template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
@@ -15,18 +14,17 @@ template<typename T_List> void testList(T_List List) { return; }
 #endif
 
 
-void runCase() {
+void runCase(int tc) {
     //case code here
 
+    cout << "Case #" << tc << ": " << '\n';
 }
 
 
-#define TEXT_IO
 int main() {
     #ifdef TEXT_IO
     freopen("in.txt", "r", stdin);
     freopen("ou.txt", "w", stdout);
-    printf("Don't Forget to Submit Without DBG Enabled\n\n");
     #endif
 
     ios::sync_with_stdio(0);
@@ -36,8 +34,7 @@ int main() {
     cin >> test_cases;
 
     for (int tc = 1; tc <= test_cases; tc++) {
-        cout << "Case #" << tc << ": ";
-        runCase();
+        runCase(tc);
         cerr << flush;
     }
 }
