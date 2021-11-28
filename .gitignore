@@ -168,8 +168,10 @@ dmypy.json
 # test files
 *test.py
 
-# input/output
+# input/output/expected
 input.txt
 output.txt
+expected.txt
 in.txt
 ou.txt
+ex.txt
