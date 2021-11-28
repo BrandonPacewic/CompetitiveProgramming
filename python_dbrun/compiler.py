@@ -1,5 +1,5 @@
 # python run_cpp.py -i <filename> (without .cc extension)
-import compair
+from compair import compairExpectedVsOutput
 import sys, os, getopt
 
 def enterDbgMode(file_name):
@@ -40,30 +40,26 @@ def exitTxtMode(file_name):
     
 
 def main(argv):
-    cc_file = ''
-    try:
-        opts, args = getopt.getopt(argv, "hi:",["help",'ifile='])
-    except getopt.GetoptError as err:
-        # print help information and exit
-        print(err)      
-        print('run_cpp.py -i <filename> (without .cc extension)')
-        sys.exit(2)
+    opts, args = getopt.getopt(argv, "hif:",["help",'ifile=', 'ffile='])
     for o, a in opts:
         if o in ("-h", "--help"):
             print('run_cpp.py -i <filename> (without .cc extension)')
             sys.exit()
-        elif o in ("-i"):
+        
+        elif o in ("-i", "ifile"):
             cc_file = a + '.cc'
             enterDbgMode(cc_file)
             run(cc_file)
             exitDbgMode(cc_file)
-        elif o in ('-if'):
+        
+        elif o in ("-f", "ffile"):
             cc_file = a + '.cc'
             enterDbgMode(cc_file)
             enterTxtMode(cc_file)
             run(cc_file)
             exitDbgMode(cc_file)
-            exitTxtMode(cc_file) 
+            exitTxtMode(cc_file)
+            compairExpectedVsOutput()
 
 
 def run(cpp_file):
