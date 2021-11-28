@@ -1,5 +1,5 @@
 # python run_cpp.py -i <filename> (without .cc extension)
-
+import compair
 import sys, os, getopt
 
 def enterDbgMode(file_name):

@@ -1,0 +1,3 @@
+def compair():
+    print('Compairing...')
+        
