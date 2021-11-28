@@ -175,3 +175,8 @@ expected.txt
 in.txt
 ou.txt
 ex.txt
+
+# dbrun compile files
+.compiler.py.swp
+.swp
+compair.py
