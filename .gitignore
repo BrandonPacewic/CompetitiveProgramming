@@ -171,3 +171,5 @@ dmypy.json
 # input/output
 input.txt
 output.txt
+in.txt
+ou.txt
