@@ -167,3 +167,7 @@ dmypy.json
 
 # test files
 *test.py
+
+# input/output
+input.txt
+output.txt
