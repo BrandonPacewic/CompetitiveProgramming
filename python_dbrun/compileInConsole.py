@@ -1,4 +1,4 @@
-#! /usr/local/bin/python
+#! /usr/bin/python
 
 # python dbrun -i <filename> (without .cc extension)
 import sys, os, getopt
