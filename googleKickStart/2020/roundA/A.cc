@@ -15,9 +15,26 @@ template<typename T_List> void testList(T_List List) { return; }
 
 
 void runCase(int tc) {
-    //case code here
+    int N, B;
+    cin >> N >> B;
+    vector<int> costs(N);
 
-    cout << "Case #" << tc << ": " << '\n';
+    for (auto &i : costs)
+        cin >> i;
+
+    sort(costs.begin(), costs.end());
+
+    int count = 0;
+    for (auto i : costs) {
+        if (B - i >= 0) {
+            count++;
+            B -= i;
+        } else {
+            break;
+        }
+    }
+
+    cout << "Case #" << tc << ": " << count << '\n';
 }
 
 
