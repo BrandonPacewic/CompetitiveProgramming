@@ -15,9 +15,29 @@ template<typename T_List> void testList(T_List List) { return; }
 
 
 void runCase() {
-    //case code here
+    int W, H, N;
+    cin >> W >> H >> N;
 
-    cout << '\n';
+    if (W % 2 != 0 && H % 2 != 0 && N != 1) {
+        cout << "NO\n";
+        return;
+    }
+
+    int current = 1;
+    while (current < N) {
+        if (H % 2 == 0) {
+            current *= 2;
+            H /= 2;
+        } else if (W % 2 == 0) {
+            current *= 2;
+            W /= 2;
+        } else {
+            cout << "NO\n";
+            return;
+        }
+    }
+
+    cout << "YES\n";
 }
 
 
