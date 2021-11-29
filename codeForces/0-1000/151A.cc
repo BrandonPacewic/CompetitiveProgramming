@@ -14,13 +14,6 @@ template<typename T_List> void testList(T_List List) { return; }
 #endif
 
 
-void runCase() {
-    //case code here
-
-    cout << '\n';
-}
-
-
 int main() {
 #ifdef TEXT_IO
     freopen("in.txt", "r", stdin);
@@ -30,11 +23,9 @@ int main() {
     ios::sync_with_stdio(0);
     cin.tie(0);
 
-    int test_cases;
-    cin >> test_cases;
+    int N, K, L, C, D, P, nl, np;
+    cin >> N >> K >> L >> C >> D >> P >> nl >> np;
 
-    while (test_cases--) {
-        runCase();
-        cerr << flush;
-    }
+    cout << min({(K * L) / nl, C * D, P / np}) / N << '\n';
+
 }
