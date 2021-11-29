@@ -15,7 +15,7 @@ template<typename T_List> void testList(T_List List) { return; }
 
 
 void runCase(int tc) {
-        int N;
+    int N;
     string S;
     cin >> N >> S;
 
