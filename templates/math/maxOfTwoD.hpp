@@ -1,9 +1,9 @@
 template<typename T_Grid> 
 int maxOfGrid(T_Grid Grid) {
-    int sum = 0;
+    int max_val = -INF;
     for (int i = 0; i < Grid.size(); i++)
         for (int j = 0; j < Grid[i].size(); j++)
-            sum += Grid[i][j];
+            max_val = max(max_val, Grid[i][j]);
     
-    return sum;
+    return max_val;
 }
