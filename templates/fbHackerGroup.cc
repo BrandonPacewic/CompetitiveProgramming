@@ -35,6 +35,6 @@ int main() {
 
     for (int tc = 1; tc <= test_cases; tc++) {
         runCase(tc);
-        cerr << flush;
+        cout << flush;
     }
 }

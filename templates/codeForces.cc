@@ -35,6 +35,6 @@ int main() {
 
     while (test_cases--) {
         runCase();
-        cerr << flush;
+        cout << flush;
     }
 }
