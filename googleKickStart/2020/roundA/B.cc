@@ -14,10 +14,48 @@ template<typename T_List> void testList(T_List List) { return; }
 #endif
 
 
-void runCase(int tc) {
-    //case code here
+const int INF = int(1e9) + 5;
 
-    cout << "Case #" << tc << ": " << '\n';
+template<typename T_Grid> 
+int maxOfGrid(T_Grid Grid) {
+    int max_val = -INF;
+    for (int i = 0; i < Grid.size(); i++)
+        for (int j = 0; j < Grid[i].size(); j++)
+            max_val = max(max_val, Grid[i][j]);
+    
+    return max_val;
+}
+
+void runCase(int tc) {
+    auto total = [&](auto stack, int count) -> int {
+        int sum = 0;
+        for (int i = 0; i < count; i++)
+            sum += stack[i];
+
+        return sum;
+    };
+
+    int N, K, P;
+    cin >> N >> K >> P;
+    vector<vector<int>> stacks(N, vector<int> (K));
+
+    for (auto &i : stacks)
+        for (auto &k :i)
+            cin >> k;
+
+    vector<vector<int>> sum(N, vector<int> (P));
+    for (int n = 0; n < N; n++)
+        for (int p = 0; p < P; p++) 
+            sum[n][p] = total(stacks[n], p + 1); 
+        
+    vector<vector<int>> dp(N, vector<int> (K, 0));
+    for (int i = 1; i < N; i++)
+        for (int j = 0; j <= P; j++)
+            for (int x = 0; x < min(K, j); x++)
+                dp[i][j] = max(dp[i][j], sum[i][x] + dp[i - 1][j - x]);
+
+
+    cout << "Case #" << tc << ": " << maxOfGrid(dp) << '\n';
 }
 
 
