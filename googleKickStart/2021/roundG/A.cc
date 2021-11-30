@@ -15,9 +15,41 @@ template<typename T_List> void testList(T_List List) { return; }
 
 
 void runCase(int tc) {
-    //case code here
+    int N, D, M;
+    int64_t C;
+    string S;
+    cin >> N >> D >> C >> M >> S;
 
-    cout << "Case #" << tc << ": " << '\n';
+    int dogs = count(S.begin(), S.end(), 'D');
+
+    if (D < dogs) {
+        cout << "Case #" << tc << ": NO" << '\n';
+        return;    
+    }
+
+    int found = 0;
+
+    for (int i = 0; i < N; i++) {
+        testArgs(found, dogs, C);
+        
+        if (found == dogs) {
+            cout << "Case #" << tc << ": YES" << '\n';
+            return;
+        }
+
+        if (S[i] == 'D') {
+            found++;
+            C += M;
+
+        } else if (C > 0) {
+            C--;
+        } else {
+            cout << "Case #" << tc << ": NO" << '\n';
+            return;
+        }
+    }
+
+    cout << "Case #" << tc << ": YES" << '\n';
 }
 
 
