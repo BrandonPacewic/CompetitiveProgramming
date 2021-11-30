@@ -32,10 +32,8 @@ void runCase(int tc) {
     for (int i = 0; i < N; i++) {
         testArgs(found, dogs, C);
         
-        if (found == dogs) {
-            cout << "Case #" << tc << ": YES" << '\n';
-            return;
-        }
+        if (found == dogs) 
+            break;
 
         if (S[i] == 'D') {
             found++;
