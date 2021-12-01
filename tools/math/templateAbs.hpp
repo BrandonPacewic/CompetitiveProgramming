@@ -1,0 +1,1 @@
+template<typename T> T abs(T NUM) { return NUM < 0 ? NUM * -1 : NUM; }
