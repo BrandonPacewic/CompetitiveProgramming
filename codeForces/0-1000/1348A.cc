@@ -29,10 +29,26 @@ template<typename T_List> void testList(T_List List) { return; }
 #endif
 
 
-void runCase() {
-    //case code here
+const int MAX_N = 30;
 
-    cout << '\n';
+void runCase() {
+    int N;
+    cin >> N;
+    array<int, MAX_N> A;
+
+    for (int i = 0; i < N; i++)
+        cin >> A[i];
+
+    int left = 0, right = 0;
+
+    for (int i = 0; i < N; i++)
+        if (left < right)
+            left += A[i];
+        else
+            right += A[i];
+
+
+    cout << abs(left - right) << '\n';
 }
 
 
@@ -45,11 +61,5 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int test_cases;
-    cin >> test_cases;
-
-    while (test_cases--) {
-        runCase();
-        cout << flush;
-    }
+    runCase();
 }
