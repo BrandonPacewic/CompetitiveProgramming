@@ -27,8 +27,8 @@ int main() {
     freopen("ou.txt", "w", stdout);
 #endif
 
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
     int test_cases;
     cin >> test_cases;
