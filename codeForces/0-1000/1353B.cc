@@ -71,7 +71,8 @@ void runCase() {
 
     for (int k = 0; k < K; k++) {
         int nmax = findMax(B);
-        A[findMin(A)] = B[nmax];
+        int omin = findMin(A);
+        A[omin] = B[nmax] > A[omin] ? B[nmax] : A[omin];
         B[nmax] = -INF;
     }
 
