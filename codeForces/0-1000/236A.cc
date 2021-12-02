@@ -29,7 +29,10 @@ template<typename T_List> void testList(T_List List) { return; }
 
 
 void runCase() {
-    //case code here
+    string S;
+    cin >> S;
+
+    map<int> used;
 
     cout << '\n';
 }
