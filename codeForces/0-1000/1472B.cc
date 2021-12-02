@@ -30,9 +30,27 @@ template<typename T_List> void testList(T_List List) { return; }
 
 
 void runCase() {
-    //case code here
+    int N;
+    cin >> N;
+    string S;
 
-    cout << '\n';
+    for (int i = 0; i < N; i++) {
+        char s;
+        cin >> s;
+        S += s;
+    }
+
+    int ones = count(S.begin(), S.end(), '1');
+    int twos = count(S.begin(), S.end(), '2');
+
+    testArgs(ones, twos);
+
+    if ((ones % 2 == 0 && twos % 2 == 0) || ((ones % 2 != 0 && twos % 2 != 0) && (ones > 1))) {
+        cout << "YES" << '\n';
+        return;
+    }
+    
+    cout << "NO" << '\n';
 }
 
 
