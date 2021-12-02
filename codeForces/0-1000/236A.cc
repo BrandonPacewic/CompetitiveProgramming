@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <unordered_map>
 #include <numeric>
 #include <queue>
 #include <random>
@@ -32,9 +33,16 @@ void runCase() {
     string S;
     cin >> S;
 
-    map<int> used;
+    unordered_map<char, int> used;
+    int unique = 0;
 
-    cout << '\n';
+    for (int i = 0; i < S.length(); i++)
+        if (!used.count(S[i])) {
+            unique++;
+            used[S[i]] = i;
+        }
+
+    cout << (unique % 2 == 0 ? "CHAT WITH HER!" : "IGNORE HIM!")  << '\n';
 }
 
 
@@ -47,11 +55,5 @@ int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int test_cases;
-    cin >> test_cases;
-
-    while (test_cases--) {
-        runCase();
-        cout << flush;
-    }
+    runCase();
 }
