@@ -28,9 +28,45 @@ template<typename T_List> void testList(T_List List) { return; }
 #define testArgs(...)
 #endif
 
+#ifdef DBG_MODE
+template<typename T_Vector> void testListInList(T_Vector List) { cerr << '#' << DBG_COUNT << " __LIST_ARGS__:("; DBG_COUNT++; for (int i = 0; i < List.size(); i++) { cerr << '('; for (int k = 0; k < List[i].size(); k++) cerr << List[i][k] << (k < List[i].size() - 1 ? ", " : ")"); cerr << (i < List.size() - 1 ? ", " : ")\n"); } }
+#else
+template<typename T_Vector> void testListInList(T_Vector List) { return; }
+#endif
+
+
+struct subarray {
+    int size, startingIndex, endingIndex;
+};
 
 void runCase(int tc) {
-    //case code here
+    int N;
+    cin >> N;
+    vector<int> A(N);
+
+    for (auto &a : A)
+        cin >> a;
+
+    vector<subarray> subarrays;
+    int currentSize = 1, currentDiff = A[0] - A[1], startingIndex = 0;
+
+    for (int i = 1; i < N; i++) {
+        if (A[i] - A[i + 1] == currentDiff) {
+            currentSize++;
+        } else {
+            subarrays.push_back({currentSize + 1, startingIndex, i});
+            startingIndex = i;
+            currentSize = 1;
+        }
+    }
+
+    subarray bestSubarray;
+
+    for (int i = 0; i < subarrays.size(); i++)
+        if (subarrays[i].size > bestSubarray.size)
+            // bestSubarray = bestSubarray[i];
+
+    testListInList(subarrays);
 
     cout << "Case #" << tc << ": " << '\n';
 }
