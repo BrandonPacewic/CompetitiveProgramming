@@ -16,7 +16,7 @@ template<typename T_List> void testList(T_List List) { return; }
 
 const int INF = int(1e9) + 5;
 
-template<typename T_Grid> 
+//dbg
 int maxOfGrid(T_Grid Grid) {
     int max_val = -INF;
     for (int i = 0; i < Grid.size(); i++) {
