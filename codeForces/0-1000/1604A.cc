@@ -30,9 +30,23 @@ template<typename T_List> void testList(T_List List) { return; }
 
 
 void runCase() {
-    //case code here
+    int N;
+    cin >> N;
+    vector<int> A(N);
 
-    cout << '\n';
+    for (auto &a : A)
+        cin >> a;
+
+    int replaceCount = 0;
+    int add = 0;
+
+    for (int i = 1; i < N; i++) {
+        if (A[i - 1] > N + add || A[i - 1] > i + add) {
+            add += A[i - 1] > N + add ? 
+        }
+    }
+
+    cout << replaceCount << '\n';
 }
 
 
