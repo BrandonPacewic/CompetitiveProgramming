@@ -42,8 +42,8 @@ void runCase() {
 
     for (int i = 1; i < N; i++) {
         if (A[i - 1] > N + add || A[i - 1] > i + add) {
-            add += A[i - 1] > N + add ? 
-        }
+            // add += A[i - 1] > N + add ? 
+        }      
     }
 
     cout << replaceCount << '\n';
