@@ -1,4 +1,19 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <array>
+#include <cassert>
+#include <chrono>
+#include <cmath>
+#include <cstring>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <map>
+#include <unordered_map>
+#include <numeric>
+#include <queue>
+#include <random>
+#include <set>
+#include <vector>
 using namespace std;
 
 //dbg
@@ -14,51 +29,33 @@ template<typename T_List> void testList(T_List List) { return; }
 #endif
 
 
-const int INF = int(1e9) + 5;
-
-//dbg
-int maxOfGrid(T_Grid Grid) {
-    int max_val = -INF;
-    for (int i = 0; i < Grid.size(); i++) {
-        testList(Grid[i]);
-
-        for (int j = 0; j < Grid[i].size(); j++)
-            max_val = max(max_val, Grid[i][j]);
-    
-    }
-    return max_val;
-}
-
 void runCase(int tc) {
-    auto total = [&](auto stack, int count) -> int {
-        int sum = 0;
-        for (int i = 0; i < count; i++)
-            sum += stack[i];
-
-        return sum;
-    };
-
     int N, K, P;
     cin >> N >> K >> P;
-    vector<vector<int>> stacks(N, vector<int> (K));
+    vector<vector<int>> A(N, vector<int> (K));
 
-    for (auto &i : stacks)
-        for (auto &k :i)
-            cin >> k;
+    for (auto &row : A)
+        for (auto &cell : row)
+            cin >> cell;
 
-    vector<vector<int>> sum(N, vector<int> (P));
-    for (int n = 0; n < N; n++)
-        for (int p = 0; p < P; p++) 
-            sum[n][p] = total(stacks[n], p + 1); 
-        
-    vector<vector<int>> dp(N, vector<int> (K, 0));
-    for (int i = 1; i < N; i++)
-        for (int j = 0; j <= P; j++)
-            for (int x = 0; x < min(K, j); x++)
-                dp[i][j] = max(dp[i][j], sum[i][x] + dp[i - 1][j - x]);
+    vector<vector<int>> SUM(N, vector<int> (P + 1, 0));
 
+    for (int i = 0; i < N; i++)
+        for (int k = 1; k < P + 1; k++) {
+            SUM[i][k] = SUM[i][k - 1] + A[i][k - 1];
+        }
 
-    cout << "Case #" << tc << ": " << maxOfGrid(dp) << '\n';
+    vector<vector<int>> dp(N, vector<int> (P, 0));
+
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < P; j++) {
+            for (int x = 0; x < P + 1; x++) {
+                dp[i][j] = max(dp[i][j], SUM[i][j] + )
+            }
+        }
+    }
+
+    cout << "Case #" << tc << ": " << '\n';
 }
 
 
@@ -68,8 +65,8 @@ int main() {
     freopen("ou.txt", "w", stdout);
 #endif
 
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
 
     int test_cases;
     cin >> test_cases;
