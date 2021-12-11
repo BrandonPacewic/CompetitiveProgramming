@@ -29,10 +29,30 @@ template<typename T_List> void testList(T_List List) { return; }
 #endif
 
 
-void runCase(int tc) {
-    
+const int INF = int(1e9) + 5;
 
-    cout << "Case #" << tc << ": " << '\n';
+void runCase(int tc) {
+    int N, P;
+    cin >> N >> P;
+    vector<int> A(N);
+
+    for (auto &a : A)
+        cin >> a;
+
+    sort(A.begin(), A.end(), greater<int>());
+    int ans = INF;
+
+    for (int i = 0; i < N - P + 1; i++) {
+        int target = A[i], subHrs = 0;
+
+        for (int k = 1; k < P; k++) {
+            subHrs += target - A[i + k];
+        }
+
+        ans = min(ans, subHrs);
+    }
+    
+    cout << "Case #" << tc << ": " << ans << '\n';
 }
 
 
