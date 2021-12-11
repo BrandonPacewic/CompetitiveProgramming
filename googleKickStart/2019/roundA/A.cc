@@ -1,8 +1,10 @@
 #include <algorithm>
 #include <array>
+#include <bits/stdint-intn.h>
 #include <cassert>
 #include <chrono>
 #include <cmath>
+#include <cstdint>
 #include <cstring>
 #include <functional>
 #include <iomanip>
@@ -39,19 +41,22 @@ void runCase(int tc) {
     for (auto &a : A)
         cin >> a;
 
-    sort(A.begin(), A.end(), greater<int>());
-    int ans = INF;
+    sort(A.begin(), A.end());
 
-    for (int i = 0; i < N - P + 1; i++) {
-        int target = A[i], subHrs = 0;
+    int64_t sum = 0;
 
-        for (int k = 1; k < P; k++) {
-            subHrs += target - A[i + k];
-        }
+    for (int i = 0; i < P; i++)
+        sum += A[i];
 
-        ans = min(ans, subHrs);
+    int64_t ans = A[P - 1] * P - sum;
+    testArgs(A[P - 1] * P - sum);
+
+
+    for (int i = P; i < N; i++) {
+        sum += A[i] - A[i - P];
+        ans = min(ans, A[i] * P - sum);
     }
-    
+
     cout << "Case #" << tc << ": " << ans << '\n';
 }
 
