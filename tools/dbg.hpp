@@ -1,7 +1,7 @@
 //dbg
-#ifdef DBG_MODE
 #ifndef BRANDON_DBG
 #define BRANDON_DBG
+#ifdef DBG_MODE
 int64_t DBG_COUNT = 0;
 void DBG_OUT() { cerr << endl; DBG_COUNT++; }
 template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
