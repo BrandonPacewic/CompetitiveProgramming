@@ -50,7 +50,7 @@ void runCase() {
     }
 
     if (ans.length() != N)
-        ans += A[N - 3][1];
+        ans += A.back()[1];
 
     cout << ans << '\n';
 }
