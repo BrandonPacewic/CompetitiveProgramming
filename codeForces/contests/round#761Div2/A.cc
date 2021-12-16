@@ -31,50 +31,33 @@ template<typename T_List> void testList(T_List List) { return; }
 
 
 void runCase() {
-    auto order = [](string s) -> string {
-        set<char> used;
-        string str = "";
-
-        for (auto ch : s)
-            if (!used.count(ch)) {
-                used.insert(ch);
-                str += ch;
-            }
-
-        return str;
-    };
-
-    auto findChars = [](string S) -> array<int, 2> {
-        array<int, 2> current = {-1, -1};
-
-        for (int i = 0; i < S.length(); i++) {
-            if (S[i] == 'b' && current[0] == -1)
-                current[0] = i;
-
-            if (S[i] == 'c')
-                current[1] = max(current[1], i);
-        }
-
-        return current;
-    };
-
     string S, T;
     cin >> S >> T;
 
     sort(S.begin(), S.end());
 
-    if (S.length() >= 3)
-        while (order(S).substr(0, 3) == T) {
-            auto current = findChars(S);
+    vector<int> stack(26, 0);
 
-            testList(current);
-            assert(current[0] != -1 && current[1] != -1);
+    for (auto ch : S)
+        stack[ch - 'a']++;
 
-            S[current[0]] = 'c';
-            S[current[1]] = 'b';
-        }
+    if (T[1] == 'b' && T[0] == 'a' && S[0] == 'a') {
+        for (int i = 0; i < stack[0]; i++)
+            cout << 'a';
 
-    cout << S << '\n';
+        for (int i = 0; i < stack[2]; i++)
+            cout << 'c';
+
+        for (int i = 0; i < stack[1]; i++)
+            cout << 'b';
+   
+        for (int i = 3; i < stack.size(); i++)
+            for (int k = 0; k < stack[i]; k++)
+                cout << char('a' + i);
+    
+        cout << '\n';
+    } else 
+        cout << S << '\n';
 }
 
 
