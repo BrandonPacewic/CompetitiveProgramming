@@ -52,7 +52,7 @@ void runCase() {
     for (int i = 0; i < N; i++) {
         int input;
         cin >> input;
-        if (need.count(input))
+        if (need.find(input) != need.end())
             need.erase(input);
         else
             A.push_back(input);
@@ -64,12 +64,12 @@ void runCase() {
         auto it = need.end();
         it--;
 
-        if (int(*it) > (num / 2)) {
+        if (int(*it) > (num - 1) / 2) {
             cout << -1 << '\n';
             return;
         }
 
-        need.erase(num);
+        need.erase(it);
     }
 
     cout << A.size() << '\n';
