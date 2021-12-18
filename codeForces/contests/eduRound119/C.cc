@@ -52,7 +52,6 @@ void runCase() {
         prev = ans;
     }
 
-    end:
     reverse(ans.begin(), ans.end());
     cout << ans << '\n';
 }
