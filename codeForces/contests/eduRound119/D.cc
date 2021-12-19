@@ -30,7 +30,7 @@ template<typename T_List> void testList(T_List List) { return; }
 #endif
 
 
-const int INF = int(1e5) + 5;
+const int INF = int(1e9) + 5;
 
 void runCase() {
     int N;
@@ -42,6 +42,8 @@ void runCase() {
 
     sort(A.begin(), A.end());
     int aprox = floor(A.back() / 3);
+    aprox++;
+
     int best = INF;
 
     testList(A);
