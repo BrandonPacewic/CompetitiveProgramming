@@ -41,14 +41,16 @@ template<typename T_SET> void testSet(T_SET SET) { return; }
 void runCase() {
     int lower, upper;
     cin >> lower >> upper;
-    set<int> range;
+    int count = 0;
 
-    for (int i = lower; i <= upper; i++)
-        range.insert(i);
+    for (int i = lower + 1; i <= upper; i++) {
+        for (int j = i + 1; j <= upper; j++) {
+            if ((i & j) == 0)
+                count++;
+        }
+    }
 
-    
-
-    cout << '\n';
+    cout << count << '\n';
 }
 
 
