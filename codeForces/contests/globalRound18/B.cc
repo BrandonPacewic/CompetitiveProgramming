@@ -28,29 +28,22 @@ template<typename T_List> void testList(T_List List) { return; }
 #define testArgs(...)
 #endif
 
-#ifndef TEST_SET
-#define TEST_SET
-#ifdef DBG_MODE
-template<typename T_SET> void testSet(T_SET SET) { cerr << '#' << DBG_COUNT << " __SET_ARGS__: ( "; DBG_COUNT++; for (auto ch : SET) cerr << ch << ' '; cerr << ")\n"; }
-#else
-template<typename T_SET> void testSet(T_SET SET) { return; }
-#endif
-#endif
 
+const int mxN = int(10e5);
+const int mLog = 20;
+
+int preCompute[mLog][mxN]; 
 
 void runCase() {
     int lower, upper;
     cin >> lower >> upper;
-    int count = 0;
+    int ans = 0;
 
-    for (int i = lower + 1; i <= upper; i++) {
-        for (int j = i + 1; j <= upper; j++) {
-            if ((i & j) == 0)
-                count++;
-        }
-    }
+    for (int i = 0; i < mLog; i++) 
+        ans = max(ans, preCompute[i][upper] - preCompute[i][lower - 1]);
 
-    cout << count << '\n';
+    upper++;
+    cout << upper - lower - ans << '\n';
 }
 
 
@@ -59,6 +52,10 @@ int main() {
     freopen("in.txt", "r", stdin);
     freopen("ou.txt", "w", stdout);
 #endif
+
+    for (int i = 0; i < mLog; i++) 
+        for (int j = 1; j <= mxN; j++)
+            preCompute[i][j] = preCompute[i][j - 1] + ((j >> i) & 1);
 
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
