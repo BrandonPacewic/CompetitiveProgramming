@@ -17,16 +17,15 @@ template<typename T_Ints> void testList(T_Ints List) { return; }
 
 //https://codeforces.com/problemset/problem/1560/B
 void runCase() {
-    int a, b, c;
-    cin >> a >> b >> c;
+    int A, B, C;
+    cin >> A >> B >> C;
+    int N = abs(A - B);
 
-    int size = a - b < 0 ? (b - a) * 2 : (a - b) * 2;
-    if (a > size || b > size || c > size) {
+    if (A > N || B > N || C > N) {
         cout << "-1\n";
         return;
-    }
-
-    cout << (c + (size / 2) > size ? c - (size / 2) : c + (size / 2)) <<  '\n';
+    } else
+        cout << (C + (N/ 2) > N ? C - (N/ 2) : C + (N/ 2)) <<  '\n';
 }
 
 int main() {
