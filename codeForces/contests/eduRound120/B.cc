@@ -28,6 +28,8 @@ template<typename T_List> void testList(T_List List) { return; }
 #define testArgs(...)
 #endif
 
+// Neal Wu -> https://www.youtube.com/watch?v=1MS2BS0c6uY&t=13s
+
 template<typename T_List>
 void printList(const T_List &List, const bool space = true, const bool new_line = true) {
     for (int i = 0; i < List.size(); i++) {
@@ -41,42 +43,41 @@ void printList(const T_List &List, const bool space = true, const bool new_line 
             cout << ' ';
 }
 
+
 void runCase() {
     int N;
     cin >> N;
-    vector<int> A(N);
 
-    for (auto &a : A)
-        cin >> a;
+    vector<int> P(N);
 
-    vector<int> B = A;
-    sort(B.begin(), B.end());
+    for (auto &p : P)
+        cin >> p;
 
     string S;
     cin >> S;
-    
+
+    vector<int> indices(N);
+    iota(indices.begin(), indices.end(), 0);
+
+    testList(indices);
+
+    sort(indices.begin(), indices.end(), [&](int a, int b){
+        testArgs(a, b);
+
+        if (S[a] != S[b]) {
+            return S[a] < S[b]; 
+        } else {
+            return P[a] < P[b];
+        }
+    });
+
+    testList(indices);
+
     vector<int> ans(N);
+    int value = 1;
 
-    if (S[0] == '1') {
-        ans[0] = B[A[0]];
-        B.erase(B.begin() + A[0]);
-    }
-
-    reverse(B.begin(), B.end());
-
-    for (int i = 1; i < N; i++) {
-        if (S[i] == '1') {
-            ans[i] = B.back();
-            B.pop_back();
-        }
-    }
-
-    for (int i = 0; i < N; i++) {
-        if (S[i] == '0') {
-            ans[i] = B.back();
-            B.pop_back();
-        }
-    }
+    for (int index : indices)
+        ans[index] = value++;
 
     printList(ans);
 }
