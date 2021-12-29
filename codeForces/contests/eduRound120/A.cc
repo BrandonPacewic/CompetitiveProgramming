@@ -30,27 +30,17 @@ template<typename T_List> void testList(T_List List) { return; }
 
 
 void runCase() {
-    array<int, 3> A;
+    array<int64_t, 3> A;
     cin >> A[0] >> A[1] >> A[2];
+    sort(A.begin(), A.end());
 
+    bool ans = A[2] - A[0] == A[1];
+    
     do {
-        if (A[0] - A[1] == A[2]) {
-            cout << "YES" << '\n';
-            return;
-        }
-
-        testList(A);
-
+        ans = ans || A[0] == A[1] && A[2] % 2 == 0;
     } while (next_permutation(A.begin(), A.end()));
 
-    do {
-        if (A[0] == A[1] && A[2] % 2 == 0) {
-            cout << "YES" << '\n';
-            return;
-        }
-    } while (next_permutation(A.begin(), A.end()));
-
-    cout << "NO" << '\n';
+    cout << (ans ? "YES" : "NO") << '\n';
 }
 
 
