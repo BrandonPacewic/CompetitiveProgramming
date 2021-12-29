@@ -29,20 +29,22 @@ template<typename T_List> void testList(T_List List) { return; }
 #endif
 
 // Neal Wu -> https://www.youtube.com/watch?v=1MS2BS0c6uY&t=13s
-
 template<typename T_List>
-void printList(const T_List &List, const bool space = true, const bool new_line = true) {
-    for (int i = 0; i < List.size(); i++) {
-        cout << List[i];
-        
-        if (space) cout << ' ';
-    }    
-        if (new_line)
-            cout << '\n';
-        else 
-            cout << ' ';
-}
+void print_list(const T_List &List, const bool space = true, const bool new_line = true, int start = -1, int end = -1) {
+    if (start == -1) start = 0;
+    if (end == -1) end = List.size();
 
+    for (int i = start; i < end; i++) {
+        std::cout << List[i];
+        
+        if (space) std::cout << ' ';
+    }    
+
+    if (new_line)
+        std::cout << '\n';
+    else
+        std::cout << ' ';
+}
 
 void runCase() {
     int N;
@@ -79,7 +81,7 @@ void runCase() {
     for (int index : indices)
         ans[index] = value++;
 
-    printList(ans);
+    print_list(ans);
 }
 
 
