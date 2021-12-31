@@ -170,9 +170,8 @@ dmypy.json
 *examples
 
 # input/output/expected
-input.txt
-output.txt
-expected.txt
+*_input.txt
+*_expected.txt
 in.txt
 ou.txt
 ex.txt
