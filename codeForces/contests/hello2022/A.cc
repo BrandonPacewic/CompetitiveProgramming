@@ -29,9 +29,29 @@ template<typename T_List> void testList(T_List List) { return; }
 
 
 void runCase() {
-    //case code here
+    int K, N;
+    cin >> K >> N;
 
-    cout << '\n';
+    for (int i = 0, r = 1; i < N; i++, r += 2) {
+        if (r > K) {
+            cout << -1 << '\n';
+            return;
+        }
+    }
+
+    for (int i = 0, cell = 0, count = 0; i < K; i++)
+        for (int j = 0; j < K; j++) {
+            if (cell == i && cell == j && count < N) {
+                cout << 'R';
+                cell += 2;
+                count++;
+            } else {
+                cout << '.';
+            }
+            
+            if (j >= K - 1)
+                cout << '\n';
+        }
 }
 
 
