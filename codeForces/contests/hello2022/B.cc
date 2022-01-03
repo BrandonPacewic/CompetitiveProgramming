@@ -27,11 +27,29 @@ template<typename T_List> void testList(T_List List) { return; }
 #define testArgs(...)
 #endif
 
+#ifdef DBG_MODE
+template<typename T_Vector> void testListInList(T_Vector List) { cerr << '#' << DBG_COUNT << " __LIST_ARGS__:("; DBG_COUNT++; for (int i = 0; i < List.size(); i++) { cerr << '('; for (int k = 0; k < List[i].size(); k++) cerr << List[i][k] << (k < List[i].size() - 1 ? ", " : ")"); cerr << (i < List.size() - 1 ? ", " : ")\n"); } }
+#else
+template<typename T_Vector> void testListInList(T_Vector List) { return; }
+#endif
+
 
 void runCase() {
-    //case code here
+    int N;
+    cin >> N;
+    vector<array<int, 4>> seg(N);
 
-    cout << '\n';
+    for (auto &nseg : seg) {
+        cin >> nseg[0] >> nseg[1] >> nseg[2];
+        nseg[3] = nseg[1] - nseg[0];
+    }
+
+    testListInList(seg);
+    vector<int> totals(N);
+
+    for (int i = 0; i < N; i++) {
+
+    }
 }
 
 
