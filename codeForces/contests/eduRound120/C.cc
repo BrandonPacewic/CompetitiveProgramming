@@ -44,7 +44,7 @@ void runCase() {
 
     sort(A.begin(), A.end());
 
-    if (accumulate(A.begin(), A.end(), 0ll) <= K) {
+    if (accumulate(A.begin(), A.end(), 0LL) <= K) {
         cout << 0 << '\n';
         return;
     }
@@ -58,9 +58,10 @@ void runCase() {
 
     for (int i = 0; i < N; i++) {
         int64_t sum = prefixsum[N - i] + A[0] * i;
-
-        int64_t need = max<int64_t>((sum - K + i) / (i + 1), 0);
-        best = min(best, need + i);
+        int reduce = i + 1;
+        int64_t need = max<int64_t>((sum - K + reduce - 1) / reduce, 0);
+        
+        best = min<int64_t>(best, need + i);
     }
 
     cout << best << '\n';
