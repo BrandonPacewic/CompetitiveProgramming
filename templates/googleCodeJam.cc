@@ -8,7 +8,6 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
-#include <unordered_map>
 #include <numeric>
 #include <queue>
 #include <random>
@@ -37,11 +36,6 @@ void runCase(int tc) {
 
 
 int main() {
-#ifdef TEXT_IO
-    freopen("in.txt", "r", stdin);
-    freopen("ou.txt", "w", stdout);
-#endif
-
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
