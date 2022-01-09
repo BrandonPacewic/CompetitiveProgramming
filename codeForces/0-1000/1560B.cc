@@ -38,7 +38,7 @@ void runCase() {
         cout << -1 << '\n';
         return;
     }
-
+    
     N /= 2;
     cout << (C > N ? C - N : C + N) << '\n';
 }
