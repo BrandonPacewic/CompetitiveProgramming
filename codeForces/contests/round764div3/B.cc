@@ -38,12 +38,15 @@ void runCase() {
     }
 
     bool ans = false;
+    int64_t g1 = 2 * A[1] - A[2];
+    int64_t g2 = 2 * A[1] - A[0];
+    int64_t g3 = A[0] / 2 + A[2] / 2;
 
-    if (2 * A[1] - A[2] % A[0] == 0)
+    if (g1 % A[0] == 0 && g1 > 0)
         ans = true;
-    else if (2 * A[1] - A[0] % A[2] == 0)
+    else if (g2 % A[2] == 0 && g2 > 0)
         ans = true;
-    else if (A[0] / 2 + A[2] / 2 % A[1] == 0)
+    else if (g3 % A[1] == 0 && g3 > 0)
         ans = true;
     
     cout << (ans ? "YES" : "NO") << '\n';
