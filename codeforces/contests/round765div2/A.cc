@@ -56,9 +56,17 @@ void run_case() {
 
     vector<int> common(N);
 
-    for (const auto binary : binarys)
+    for (auto &binary : binarys) {
+        if (binary.size() < binarys[0].size() || binary.size() < binarys[1].size()) {
+            reverse(binary.begin(), binary.end());
+            binary.push_back(0);
+            reverse(binary.begin(), binary.end());
+        }
+
+
         for (int i = 0; i < binary.size(); i++)
             common[i] += binary[i];
+    }
 
     int best = *max_element(common.begin(), common.end());
 
@@ -73,15 +81,13 @@ void run_case() {
         if (common[i] == best)
             target[i]++;
 
-    int count = 0;
+    testList(target);
+    int ans = 0;
 
-    for (const auto binary : binarys)
-        for (int i = 0; i < binary.size(); i++) {
-            if (common[i] != binary[i])
-                count++;
-        }
+    for (int i = 0; i < target.size(); i++)
+        ans += pow(target[i], 2);
 
-    cout << count << '\n';
+    cout << ans << '\n';
 }
 
 
