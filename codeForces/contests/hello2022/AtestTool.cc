@@ -52,7 +52,7 @@ void runCase() {
     }
 
     int cell = 0, count = 0;
-    print_empty_matrix(K, K, '.', 'R', [&](int x, int y) -> bool {
+    print_empty_matrix<char>(K, K, '.', 'R', [&](int x, int y) -> bool {
         if (x == cell && y == cell && count < N) {
             count++;
             cell += 2;
