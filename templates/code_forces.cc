@@ -28,8 +28,7 @@ template<typename T_List> void testList(T_List List) { return; }
 #endif
 
 
-// TODO: Dont forget to add link to problem
-void runCase() {
+void run_case() {
     //case code here
 
     cout << '\n';
@@ -44,7 +43,7 @@ int main() {
     cin >> test_cases;
 
     while (test_cases--) {
-        runCase();
+        run_case();
         cout << flush;
     }
 }
