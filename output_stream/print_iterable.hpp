@@ -1,5 +1,5 @@
 template<typename T_iterable>
-void print_list(const T_iterable &_iterable, const bool _space = true, const bool _new_line = true, int _start = -1, int _end = -1) {
+void print_iterable(const T_iterable &_iterable, const bool _space = true, const bool _new_line = true, int _start = -1, int _end = -1) {
 if (_start == -1) _start = 0;
 if (_end == -1) _end = int(_iterable.size());
 
