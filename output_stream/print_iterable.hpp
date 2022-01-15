@@ -4,7 +4,7 @@ if (_start == -1) _start = 0;
 if (_end == -1) _end = int(_iterable.size());
 
     for (int i = _start; i < _end; i++) {
-        std::cout << iterable[i];
+        std::cout << _iterable[i];
         
         if (_space) std::cout << ' ';
     }    
