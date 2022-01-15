@@ -86,6 +86,7 @@ void run_case() {
 
     map<array<int, 2>, int> edge_color;
 
+    // Dfs for the leaf that we found
     y_combinator([&](auto self, int node, int parent, int color) -> void {
         for (int neigh : adj[node])
             if (neigh != parent) {
