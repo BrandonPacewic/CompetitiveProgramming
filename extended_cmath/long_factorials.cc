@@ -14,7 +14,7 @@ void print_reverse(T iterable) {
 }
 
 
-std::vector<int> long_fatorials(int n) {
+std::vector<int> long_factorials(int n) {
 	std::vector<int> res;
 	res.push_back(1);
 
@@ -50,6 +50,6 @@ int main() {
 	int N;
 	std::cin >> N;
 
-	auto res = long_fatorials(N);
+	auto res = long_factorials(N);
 	print_reverse(res);
 }
