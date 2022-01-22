@@ -90,7 +90,7 @@ void run_case() {
     y_combinator([&](auto self, int node, int parent, int color) -> void {
         for (int neigh : adj[node])
             if (neigh != parent) {
-                edge_color[{node, neigh}] = edge_color[{node, neigh}] = color;
+                edge_color[{node, neigh}] = edge_color[{neigh, node}] = color;
                 self(neigh, node, 5 - color);
             }
     })(leaf, -1, -2);
