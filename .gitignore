@@ -169,13 +169,14 @@ dmypy.json
 *test.py
 *examples
 
-# input/output/expected
+# input/output/expected/
 *_input.txt
 *_expected.txt
 *_output.txt
 in.txt
 ou.txt
 ex.txt
+*.zip
 
 # dbrun compile files
 .compiler.py.swp
