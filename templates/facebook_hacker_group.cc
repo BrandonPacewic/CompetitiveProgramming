@@ -10,7 +10,6 @@
 #include <map>
 #include <numeric>
 #include <queue>
-#include <random>
 #include <set>
 #include <vector>
 using namespace std;
@@ -29,7 +28,7 @@ int64_t DBG_COUNT = 0;
 #endif
 
 
-void runCase(int tc) {
+void run_case(int tc) {
     //case code here
 
     cout << "Case #" << tc << ": " << '\n';
@@ -44,7 +43,7 @@ int main() {
     cin >> test_cases;
 
     for (int tc = 1; tc <= test_cases; tc++) {
-        runCase(tc);
+        run_case(tc);
         cout << flush;
     }
 }
