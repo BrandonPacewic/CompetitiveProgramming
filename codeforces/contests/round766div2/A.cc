@@ -33,7 +33,6 @@ void run_case() {
     cin >> N >> M >> R >> C;
     vector<string> grid(N);
     bool black = false;
-    R--, C--;
 
     for (auto &row : grid) {
         cin >> row;

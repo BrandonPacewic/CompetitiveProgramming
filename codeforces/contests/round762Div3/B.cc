@@ -42,7 +42,6 @@ void runCase() {
             used.insert(pow(i, 3));
     }
 
-
     cout << used.size() << '\n';
 }
 
