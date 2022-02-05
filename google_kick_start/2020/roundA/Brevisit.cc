@@ -45,16 +45,11 @@ void run_case(int tc) {
         }
     }
 
-    vector<vector<int>> dp(N, vector<int>(P));
+    vector<vector<int>> dp(N, vector<int>(P + 1, 0));
 
-    for (int i = 1; i < N; i++) 
-        for (int j = 0; j < P; j++) 
-            for (int x = 0; x < min(j, K); x++) 
-                dp[i][j] = sum[i][x] + dp[i - 1][j - x];
-            
-    testArgs(dp);
+    testArgs(sum);
 
-    cout << "Case #" << tc << ": " << dp[N - 1][P - 1] << '\n';
+    cout << "Case #" << tc << ": " << dp[N - 1][P] << '\n';
 }
 
 
