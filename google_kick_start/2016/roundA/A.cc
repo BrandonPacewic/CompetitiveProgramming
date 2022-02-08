@@ -31,9 +31,6 @@ template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { ce
 void run_case(int tc) {
     auto to_set = [](string _x) -> set<char> {
         set<char> set_obj(_x.begin(), _x.end());
-
-        testArgs(set_obj);
-
         return set_obj;
     };
 
