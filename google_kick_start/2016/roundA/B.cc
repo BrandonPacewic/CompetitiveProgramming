@@ -22,9 +22,9 @@ template<typename T_container, typename T = typename enable_if<!is_same<T_contai
 int64_t DBG_COUNT = 0;
 void DBG_OUT() { cerr << endl; DBG_COUNT++; }
 template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
-#define testArgs(...) cerr << '#' << DBG_COUNT << " [" << #__VA_ARGS__ << "]:", DBG_OUT(__VA_ARGS__)
+#define test(...) cerr << '#' << DBG_COUNT << " [" << #__VA_ARGS__ << "]:", DBG_OUT(__VA_ARGS__)
 #else
-#define testArgs(...)
+#define test(...)
 #endif
 
 
@@ -71,7 +71,6 @@ void run_case(int tc) {
             default:
                 return {center.first, center.second - 1}; 
         }
-
     };
 
     auto pathfind = [&](pair<int, int> start) -> int {
