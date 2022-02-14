@@ -6,10 +6,11 @@ if (_end == -1) _end = int(_iterable.size());
     for (int i = _start; i < _end; i++) {
         std::cout << _iterable[i];
         
-        if (_space) std::cout << ' ';
-    }    
-        if (_new_line)
-            std::cout << '\n';
-        else 
-            std::cout << ' ';
+        if (_space && i < _end - 1) std::cout << ' ';
+    }
+
+    if (_new_line)
+        std::cout << '\n';
+    else 
+        std::cout << ' ';
 }
