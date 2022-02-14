@@ -29,8 +29,8 @@ template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { ce
 
 
 bool is_vowel(char a) {
-    const string vowels = "aeiouAEIOU";
-    return vowels.find(a) != string::npos;
+    const string vowels = "aeiou";
+    return vowels.find(tolower(a)) != string::npos;
 }
 
 
@@ -38,7 +38,7 @@ void run_case(int tc) {
     string kingdom, ans;
     cin >> kingdom;
 
-    if (kingdom.back() == 'y' || kingdom.back() == 'Y')
+    if (tolower(kingdom.back()) == 'y')
         ans = "nobody";
     else if (is_vowel(kingdom.back()))
         ans = "Alice";
