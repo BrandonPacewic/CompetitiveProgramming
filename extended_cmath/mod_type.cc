@@ -1,13 +1,13 @@
 /*
- *
- *
- *
+ * Main feature of mod_type<> class, modular arithmetic in C++ works 
+ * different than it otherwise should. In C and C++ the % operator creates
+ * a value between -b and b when in most other cases the expected return 
+ * value should be between 0 and b. This is a simple fix.
  */
 
 #include <iostream>
 #include <istream>
-
-namespace bp {
+#include <cctype>
 
 template<typename _Tp>
 struct mod_type {
@@ -20,11 +20,6 @@ struct mod_type {
     explicit operator int64_t() const { return value; }
     explicit operator double() const { return value; }
     explicit operator long double() const { return value; }
-
-    // Main feature of mod_type<> class, modular arithmetic in C++ works 
-    // different than it otherwise should. In C and C++ the % operator creates
-    // a value between -b and b when in most other cases the expected return 
-    // value should be between 0 and b. This is a simple fix.
 
     mod_type& operator%=(const mod_type& other) {
         value %= other.value;
@@ -80,5 +75,3 @@ struct mod_type {
     friend std::istream& operator>>(std::istream& is, mod_type& a)
     { return is >> a.value; }
 };
-
-} // namespace bp
