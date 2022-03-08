@@ -5,9 +5,9 @@
  * value should be between 0 and b. This is a simple fix.
  */
 
-#include <iostream>
+#include <cstdint>
+#include <ostream>
 #include <istream>
-#include <cctype>
 
 template<typename _Tp>
 struct mod_type {
