@@ -1,9 +1,16 @@
 /*
- * Basic static mod type, prevents the value from ever going above the Ceil,
- * used for codeforces problems where they state at the end of the problem,
- * "Because the answer can be really really big output the answer mod x". This 
- * has also been used in different google code jam rounds.
+ * Copyright (c) 2022 Brandon Pacewic
+ *
+ * Developed and tested by Brandon Pacewic
+ * 
+ * satic_mod_type.cc
  */
+
+// Basic static mod type, prevents the value from ever going above the Ceil,
+// (keeps the value between 0 and Ceil without ever touching Ceil) used for
+// codeforces problems where they state at the end of the problem, "Because the
+// answer can be really really big output the answer mod x". This has also been
+// used in different google code jam rounds.
 
 #include <cstdint>
 #include <istream>
@@ -75,15 +82,9 @@ struct static_mod_type {
 		return tmp %= other;
 	}
 
-	static_mod_type operator++() {
-		++value;
-		return *this %= Ceil;
-	}
+	static_mod_type operator++() { return *this += 1; }
 
-	static_mod_type operator--() {
-		--value;
-		return *this %= Ceil;
-	}
+	static_mod_type operator--() { return *this -= 1; }
 
 	bool operator==(const static_mod_type& other) const 
 	{ return value == other.value; }
