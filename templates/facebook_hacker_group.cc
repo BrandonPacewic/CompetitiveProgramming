@@ -1,6 +1,3 @@
-#include <algorithm>
-#include <array>
-#include <cassert>
 #include <chrono>
 #include <cmath>
 #include <cstring>
@@ -12,38 +9,57 @@
 #include <queue>
 #include <set>
 #include <vector>
-using namespace std;
 
-template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
-template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
+// dbg output stream handling for pairs
+template<typename A, typename B> 
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) { 
+    return os << '(' << p.first << ", " << p.second << ')'; 
+}
+
+// dbg output stream handling for containers excluding type std::string
+template<typename T_container, typename T = typename std::enable_if<
+        !std::is_same<T_container, std::string>::value, 
+        typename T_container::value_type>::type> std::ostream& operator<<(
+            std::ostream& os, const T_container& A) { 
+    std::string sep; 
+    os << '{';
+
+    for (const T& a : A) { 
+        os << sep << a, sep = ", ";
+    }
+
+    return os << '}'; 
+}
 
 //dbg
 #ifdef DBG_MODE
-int64_t DBG_COUNT = 0;
-void DBG_OUT() { cerr << endl; DBG_COUNT++; }
-template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
-#define test(...) cerr << '#' << DBG_COUNT << " [" << #__VA_ARGS__ << "]:", DBG_OUT(__VA_ARGS__)
+int64_t _dbg_count = 0;
+void _dbg_count() { std::cerr << std::endl; ++_dbg_count; }
+template<typename Front, typename... Back> 
+void _dbg_count(Head A, Tail... B) { std::cerr << ' ' << A; _dbg_count(B...); }
+#define test(...) std::cerr << '#' << _dbg_count << 
+    " [" << #__VA_ARGS__ << "]:", _dbg_count(__VA_ARGS__)
 #else
 #define test(...)
 #endif
 
 
 void run_case(int tc) {
-    //case code here
+    using namespace std;
+    //TODO: case code here
 
     cout << "Case #" << tc << ": " << '\n';
 }
 
-
 int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);
+    std::ios::sync_with_stdio(0);
+    std::cin.tie(0);
 
     int test_cases;
-    cin >> test_cases;
+    std::cin >> test_cases;
 
     for (int tc = 1; tc <= test_cases; tc++) {
         run_case(tc);
-        cout << flush;
+        std::cout << std::flush;
     }
 }
