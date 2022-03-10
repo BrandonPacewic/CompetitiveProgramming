@@ -35,13 +35,11 @@ template<typename T_container, typename T = typename std::enable_if<
 }
 
 //dbg
-#ifdef DBG_MODE
-int64_t _dbg_count = 0;
-void _dbg_count() { std::cerr << std::endl; ++_dbg_count; }
-template<typename Front, typename... Back> 
-void _dbg_count(Head A, Tail... B) { std::cerr << ' ' << A; _dbg_count(B...); }
-#define test(...) std::cerr << '#' << _dbg_count << 
-    " [" << #__VA_ARGS__ << "]:", _dbg_count(__VA_ARGS__)
+#ifndef DBG_MODE
+void dbg_out() { std::cerr << std::endl; }
+template<typename Head, typename... Tail> 
+void dbg_out(Head A, Tail... B) { std::cerr << ' ' << A; dbg_out(B...); }
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
 #define test(...)
 #endif
