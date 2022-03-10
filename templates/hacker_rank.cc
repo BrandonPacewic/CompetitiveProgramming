@@ -56,4 +56,6 @@ int main() {
     std::cin.tie(nullptr);
 
     // TODO: Add test runner
+
+    return 0;
 }

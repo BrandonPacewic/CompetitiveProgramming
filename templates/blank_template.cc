@@ -50,4 +50,6 @@ int main() {
     std::cin.tie(nullptr);
 
     //TODO: Write code
+
+    return 0;
 }

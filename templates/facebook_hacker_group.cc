@@ -63,4 +63,6 @@ int main() {
         run_case(tc);
         std::cout << std::flush;
     }
+
+    return 0;
 }
