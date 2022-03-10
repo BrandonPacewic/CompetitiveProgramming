@@ -22,8 +22,8 @@ std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
 // dbg output stream handling for containers excluding type std::string
 template<typename T_container, typename T = typename std::enable_if<
         !std::is_same<T_container, std::string>::value, 
-        typename T_container::value_type>::type> std::ostream& operator<<(
-            std::ostream& os, const T_container& A) { 
+        typename T_container::value_type>::type> 
+std::ostream& operator<<(std::ostream& os, const T_container& A) { 
     std::string sep; 
     os << '{';
 
@@ -35,7 +35,7 @@ template<typename T_container, typename T = typename std::enable_if<
 }
 
 //dbg
-#ifndef DBG_MODE
+#ifdef DBG_MODE
 void dbg_out() { std::cerr << std::endl; }
 template<typename Head, typename... Tail> 
 void dbg_out(Head A, Tail... B) { std::cerr << ' ' << A; dbg_out(B...); }
