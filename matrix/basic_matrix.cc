@@ -8,7 +8,7 @@
 
 // This basic matrix is almost identical to uniform_matrix, just renamed so 
 // I can search for the version of this type that contains all the definitions
-// in one file so I can quickly fnid it while in a contest
+// in one file so I can quickly fnid it while in contest
 
 #include <cstddef>
 #include <iostream>
@@ -16,12 +16,18 @@
 #include <vector>
 
 template<typename _Tp>
-struct _basic_matrix_row : public std::vector<_Tp> {
-    int current_cell_index = 0;
+struct _basic_matrix_row {
+    _Tp* elements;
+    std::size_t size;
+    int current_cell_index;
+
+    _basic_matrix_row(std::size_t _size) 
+        : elements{new _Tp[_size]}, size{_size}, current_cell_index{0} { }
+
+    ~_basic_matrix_row() { delete[] elements; }
 
     int assign_back(const _Tp& new_element) try {
-        *this[current_cell_index] = new_element;
-        ++current_cell_index;
+        elements[current_cell_index++] = new_element;
 
         return current_cell_index;
     }
@@ -39,11 +45,7 @@ struct basic_matrix {
 
     basic_matrix(std::size_t _sz) 
         : rows{new _basic_matrix_row<_Tp>[_sz]}, current_row_index{0}, 
-        sz{_sz} {}
-
-    basic_matrix(std::size_t _sz, _Tp inital)
-        : rows{new _basic_matrix_row<_Tp>[_sz]}, current_row_index{0},
-        sz{_sz} {}
+        sz{_sz} { }
 
     ~basic_matrix() { delete[] rows; }
 
@@ -66,7 +68,7 @@ struct basic_matrix {
     void for_all(_Fun function) const noexcept {
         for (int _row = 0; _row < sz; ++_row) {
             for (int _cell = 0; _cell < sz; ++_cell) {
-                function(*this[_row][_cell], _row, _cell);
+                function(rows[_row][_cell], _row, _cell);
             }
         }
     }
