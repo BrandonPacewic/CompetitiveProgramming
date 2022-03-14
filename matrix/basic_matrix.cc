@@ -18,13 +18,19 @@
 template<typename _Tp>
 struct _basic_matrix_row {
     _Tp* elements;
-    std::size_t size;
+    std::size_t sz;
     int current_cell_index;
 
+    _basic_matrix_row() { }
+
     _basic_matrix_row(std::size_t _size) 
-        : elements{new _Tp[_size]}, size{_size}, current_cell_index{0} { }
+        : elements{new _Tp[_size]}, sz{_size}, current_cell_index{0} { }
 
     ~_basic_matrix_row() { delete[] elements; }
+
+    std::size_t size() const noexcept { return sz; }
+
+    _Tp& operator[](int index) { return elements[index]; }
 
     int assign_back(const _Tp& new_element) try {
         elements[current_cell_index++] = new_element;
@@ -43,16 +49,17 @@ struct basic_matrix {
     std::size_t sz;
     int current_row_index;
 
-    basic_matrix(std::size_t _sz) 
-        : rows{new _basic_matrix_row<_Tp>[_sz]}, current_row_index{0}, 
-        sz{_sz} { }
+    basic_matrix(std::size_t _size) 
+        : rows{new _basic_matrix_row<_Tp>[_size]}, sz{_size},
+        current_row_index{0} { 
+        for (int i = 0; i < int(sz); i++) {
+            rows[i] = _basic_matrix_row<_Tp>(sz);
+        }
+    }
 
-    ~basic_matrix() { delete[] rows; }
+    std::size_t size() const noexcept { return sz; }
 
-    const std::size_t size() const noexcept { return sz; }
-
-    const _basic_matrix_row<_Tp>& operator[](
-        const int& index) const noexcept { return rows[index]; }
+    _basic_matrix_row<_Tp>& operator[](int index) const { return rows[index]; }
 
     void assign_back(const _Tp& new_element) try {
         int current = rows[current_row_index].assign_back(new_element);
@@ -64,12 +71,14 @@ struct basic_matrix {
         throw error;
     }
 
+    // TODO: lambda function should have type of void
     template<class _Fun>
     void for_all(_Fun function) const noexcept {
-        for (int _row = 0; _row < sz; ++_row) {
-            for (int _cell = 0; _cell < sz; ++_cell) {
+        for (int _row = 0; _row < int(sz); ++_row) {
+            for (int _cell = 0; _cell < int(sz); ++_cell) {
                 function(rows[_row][_cell], _row, _cell);
             }
         }
     }
 };
+
