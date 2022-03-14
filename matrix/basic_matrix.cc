@@ -8,54 +8,54 @@
 
 // This basic matrix is almost identical to uniform_matrix, just renamed so 
 // I can search for the version of this type that contains all the definitions
-// in one file
+// in one file so I can quickly fnid it while in a contest
 
 #include <cstddef>
 #include <iostream>
 #include <stdexcept>
+#include <vector>
 
-template<typename _Tp, const std::size_t _Sz>
-struct _basic_matrix_row {
-    _Tp* elements;
-    int current_cell_index;
-
-    _basic_matrix_row() : elements{new _Tp[_Sz]}, current_cell_index{0} {}
-    ~_basic_matrix_row() { delete[] elements; };
-
-    const std::size_t size() const noexcept { return _Sz; }
-    
-    const _Tp& operator[](const int& index) const noexcept 
-    { return elements[index]; }
+template<typename _Tp>
+struct _basic_matrix_row : public std::vector<_Tp> {
+    int current_cell_index = 0;
 
     int assign_back(const _Tp& new_element) try {
-        elements[current_cell_index] = new_element;
+        *this[current_cell_index] = new_element;
         ++current_cell_index;
+
+        return current_cell_index;
     }
     catch (const std::out_of_range& error) {
-        std::cerr << "assign_back has no elements to assign" << '\n';
+        std::cerr << "assign_back has no cell to assign" << '\n';
         throw error;
     }
 };
 
-template<typename _Tp, const std::size_t _Sz>
+template<typename _Tp>
 struct basic_matrix {
-    _basic_matrix_row<_Tp,_Sz>* rows;
+    _basic_matrix_row<_Tp>* rows;
+    std::size_t sz;
     int current_row_index;
 
-    basic_matrix() : 
-        rows{new _basic_matrix_row<_Tp, _Sz>[_Sz]}, current_row_index{0} {}
-    
+    basic_matrix(std::size_t _sz) 
+        : rows{new _basic_matrix_row<_Tp>[_sz]}, current_row_index{0}, 
+        sz{_sz} {}
+
+    basic_matrix(std::size_t _sz, _Tp inital)
+        : rows{new _basic_matrix_row<_Tp>[_sz]}, current_row_index{0},
+        sz{_sz} {}
+
     ~basic_matrix() { delete[] rows; }
 
-    const std::size_t size() const noexcept { return _Sz; }
+    const std::size_t size() const noexcept { return sz; }
 
-    const _basic_matrix_row<_Tp, _Sz>& operator[](
+    const _basic_matrix_row<_Tp>& operator[](
         const int& index) const noexcept { return rows[index]; }
 
     void assign_back(const _Tp& new_element) try {
         int current = rows[current_row_index].assign_back(new_element);
 
-        if (current == _Sz) { ++current_row_index; }
+        if (current == sz) { ++current_row_index; }
     }
     catch (const std::out_of_range& error) {
         std::cerr << "assign_back has no rows to assign" << '\n';
@@ -63,10 +63,10 @@ struct basic_matrix {
     }
 
     template<class _Fun>
-    void for_all(_Fun function) noexcept {
-        for (int row = 0; row < _Sz; ++row) {
-            for (int cell = 0; cell < _Sz; ++cell) {
-                function(*this[row][cell], row, cell);
+    void for_all(_Fun function) const noexcept {
+        for (int _row = 0; _row < sz; ++_row) {
+            for (int _cell = 0; _cell < sz; ++_cell) {
+                function(*this[_row][_cell], _row, _cell);
             }
         }
     }
