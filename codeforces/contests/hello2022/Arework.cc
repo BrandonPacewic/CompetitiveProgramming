@@ -45,11 +45,24 @@ void dbg_out(Head A, Tail... B) { std::cerr << ' ' << A; dbg_out(B...); }
 #endif
 
 template<typename _Tp>
-struct _basic_matrix_row : public std::vector<_Tp> {
-    int current_cell_index = 0;
+struct _basic_matrix_row {
+    _Tp* elements;
+    std::size_t sz;
+    int current_cell_index;
+
+    _basic_matrix_row() { }
+
+    _basic_matrix_row(std::size_t _size) 
+        : elements{new _Tp[_size]}, sz{_size}, current_cell_index{0} { }
+
+    ~_basic_matrix_row() { delete[] elements; }
+
+    std::size_t size() const noexcept { return sz; }
+
+    _Tp& operator[](int index) { return elements[index]; }
 
     int assign_back(const _Tp& new_element) try {
-        *this[current_cell_index++] = new_element;
+        elements[current_cell_index++] = new_element;
 
         return current_cell_index;
     }
@@ -61,25 +74,38 @@ struct _basic_matrix_row : public std::vector<_Tp> {
 
 template<typename _Tp>
 struct basic_matrix {
-    _basic_matrix_row<_Tp>* inner_rows;
+    _basic_matrix_row<_Tp>* rows;
     std::size_t sz;
     int current_row_index;
 
-    basic_matrix(std::size_t _sz, _Tp inital) 
-        : inner_rows{new _basic_matrix_row<_Tp>}, 
-        sz{_sz}, current_row_index{0} { 
-        for (int i = 0; i < int(sz); ++i) {
-            inner_rows[i].assign(sz, inital);
+    basic_matrix(std::size_t _size) 
+        : rows{new _basic_matrix_row<_Tp>[_size]}, sz{_size},
+        current_row_index{0} { 
+        for (int i = 0; i < int(sz); i++) {
+            rows[i] = _basic_matrix_row<_Tp>(sz);
         }
     }
 
-    _basic_matrix_row<_Tp>& operator[](int index) { return inner_rows[index]; }
+    std::size_t size() const noexcept { return sz; }
+
+    _basic_matrix_row<_Tp>& operator[](int index) const { return rows[index]; }
+
+    void assign_back(const _Tp& new_element) try {
+        int current = rows[current_row_index].assign_back(new_element);
+
+        if (current == sz) { ++current_row_index; }
+    }
+    catch (const std::out_of_range& error) {
+        std::cerr << "assign_back has no rows to assign" << '\n';
+        throw error;
+    }
 
     template<class _Fun>
     void for_all(_Fun function) const noexcept {
         for (int _row = 0; _row < int(sz); ++_row) {
             for (int _cell = 0; _cell < int(sz); ++_cell) {
-                function(inner_rows[_row][_cell], _row, _cell);
+                test(_row, _cell);
+                function(rows[_row][_cell], _row, _cell);
             }
         }
     }
@@ -97,25 +123,25 @@ void run_case() {
         }
     }
 
-    basic_matrix<char> matrix(K, 'a');
-    
-    cout << matrix[0][0] << '\n';
-    
-    // int cell = 0, count = 0;
-    // matrix.for_all([&](char& item, int x, int y) -> void {
-    //     if (x == cell && y == cell && count < N) {
-    //         ++count;
-    //         cell += 2;
-    //         item = 'R';
-    //     }
-    //     else {
-    //         item = '.';
-    //     }
-    // });
+    basic_matrix<char> matrix(K);
 
-    // matrix.for_all([&](char& item, int x, int) -> void {
-    //     cout << item << (x >= K - 1 ? '\n' : ' ');
-    // });
+    int cell = 0, count = 0;
+    matrix.for_all([&](char& item, int y, int x) -> void {
+        if (x == cell && y == cell && count < N) {
+            ++count;
+            cell += 2;
+            item = 'R';
+        }
+        else {
+            item = '.';
+        }
+    });
+
+    matrix.for_all([&](char& item, int row, int col) -> void {
+        cout << item;
+
+        if (col >= K - 1) cout << '\n';
+    });
 }
 
 int main() {
