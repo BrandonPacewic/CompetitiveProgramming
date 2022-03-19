@@ -12,3 +12,14 @@ void print_matrix(const T_matrix &matrix, const bool _space = false, const bool 
             std::cout << '\n';
     }
 }
+
+
+template<typename T_matrix>
+void output_matrix(const T_matrix& matrix) {
+    for (int row = 0; row < int(matrix.size()); ++row) {
+        for (int cell = 0; cell < int(matrix[row].size); ++cell) {
+            std::cout << matrix[row][cell] << (
+                cell > int(matrix[row].size() - 1) ? '\n' : ' ');
+        }
+    }
+}
