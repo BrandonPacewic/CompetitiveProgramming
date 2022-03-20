@@ -58,7 +58,7 @@ void run_case(const int& tc) {
 
     int t = (9 - r) % 9, p = 0;
 
-    while (!t && !p || p < int(N.length()) && N[p] - '0' <= t) {
+    while ((!t && !p) || p < int(N.length()) && N[p] - '0' <= t) {
         ++p;
     }
 
