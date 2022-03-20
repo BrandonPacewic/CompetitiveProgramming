@@ -12,6 +12,7 @@
 #include <queue>
 #include <set>
 #include <vector>
+using namespace std;
 
 // dbg output stream handling for pairs
 template<typename A, typename B> 
@@ -46,7 +47,6 @@ void dbg_out(Head A, Tail... B) { std::cerr << ' ' << A; dbg_out(B...); }
 
 // TODO: Rename function
 void foo() {
-    using namespace std;
     // TODO: problem code here
 
 }

@@ -12,6 +12,7 @@
 #include <queue>
 #include <set>
 #include <vector>
+using namespace std;
 
 // dbg output stream handling for pairs
 template<typename A, typename B> 
@@ -45,8 +46,7 @@ void dbg_out(Head A, Tail... B) { std::cerr << ' ' << A; dbg_out(B...); }
 #endif
 
 
-void run_case(int tc) {
-    using namespace std;
+void run_case(const int& tc) {
     //TODO: case code here
 
     cout << "Case #" << tc << ": " << '\n';
