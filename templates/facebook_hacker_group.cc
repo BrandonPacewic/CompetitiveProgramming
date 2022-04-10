@@ -61,7 +61,9 @@ int main() {
 
     for (int tc = 1; tc <= test_cases; tc++) {
         run_case(tc);
+#ifdef DBG_MODE
         std::cout << std::flush;
+#endif
     }
 
     return 0;
