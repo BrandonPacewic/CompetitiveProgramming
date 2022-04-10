@@ -1,0 +1,8 @@
+peel
+
+peel
+
+middle letter can only be duplicated if last letter is greater than it
+same with first letter
+
+
