@@ -6,7 +6,7 @@ std::vector<std::pair<T, int>> run_length_encoding(const T_iterable& items) {
 
     for (const T& item : items)
         if (item == previous) {
-            count++;
+            ++count;
         } 
         else {
             if (count > 0) {
@@ -17,7 +17,7 @@ std::vector<std::pair<T, int>> run_length_encoding(const T_iterable& items) {
             count = 1;
         }
 
-    if (count > 0) {
+    if (count) {
         encoding.emplace_back(previous, count);
     }
 
