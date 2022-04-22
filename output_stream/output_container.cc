@@ -5,7 +5,7 @@ void output_container(const T_container& container,
     for (std::size_t i = 0; i < container.size(); ++i) {
         std::cout << container[i];
 
-        if (space && i < end - 1) {
+        if (space && i < container.size() - 1) {
             std::cout << ' ';
         }
     }
