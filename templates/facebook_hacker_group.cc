@@ -14,28 +14,25 @@
 #include <vector>
 using namespace std;
 
-// dbg output stream handling for pairs
 template<typename A, typename B> 
 std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) { 
     return os << '(' << p.first << ", " << p.second << ')'; 
 }
 
-// dbg output stream handling for containers excluding type std::string
 template<typename T_container, typename T = typename std::enable_if<
-        !std::is_same<T_container, std::string>::value, 
-        typename T_container::value_type>::type> 
-std::ostream& operator<<(std::ostream& os, const T_container& A) { 
-    std::string sep; 
-    os << '{';
+    !std::is_same<T_container, std::string>::value, 
+    typename T_container::value_type>::type> 
+std::ostream& operator<<(std::ostream& os, const T_container& container) { 
+    os << '{'; 
+    std::string separator; 
 
-    for (const T& a : A) { 
-        os << sep << a, sep = ", ";
+    for (const T& item : container) {
+        os << separator << item, separator = ", "; 
     }
 
     return os << '}'; 
 }
 
-//dbg
 #ifdef DBG_MODE
 void dbg_out() { std::cerr << std::endl; }
 template<typename Head, typename... Tail> 
@@ -45,26 +42,29 @@ void dbg_out(Head A, Tail... B) { std::cerr << ' ' << A; dbg_out(B...); }
 #define test(...)
 #endif
 
-
-void run_case(const int& tc) {
+void run_case(const uint16_t& tc) {
     //TODO: case code here
 
     cout << "Case #" << tc << ": " << '\n';
 }
 
 int main() {
-    std::ios::sync_with_stdio(0);
-    std::cin.tie(0);
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
 
-    int test_cases;
+    uint16_t test_cases;
     std::cin >> test_cases;
 
-    for (int tc = 1; tc <= test_cases; tc++) {
+    for (uint16_t tc = 1; tc <= test_cases; tc++) {
         run_case(tc);
 #ifdef DBG_MODE
         std::cout << std::flush;
 #endif
     }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
+#endif
 
     return 0;
 }
