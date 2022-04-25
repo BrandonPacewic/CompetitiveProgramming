@@ -1,7 +1,9 @@
+#include <algorithm>
 #include <cstddef>
+#include <iostream>
 #include <functional>
 #include <memory>
-#include <iostream>
+#include <unordered_set>
 
 template<typename _Tp>
 class _uniform_matrix_row {
@@ -12,12 +14,10 @@ public:
     _uniform_matrix_row() {}
 
     _uniform_matrix_row(std::size_t _sz) 
-            : elements{std::make_unique<_Tp[]>(_sz)}, 
-            sz{_sz}, current_cell_index{0} {}
+            : elements{std::make_unique<_Tp[]>(_sz)}, sz{_sz} {}
 
     _uniform_matrix_row(std::size_t _sz, const _Tp& _element) 
-            : elements{std::make_unique<_Tp[]>(_sz)}, 
-            sz{_sz}, current_cell_index{0} {
+            : elements{std::make_unique<_Tp[]>(_sz)}, sz{_sz} {
         std::fill(elements.get(), elements.get() + sz, _element);
     }
 
@@ -29,17 +29,11 @@ public:
     iterator end() { return &elements[sz]; }
     const const_iterator end() const { return &elements[sz]; }
 
-    _Tp& operator[](int i) { return elements[i]; }
-
-    std::size_t _assign_back(const _Tp& new_element) {
-        elements[current_cell_index++] = new_element;
-        return current_cell_index;
-    }
+    _Tp& operator[](const int& i) { return elements[i]; }
 
 private:
     std::unique_ptr<_Tp[]> elements;
     std::size_t sz;
-    std::size_t current_cell_index;
 };
 
 template<typename _Tp>
@@ -50,18 +44,16 @@ public:
     typedef const row_type*          const_iterator;
 
     uniform_matrix(std::size_t _sz) 
-            : rows{std::make_unique<row_type[]>(_sz)}, 
-            sz{_sz}, current_row_index{0} {
+            : rows{std::make_unique<row_type[]>(_sz)}, sz{_sz} {
         for (std::size_t i = 0; i < sz; ++i) {
             rows[i] = _uniform_matrix_row<_Tp>(sz);
         }
     }
 
     uniform_matrix(std::size_t _sz, const _Tp& _element) 
-            : rows{std::make_unique<row_type[]>(_sz)}, 
-            sz{_sz}, current_row_index{0} {
+            : rows{std::make_unique<row_type[]>(_sz)}, sz{_sz} {
         for (std::size_t i = 0; i < sz; ++i) {
-            rows[i] = _uniform_matrix_row<_Tp>(sz, _element);
+            rows[i] = row_type(sz, _element);
         }
     }
 
@@ -73,23 +65,34 @@ public:
     iterator end() { return &rows[sz]; }
     const const_iterator end() const { return &rows[sz]; }
 
-    row_type& operator[](int i) const { return rows[i]; }
+    row_type& operator[](const int& i) const { return rows[i]; }
 
-    void assign_back(const _Tp& new_element) {
-        std::size_t current = rows[current_row_index]->_assign_back(new_element);
-
-        if (current == sz) { 
-            ++current_row_index; 
-        }
-    }
-
-    void 
-    for_each(std::function<void(_Tp&, std::size_t&, std::size_t&)> lambda) 
+    void for_each(std::function<void(_Tp&, std::size_t&, std::size_t&)> lambda) 
             const {
         for (std::size_t row = 0; row < sz; ++row) {
             for (std::size_t cell = 0; cell < sz; ++cell) {
                 lambda(rows[row][cell], row, cell);
             }
+        }
+    }
+
+    void 
+    iota(_Tp start, std::unordered_set<_Tp> avoid = {static_cast<_Tp>(0)}) {
+        this->for_each([&](_Tp& element, std::size_t&, std::size_t&) {
+            while (avoid.find(element) != avoid.end()) {
+                ++start;
+            }
+
+            element = start++;
+        });
+    }
+
+    void sort_rows(std::function<bool(_Tp&, _Tp&)> lambda = 
+                [](_Tp& a, _Tp& b) { 
+                    return a < b; 
+                }) {
+        for (std::size_t row = 0; row < sz; ++row) {
+            std::sort(rows[row].begin(), rows[row].end(), lambda);
         }
     }
 
@@ -110,5 +113,4 @@ public:
 private:
     std::unique_ptr<row_type[]> rows;
     std::size_t sz;
-    std::size_t current_row_index;
 };
