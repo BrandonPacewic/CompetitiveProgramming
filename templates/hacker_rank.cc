@@ -8,6 +8,7 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <numeric>
 #include <queue>
 #include <set>
