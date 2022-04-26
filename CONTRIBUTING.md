@@ -21,7 +21,7 @@ I would love to work on any and all of your ideas and if you would also like to
 work on the feature along side me please do! Simply raise an issue and connect
 a new branch.
 
-I welcome all contributions from entire classes to small formatting changes.
+I welcome all contributions from entire classes to small formatting changes. 💙
 
 If you would like to contribute code please keep in mind that I have a specific
 way I like to format code. Visit the style guide for more information. If you
