@@ -12,8 +12,24 @@ Ranges on the following chart are inclusive.
 | <code>uint32_t</code> | 4 | <code>unsigned int</code> | 0 | 4294967295 |
 | <code>int64_t</code> | 8 | <code>long long</code> | -9223372036854775808 | 9223372036854775807 |
 | <code>uint64_t</code> | 8 | <code>unsigned long long</code> | 0 | 18446744073709551615 |
-| <code>int128_t</code> | 16 | <code>__int128</code> | -170141183460469231731687303715884105728 | 170141183460469231731687303715884105727 |
-| <code>uint128_t</code> | 16 | <code>unsigned __int128</code> | 0 | 340282366920938463463374607431768211455 |
+
+GCC and Clang also support the <code>__int128</code> type.
+- Size in Bytes: 16
+- Minimum Value: -9223372036854775808
+- Maximum Value: 9223372036854775807
+
+As well as the <code>unsigned __int128</code> type.
+- Size in Bytes: 16
+- Minimum Value: 0
+- Maximum Value: 18446744073709551615 
+
+You can use these types to define your own version of these types that better
+conform to the usual naming conventions.
+
+```cpp
+typedef __int128 int128_t;
+typedef unsigned __int128 uint128_t;
+```
 
 Please note that the <code>short</code> and <code>long</code> types are not 
 always 16-bit and 32-bit respectively. For example, in arduino, 
@@ -49,12 +65,12 @@ always 16-bit and 32-bit respectively. For example, in arduino,
 ```
 
 ```cpp
-#define int_128_min -170141183460469231731687303715884105728
-#define int_128_max 170141183460469231731687303715884105727
+#define int_128_min -9223372036854775808
+#define int_128_max 9223372036854775807
 ```
 
 ```cpp
-#define uint_128_max 340282366920938463463374607431768211455
+#define uint_128_max 18446744073709551615
 ```
 
 ### int64_t vs long long
