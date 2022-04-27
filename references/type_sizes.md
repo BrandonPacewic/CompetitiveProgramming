@@ -133,6 +133,29 @@ Ranges on the following chart are inclusive.
 | <code>char16_t</code> | 2 | none | 0 | 65535 |
 | <code>char32_t</code> | 4 | none | 0 | 4294967295 |
 
+### Size Macros
+
+```cpp
+#define char_min -128
+#define char_max 127
+```
+
+```cpp
+#define uchar_max 255
+```
+
+```cpp
+#define wchar_max 65535
+```
+
+```cpp
+#define char16_max 65535
+```
+
+```cpp
+#define char32_max 4294967295
+```
+
 ## Boolean
 
 Put very simply :)
@@ -140,3 +163,10 @@ Put very simply :)
 | Type | Size in Bytes | Other Names | Minimum Value | Maximum Value |
 | ---- | ------------- | ------------ | ------------- | ------------- |
 | <code>bool</code> | 1 | none | 0 (false) | 1 (true) |
+
+And just for the sake of being thorough,
+
+```cpp
+#define bool_min 0
+#define bool_max 1
+```
