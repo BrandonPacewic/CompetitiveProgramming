@@ -33,7 +33,7 @@ typedef unsigned __int128 uint128_t;
 
 Please note that the <code>short</code> and <code>long</code> types are not 
 always 16-bit and 32-bit respectively. For example, in arduino, 
-<code>short</code> is 8-bit, but <code>long</code> is 16-bit.
+<code>short</code> is 8-bit, and <code>long</code> is 16-bit.
 
 ### Size Macros
 
@@ -96,3 +96,47 @@ shorter, at least use capital ls'.
 ```cpp
 #define LL long long
 ```
+
+## Floating Point Types
+
+Ranges on the following chart are inclusive.
+
+| Type | Size in Bytes | Other Names | Minimum Value | Maximum Value |
+| ---- | ------------- | ------------ | ------------- | ------------- |
+| <code>float</code> | 4 | none | -3.402823e+38 | 3.402823e+38 |
+| <code>double</code> | 8 | <code>long double</code> | -1.7976931348623157e+308 | 1.7976931348623157e+308 |
+
+Note that <code>long double</code> and <code>double</code> are the same in most
+cases, depending on the compiler.
+
+### Size Macros
+
+```cpp
+#define float_min -3.402823e+38
+#define float_max 3.402823e+38
+```
+
+```cpp
+#define double_min -1.7976931348623157e+308
+#define double_max 1.7976931348623157e+308
+```
+
+## Character Types
+
+Ranges on the following chart are inclusive.
+
+| Type | Size in Bytes | Other Names | Minimum Value | Maximum Value |
+| ---- | ------------- | ------------ | ------------- | ------------- |
+| <code>char</code> | 1 | <code>signed char</code> | -128 | 127 |
+| <code>unsigned char</code> | 1 | <code>char8_t</code> | 0 | 255 |
+| <code>wchar_t</code> | 2 | none | 0 | 65535 |
+| <code>char16_t</code> | 2 | none | 0 | 65535 |
+| <code>char32_t</code> | 4 | none | 0 | 4294967295 |
+
+## Boolean
+
+Put very simply :)
+
+| Type | Size in Bytes | Other Names | Minimum Value | Maximum Value |
+| ---- | ------------- | ------------ | ------------- | ------------- |
+| <code>bool</code> | 1 | none | 0 (false) | 1 (true) |
