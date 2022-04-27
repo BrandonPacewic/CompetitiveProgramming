@@ -1,8 +1,6 @@
-#include <memory>
-
 class int24 {
 public:
-    int24(unsigned long val) : data(std::make_unique<unsigned char[]>(3)) {
+    int24(unsigned long val) {
         data[0] = ( val        & 0xff);
         data[1] = ((val >> 8)  & 0xff);
         data[2] = ((val >> 16) & 0xff);
@@ -15,9 +13,9 @@ public:
     }
 
     void operator=(int24 val) {
-        data[0] = this->data[0];
-        data[1] = this->data[1];
-        data[2] = this->data[2];
+        this->data[0] = val.data[0];
+        this->data[1] = val.data[1];
+        this->data[2] = val.data[2];
     }
 
     unsigned long decode() const {
@@ -32,5 +30,5 @@ public:
     }
 
 private:
-    std::unique_ptr<unsigned char[]> data;
+    unsigned char data[3];
 };
