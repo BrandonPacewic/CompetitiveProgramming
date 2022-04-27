@@ -12,6 +12,8 @@ Ranges on the following chart are inclusive.
 | <code>uint32_t</code> | 4 | <code>unsigned int</code> | 0 | 4294967295 |
 | <code>int64_t</code> | 8 | <code>long long</code> | -9223372036854775808 | 9223372036854775807 |
 | <code>uint64_t</code> | 8 | <code>unsigned long long</code> | 0 | 18446744073709551615 |
+| <code>int128_t</code> | 16 | <code>__int128</code> | -170141183460469231731687303715884105728 | 170141183460469231731687303715884105727 |
+| <code>uint128_t</code> | 16 | <code>unsigned __int128</code> | 0 | 340282366920938463463374607431768211455 |
 
 Please note that the <code>short</code> and <code>long</code> types are not 
 always 16-bit and 32-bit respectively. For example, in arduino, 
@@ -46,4 +48,35 @@ always 16-bit and 32-bit respectively. For example, in arduino,
 #define uint_64_max 18446744073709551615
 ```
 
-### Comparison between 
+```cpp
+#define int_128_min -170141183460469231731687303715884105728
+#define int_128_max 170141183460469231731687303715884105727
+```
+
+```cpp
+#define uint_128_max 340282366920938463463374607431768211455
+```
+
+### int64_t vs long long
+
+I strongly prefer the <code>int64_t</code> type over <code>long long</code>
+even though in most cases they are the same. The keyword <code>long</code> can
+change from system to system, and <code>int64_t</code> is guaranteed to be the
+same on all systems. 
+
+Some people like to use <code>define</code> shortan the keyword.
+
+```cpp
+#define ll long long
+```
+
+I dislike this for two reasons:
+- <code>l</code> can be confused with <code>1</code>
+- The problem of portability as discussed
+
+If you really want to insist on defining <code>long long</code> as something
+shorter, at least use capital ls'.
+
+```cpp
+#define LL long long
+```
