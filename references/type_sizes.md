@@ -80,7 +80,7 @@ even though in most cases they are the same. The keyword <code>long</code> can
 change from system to system, and <code>int64_t</code> is guaranteed to be the
 same on all systems. 
 
-Some people like to use <code>define</code> shortan the keyword.
+Some people like to use <code>define</code> shorten the keyword.
 
 ```cpp
 #define ll long long
