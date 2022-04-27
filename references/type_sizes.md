@@ -2,14 +2,16 @@
 
 ### Integer Types
 
-| Type | Size in Bytes | Minimum Value | Maximum Value |
-| ---- | ------------- | ------------- | ------------- |
-| <code>int16_t</code> | 16 | -32768 | 32767 |
-| <code>uint16_t</code> | 16 | 0 | 65535 |
-| <code>int32_t</code> | 32 | -2147483648 | 2147483647 |
-| <code>uint32_t</code> | 32 | 0 | 4294967295 |
-| <code>int64_t</code> | 64 | -9223372036854775808 | 9223372036854775807 |
-| <code>uint64_t</code> | 64 | 0 | 18446744073709551615 |
+Ranges on the following chart are inclusive.
+
+| Type | Size in Bytes | Other Names | Minimum Value | Maximum Value |
+| ---- | ------------- | ------------ | ------------- | ------------- |
+| <code>int16_t</code> | 2 | <code>short</code> | -32768 | 32767 |
+| <code>uint16_t</code> | 2 | <code>unsigned short</code> | 0 | 65535 |
+| <code>int32_t</code> | 4 | <code>int</code> | -2147483648 | 2147483647 |
+| <code>uint32_t</code> | 4 | <code>unsigned int</code> | 0 | 4294967295 |
+| <code>int64_t</code> | 8 | <code>long</code> | -9223372036854775808 | 9223372036854775807 |
+| <code>uint64_t</code> | 8 | <code>unsigned long</code> | 0 | 18446744073709551615 |
 
 ### Size Macros
 
