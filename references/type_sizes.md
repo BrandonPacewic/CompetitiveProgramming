@@ -33,7 +33,7 @@ typedef unsigned __int128 uint128_t;
 
 Please note that the <code>short</code> and <code>long</code> types are not 
 always 16-bit and 32-bit respectively. For example, in arduino, 
-<code>short</code> is 8-bit, and <code>long</code> is 16-bit.
+<code>short</code> is 8-bit, and <code>long</code> is 32-bit.
 
 ### Size Macros
 
