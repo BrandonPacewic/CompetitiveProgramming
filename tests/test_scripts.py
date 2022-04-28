@@ -37,6 +37,9 @@ class Test:
             print('Test Failed')
             return False
         
+        if exit_code:
+            print('Test Failed')
+
         return not exit_code
 
 
