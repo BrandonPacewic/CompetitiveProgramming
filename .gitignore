@@ -50,6 +50,7 @@ ex.txt
 
 # Source code testing
 !tests/other/encoding.test.cc
+!tests/other/other.test.py
 
 # Other Things
 googleKickStart/2018/
