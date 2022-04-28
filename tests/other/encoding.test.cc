@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-constexpr int16_t total_tests = 5;
+constexpr uint16_t total_tests = 5;
 
 using encoding_output = std::vector<std::pair<char, int>>;
 
@@ -150,10 +150,10 @@ int main() {
     const bool all_tests_passed = run_encoding_tests();
 
     if (all_tests_passed) {
-        std::cerr << "All tests passed!" << std::endl;
+        std::cerr << "All encoding tests passed!" << std::endl;
     }
     else {
-        std::cerr << "Some tests failed!" << std::endl;
+        std::cerr << "Some encoding tests failed!" << std::endl;
     }
 
     return !all_tests_passed;
