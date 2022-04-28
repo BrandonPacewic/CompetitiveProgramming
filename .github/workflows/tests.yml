@@ -18,4 +18,5 @@ jobs:
             import sys
             sys.path.insert(1, './tests/')
             import test_scripts
-            assert(test_scripts.test_scripts())
+            
+            exit(!test_scripts.test_scripts())

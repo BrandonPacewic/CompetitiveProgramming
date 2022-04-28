@@ -157,7 +157,5 @@ int main() {
         std::cerr << "Some encoding tests failed!" << std::endl;
     }
 
-    assert(all_tests_passed);
-
-    return 0;
+    return !all_tests_passed;
 }
