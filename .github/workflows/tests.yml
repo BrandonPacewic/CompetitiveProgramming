@@ -15,14 +15,13 @@ jobs:
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
-            # import sys
-            # sys.path.insert(1, './tests/')
-            # import test_scripts
-            # result = test_scripts.test_scripts()
+            import sys
+            sys.path.insert(1, './tests/')
+            import test_scripts
+            result = test_scripts.test_scripts()
 
-            # if result:
-            #   exit(0)
-            # else:
-            #   exit(1)
+            if result:
+              exit(0)
+            else:
+              exit(1)
 
-            
