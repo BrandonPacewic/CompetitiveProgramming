@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# Python 
+__pycache__/
+
 # test
 *test.cc
 *test.cpp
