@@ -20,8 +20,5 @@ jobs:
             import test_scripts
             result = test_scripts.test_scripts()
 
-            if result:
-              exit(0)
-            else:
-              exit(1)
+            exit(result)
 
