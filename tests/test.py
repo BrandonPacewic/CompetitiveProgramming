@@ -12,11 +12,15 @@ class Test:
         self.file_dir = file_dir
 
     def compile(self) -> None:
+        os.chdir(self.file_dir)
+
         try:
-            os.system(f'{COMPILER} {FLAGS} {self.file_dir}{self.fname}.cc -o {self.fname}.out')
+            os.system(f'{COMPILER} {FLAGS} {self.fname}.cc -o {self.fname}.out')
         except:
             print('Compile Error')
             exit(1)
+
+        os.chdir('../')        
     
     def run(self) -> None:
         try:
@@ -26,18 +30,14 @@ class Test:
             exit(1)
 
 
-test_directorys = [
-    './other/'
-]
-
-
 def create_tests() -> List[Test]:
     tests = []
 
-    for directory in test_directorys:
-        for file in os.listdir(directory):
-            if file.endswith('.cc'):
-                tests.append(Test(file[:-3], directory))
+    for root, _, files in os.walk('./'):
+        for file in files:
+            if file.endswith('.test.cc'):
+                tests.append(Test(file[:-3], f'{root}/'))
+                print(f'Found file {file}')
 
     return tests
 

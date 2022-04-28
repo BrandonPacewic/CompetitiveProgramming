@@ -1,6 +1,7 @@
 #include "../../src/other/encoding.cc"
 
 #include <array>
+#include <cassert>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -156,5 +157,7 @@ int main() {
         std::cerr << "Some encoding tests failed!" << std::endl;
     }
 
-    return !all_tests_passed;
+    assert(all_tests_passed);
+
+    return 0;
 }
