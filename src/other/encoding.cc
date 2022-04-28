@@ -8,7 +8,7 @@ std::vector<std::pair<T, int>> run_length_encoding(const T_iterable& items) {
 
     for (const T& item : items)
         if (item == previous) {
-            count += 2;
+            ++count;
         } 
         else {
             if (count > 0) {
