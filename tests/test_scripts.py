@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 from typing import List
 
@@ -24,16 +25,19 @@ class Test:
         return True
 
     def run(self) -> bool:
-        # print current dir
-        print(os.getcwd())
-
         try:
+            process = subprocess.Popen(
+                f'{self.file_dir}{self.fname}.out', 
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            process.communicate()
+            exit_code = process.wait()
+
             os.system(f'{self.file_dir}{self.fname}.out')
         except:
             print('Test Failed')
             return False
         
-        return True
+        return not exit_code
 
 
 def create_tests() -> List[Test]:
@@ -50,11 +54,16 @@ def create_tests() -> List[Test]:
     return tests
 
 
-def test_scripts() -> bool:
+def test_scripts() -> int:
     tests = create_tests()
     sucess = True
 
     for test in tests:
         sucess = sucess and test.compile() and test.run()
 
-    return sucess
+    print(sucess)
+
+    if sucess:
+        return 0
+    else:
+        return 1
