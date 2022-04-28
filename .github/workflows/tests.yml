@@ -18,6 +18,9 @@ jobs:
             import sys
             sys.path.insert(1, './tests/')
             import test_scripts
-            test_scripts.test_scripts()
+            result = test_scripts.test_scripts()
 
-            # exit(0 if not test_scripts.test_scripts() else 1)
+            if result:
+              exit(0)
+            else:
+              exit(1)
