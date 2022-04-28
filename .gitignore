@@ -41,6 +41,7 @@ __pycache__/
 # test files
 *test.py
 *examples
+testing.py
 
 # input/output/expected/
 *_input.txt
