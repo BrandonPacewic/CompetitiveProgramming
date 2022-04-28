@@ -32,13 +32,9 @@ class Test:
             process.communicate()
             exit_code = process.wait()
 
-            os.system(f'{self.file_dir}{self.fname}.out')
         except:
-            print('Test Failed')
+            print('Execute Failed')
             return False
-        
-        if exit_code:
-            print('Test Failed')
 
         return not exit_code
 
@@ -64,9 +60,7 @@ def test_scripts() -> int:
     for test in tests:
         sucess = sucess and test.compile() and test.run()
 
-    print(sucess)
+        if sucess:
+            print(f'Test {test.fname.split(".")[0]} passed')
 
-    if sucess:
-        return 0
-    else:
-        return 1
+    return 0 if sucess else 1
