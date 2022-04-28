@@ -16,5 +16,5 @@ jobs:
         with:
           script: |
             import os
-            os.system('cd tests/')
-            os.system('python3 test.py')
+            from ./tests/test.py import test_scripts
+            assert(test_scripts())

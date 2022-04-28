@@ -11,23 +11,26 @@ class Test:
         self.fname = fname
         self.file_dir = file_dir
 
-    def compile(self) -> None:
+    def compile(self) -> bool:
         os.chdir(self.file_dir)
 
         try:
             os.system(f'{COMPILER} {FLAGS} {self.fname}.cc -o {self.fname}.out')
         except:
             print('Compile Error')
-            exit(1)
+            return False
 
-        os.chdir('../')        
-    
-    def run(self) -> None:
+        os.chdir('../') 
+        return True
+
+    def run(self) -> bool:
         try:
             os.system(f'{self.file_dir}{self.fname}.out')
         except:
             print('Test Failed')
-            exit(1)
+            return False
+        
+        return True
 
 
 def create_tests() -> List[Test]:
@@ -42,13 +45,11 @@ def create_tests() -> List[Test]:
     return tests
 
 
-def main():
+def test_scripts() -> bool:
     tests = create_tests()
+    sucess = True
 
     for test in tests:
-        test.compile()
-        test.run()
+        sucess = sucess and test.compile() and test.run()
 
-
-if __name__ == '__main__':
-    main()
+    return sucess
