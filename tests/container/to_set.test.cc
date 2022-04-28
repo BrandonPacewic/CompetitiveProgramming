@@ -85,7 +85,7 @@ bool run_to_set_tests() {
         const auto output = to_set(input);
         
         if (output != expected) {
-            std::cout << "Test " << i + 1 << " failed.\n";
+            std::cerr << "Test " << i + 1 << " failed.\n";
             passing = false;
         }
     }
@@ -104,7 +104,7 @@ bool run_to_unordered_set_tests() {
         const auto output = to_unordered_set(input);
         
         if (output != expected) {
-            std::cout << "Test " << i + 1 << " failed.\n";
+            std::cerr << "Test " << i + 1 << " failed.\n";
             passing = false;
         }
     }
