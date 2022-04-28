@@ -53,7 +53,7 @@ ex.txt
 *.zip
 
 # Source code testing
-!tests/other/encoding.test.cc
+!tests/container/encoding.test.cc
 !tests/test.py
 
 # Other Things
