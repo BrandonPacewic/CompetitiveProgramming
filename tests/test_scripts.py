@@ -63,5 +63,7 @@ def test_scripts() -> int:
 
         if current_test:
             print(f'Test {test.fname.split(".")[0]} passed')
+        else:
+            print(f'Test {test.fname.split(".")[0]} failed')
 
     return 0 if sucess else 1

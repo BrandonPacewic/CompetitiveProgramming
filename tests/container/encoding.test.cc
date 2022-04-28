@@ -1,7 +1,6 @@
 #include "../../src/container/encoding.cc"
 
 #include <array>
-#include <cassert>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -139,7 +138,7 @@ bool run_encoding_tests() {
         const auto output = run_length_encoding<char>(input);
 
         if (output != expected) {
-            std::cerr << "Test " << i + 1 << " failed!" << '\n';
+            std::cerr << "Test " << i + 1 << " failed.\n";
             passing = false;
         }
     }

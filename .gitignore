@@ -54,6 +54,7 @@ ex.txt
 
 # Source code testing
 !tests/container/encoding.test.cc
+!tests/container/to_set.test.cc
 !tests/test.py
 
 # Other Things
