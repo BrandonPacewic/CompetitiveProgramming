@@ -16,4 +16,5 @@ jobs:
         with:
           script: |
             import os
+            os.system('cd tests/')
             os.system('python3 test.py')
