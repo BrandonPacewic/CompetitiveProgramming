@@ -58,9 +58,10 @@ def test_scripts() -> int:
     sucess = True
 
     for test in tests:
-        sucess = sucess and test.compile() and test.run()
+        current_test = test.compile() and test.run()
+        sucess = sucess and current_test
 
-        if sucess:
+        if current_test:
             print(f'Test {test.fname.split(".")[0]} passed')
 
     return 0 if sucess else 1
