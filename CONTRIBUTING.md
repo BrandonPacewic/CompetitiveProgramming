@@ -23,7 +23,12 @@ a new branch.
 
 I welcome all contributions from entire classes to small formatting changes. 💙
 
-If you would like to contribute code please keep in mind that I have a specific
-way I like to format code. Visit the style guide for more information. If you
-have no interest in following my formatting rules that's no problem at all
-please just keep in mind that I will align your code to my style guide.
+## Steps to Contribute
+1. Clone the repository
+2. Make a new branch
+3. Write your code
+4. Raise an issue
+5. Make a pull request with the keywords ```this pr closes #<number>```
+6. Sit back and wait!
+
+I love working with people so please don't be shy to share your ideas!
