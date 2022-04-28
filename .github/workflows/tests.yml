@@ -15,6 +15,7 @@ jobs:
       - uses: jannekem/run-python-script-action@v1
         with:
           script: |
-            import os
-            from tests/test import test_scripts
-            # assert(test_scripts())
+            import sys
+            sys.path.insert(1, './tests/')
+            import test_scripts
+            assert(test_scripts.test_scripts())

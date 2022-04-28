@@ -24,6 +24,9 @@ class Test:
         return True
 
     def run(self) -> bool:
+        # print current dir
+        print(os.getcwd())
+
         try:
             os.system(f'{self.file_dir}{self.fname}.out')
         except:
@@ -34,6 +37,8 @@ class Test:
 
 
 def create_tests() -> List[Test]:
+    os.chdir('./tests/')
+
     tests = []
 
     for root, _, files in os.walk('./'):
