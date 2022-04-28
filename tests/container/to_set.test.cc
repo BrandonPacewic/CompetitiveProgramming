@@ -117,9 +117,10 @@ int main() {
     const bool to_unordered_set_passing = run_to_unordered_set_tests();
 
     if (to_set_passing && to_unordered_set_passing) {
-        std::cerr << "All tests passed!" << std::endl;
-    } else {
-        std::cerr << "Some tests failed!" << std::endl;
+        std::cerr << "All to_set tests passed!" << std::endl;
+    } 
+    else {
+        std::cerr << "Some to_set tests failed!" << std::endl;
     }
 
     return !(to_set_passing && to_unordered_set_passing);
