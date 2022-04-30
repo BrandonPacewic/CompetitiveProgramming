@@ -1,15 +1,15 @@
 /*
- * Main feature of mod_type<> class, modular arithmetic in C++ works 
+ * Main feature of mod_type<> class, modular arithmetic in C++ works
  * different than it otherwise should. In C and C++ the % operator creates
- * a value between -b and b when in most other cases the expected return 
+ * a value between -b and b when in most other cases the expected return
  * value should be between 0 and b. This is a simple fix.
  */
 
 #include <cstdint>
-#include <ostream>
 #include <istream>
+#include <ostream>
 
-template<typename _Tp>
+template <typename _Tp>
 struct mod_type {
     _Tp value;
 
@@ -24,19 +24,29 @@ struct mod_type {
 
     mod_type& operator%=(const mod_type& other) {
         value %= other.value;
-        if (value < 0) { value += other.value; }
+        if (value < 0) {
+            value += other.value;
+        }
         return *this;
     }
 
-    mod_type operator%(const mod_type& other) const { 
+    mod_type operator%(const mod_type& other) const {
         mod_type tmp = *this;
         tmp.value %= other.value;
-        if (tmp.value < 0) { tmp.value += other.value; }
+        if (tmp.value < 0) {
+            tmp.value += other.value;
+        }
         return tmp.value;
     }
 
-    mod_type& operator++() { ++value; return *this; }
-    mod_type& operator--() { --value; return *this; }
+    mod_type& operator++() {
+        ++value;
+        return *this;
+    }
+    mod_type& operator--() {
+        --value;
+        return *this;
+    }
 
     mod_type& operator+=(const mod_type& other) {
         value += other.value;
@@ -58,21 +68,27 @@ struct mod_type {
         return *this;
     }
 
-    mod_type operator+(const mod_type& other) const 
-    { return value + other.value; }
+    mod_type operator+(const mod_type& other) const {
+        return value + other.value;
+    }
 
-    mod_type operator-(const mod_type& other) const
-    { return value - other.value; }
+    mod_type operator-(const mod_type& other) const {
+        return value - other.value;
+    }
 
-    mod_type operator*(const mod_type& other) const
-    { return value * other.value; }
+    mod_type operator*(const mod_type& other) const {
+        return value * other.value;
+    }
 
-    mod_type operator/(const mod_type& other) const
-    { return value / other.value; }
+    mod_type operator/(const mod_type& other) const {
+        return value / other.value;
+    }
 
-    friend std::ostream& operator<<(std::ostream& os, const mod_type& a)
-    { return os << a.value; }
+    friend std::ostream& operator<<(std::ostream& os, const mod_type& a) {
+        return os << a.value;
+    }
 
-    friend std::istream& operator>>(std::istream& is, mod_type& a)
-    { return is >> a.value; }
+    friend std::istream& operator>>(std::istream& is, mod_type& a) {
+        return is >> a.value;
+    }
 };

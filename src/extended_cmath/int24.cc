@@ -1,14 +1,14 @@
 class int24 {
-public:
+   public:
     int24(unsigned long val) {
-        data[0] = ( val        & 0xff);
-        data[1] = ((val >> 8)  & 0xff);
+        data[0] = (val & 0xff);
+        data[1] = ((val >> 8) & 0xff);
         data[2] = ((val >> 16) & 0xff);
     }
 
     void operator=(unsigned long val) {
-        data[0] = ( val        & 0xff);
-        data[1] = ((val >> 8)  & 0xff);
+        data[0] = (val & 0xff);
+        data[1] = ((val >> 8) & 0xff);
         data[2] = ((val >> 16) & 0xff);
     }
 
@@ -29,6 +29,6 @@ public:
         return val;
     }
 
-private:
+   private:
     unsigned char data[3];
 };

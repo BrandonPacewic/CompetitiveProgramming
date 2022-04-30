@@ -1,29 +1,33 @@
 #include <iostream>
 #include <string>
 
-template<typename A, typename B> 
-std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) { 
-    return os << '(' << p.first << ", " << p.second << ')'; 
+template <typename A, typename B>
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
+    return os << '(' << p.first << ", " << p.second << ')';
 }
 
-template<typename T_container, typename T = typename std::enable_if<
-    !std::is_same<T_container, std::string>::value, 
-    typename T_container::value_type>::type> 
-std::ostream& operator<<(std::ostream& os, const T_container& container) { 
-    os << '{'; 
-    std::string separator; 
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
+    os << '{';
+    std::string separator;
 
     for (const T& item : container) {
-        os << separator << item, separator = ", "; 
+        os << separator << item, separator = ", ";
     }
 
-    return os << '}'; 
+    return os << '}';
 }
 
 #ifdef DBG_MODE
 void dbg_out() { std::cerr << std::endl; }
-template<typename Head, typename... Tail> 
-void dbg_out(Head A, Tail... B) { std::cerr << ' ' << A; dbg_out(B...); }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
+}
 #define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
 #define test(...)
