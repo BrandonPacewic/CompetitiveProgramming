@@ -10,7 +10,7 @@ constexpr uint16_t total_tests = 5;
 
 using encoding_output = std::vector<std::pair<char, int>>;
 
-std::array<std::pair<std::string, std::vector<std::pair<char, int>>>, total_tests> test_cases;
+std::array<std::pair<std::string, encoding_output>, total_tests> test_cases;
 
 void init_test_cases() {
     test_cases[0].first = "";
