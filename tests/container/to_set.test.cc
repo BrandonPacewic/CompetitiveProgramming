@@ -1,5 +1,6 @@
 #include "../../src/container/to_set.cc"
 
+#include <algorithm>
 #include <array>
 #include <iostream>
 #include <set>
@@ -8,119 +9,76 @@
 
 constexpr uint16_t total_tests = 5;
 
-std::array<std::pair<std::string, std::set<char>>, total_tests>
-generate_to_set_tests() {
-    std::array<std::pair<std::string, std::set<char>>, total_tests> tests;
+std::array<std::pair<std::string, std::set<char>>, total_tests> set_test_cases;
+std::array<std::pair<std::string, std::unordered_set<char>>, total_tests> unordered_set_test_cases;
 
-    tests[0] = {
-        "abcdefghi",
-        {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'}
-    };
+void init_set_test_cases() {
+    set_test_cases[0].first = "";
+    set_test_cases[0].second = {};
 
-    tests[1] = {
-        "aabcdefgh",
-        {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'}
-    };
+    set_test_cases[1].first = "a";
+    set_test_cases[1].second = { 'a' };
 
-    tests[2] = {
-        "arandomword",
-        {'a', 'r', 'a', 'n', 'd', 'o', 'm', 'w', 'o', 'r', 'd'}
-    };
+    set_test_cases[2].first = "aa";
+    set_test_cases[2].second = { 'a' };
 
-    tests[3] = {
-        "",
-        {}
-    };
+    set_test_cases[3].first = "aba";
+    set_test_cases[3].second = { 'a', 'b' };
 
-    tests[4] = {
-        "a",
-        {'a'}
-    };
-
-    return tests;
+    set_test_cases[4].first = "ababa";
+    set_test_cases[4].second = { 'a', 'b' };
 }
 
-std::array<std::pair<std::string, std::unordered_set<char>>, total_tests>
-generate_to_unordered_set_tests() {
-    std::array<
-        std::pair<std::string, std::unordered_set<char>>,
-        total_tests> tests;
+void init_unordered_set_test_cases() {
+    unordered_set_test_cases[0].first = "";
+    unordered_set_test_cases[0].second = {};
 
-    tests[0] = {
-        "abcdefghi",
-        {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'}
-    };
+    unordered_set_test_cases[1].first = "a";
+    unordered_set_test_cases[1].second = { 'a' };
 
-    tests[1] = {
-        "aabcdefgh",
-        {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'}
-    };
+    unordered_set_test_cases[2].first = "aa";
+    unordered_set_test_cases[2].second = { 'a' };
 
-    tests[2] = {
-        "arandomword",
-        {'a', 'r', 'a', 'n', 'd', 'o', 'm', 'w', 'o', 'r', 'd'}
-    };
+    unordered_set_test_cases[3].first = "aba";
+    unordered_set_test_cases[3].second = { 'a', 'b' };
 
-    tests[3] = {
-        "",
-        {}
-    };
-
-    tests[4] = {
-        "a",
-        {'a'}
-    };
-
-    return tests;
-}
-
-bool run_to_set_tests() {
-    auto tests = generate_to_set_tests();
-    bool passing = true;
-
-    for (uint16_t i = 0; i < total_tests; ++i) {
-        const auto& test = tests[i];
-        const auto& input = test.first;
-        const auto& expected = test.second;
-        const auto output = to_set(input);
-        
-        if (output != expected) {
-            std::cerr << "Test " << i + 1 << " failed.\n";
-            passing = false;
-        }
-    }
-
-    return passing;
-}
-
-bool run_to_unordered_set_tests() {
-    auto tests = generate_to_unordered_set_tests();
-    bool passing = true;
-
-    for (uint16_t i = 0; i < total_tests; ++i) {
-        const auto& test = tests[i];
-        const auto& input = test.first;
-        const auto& expected = test.second;
-        const auto output = to_unordered_set(input);
-        
-        if (output != expected) {
-            std::cerr << "Test " << i + 1 << " failed.\n";
-            passing = false;
-        }
-    }
-
-    return passing;
+    unordered_set_test_cases[4].first = "ababa";
+    unordered_set_test_cases[4].second = { 'a', 'b' };
 }
 
 int main() {
-    const bool to_set_passing = run_to_set_tests();
-    const bool to_unordered_set_passing = run_to_unordered_set_tests();
+    init_set_test_cases();
+    init_unordered_set_test_cases();
+    bool all_passed = true;
 
-    if (to_set_passing && to_unordered_set_passing) {
-        std::cerr << "All tests passed!" << std::endl;
-    } else {
-        std::cerr << "Some tests failed!" << std::endl;
-    }
+    std::cout << "Running to_set tests..." << std::endl;
 
-    return !(to_set_passing && to_unordered_set_passing);
+    std::for_each(set_test_cases.begin(), set_test_cases.end(), [&](const auto& test_case) {
+        bool current_test_passed = to_set(test_case.first) == test_case.second;
+
+        if (!current_test_passed) {
+            all_passed = false;
+            std::cout << "Failed test case: " << test_case.first << std::endl;
+        } else {
+            std::cout << "Passed test case: " << test_case.first << std::endl;
+        }
+    });
+
+    std::cout << "Finished to_set tests.\n";
+    std::cout << "Running to_unordered_set tests..." << std::endl;
+
+    std::for_each(unordered_set_test_cases.begin(), unordered_set_test_cases.end(), [&](const auto& test_case) {
+        bool current_test_passed = to_unordered_set(test_case.first) == test_case.second;
+
+        if (!current_test_passed) {
+            all_passed = false;
+            std::cout << "Failed test case: " << test_case.first << std::endl;
+        } else {
+            std::cout << "Passed test case: " << test_case.first << std::endl;
+        }
+    });
+
+    std::cout << "Finished to_unordered_set tests." << std::endl;
+
+    return !all_passed;
 }
