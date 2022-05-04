@@ -162,7 +162,7 @@ class uniform_matrix {
 void run_case(const uint16_t& tc) {
     uint16_t N;
     cin >> N;
-    
+
     uniform_matrix<uint16_t> matrix(N);
 
     matrix.for_each([&](uint16_t& item, auto&, auto&) { cin >> item; });

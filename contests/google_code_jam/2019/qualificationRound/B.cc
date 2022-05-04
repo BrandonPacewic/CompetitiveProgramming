@@ -57,9 +57,8 @@ void run_case(const uint16_t& tc) {
 
     string ans;
 
-    for_each(S.begin(), S.end(), [&](const char& ch) {
-        ans += ch == 'E' ? 'S' : 'E';
-    });
+    for_each(S.begin(), S.end(),
+             [&](const char& ch) { ans += ch == 'E' ? 'S' : 'E'; });
 
     cout << "Case #" << tc << ": " << ans << '\n';
 }

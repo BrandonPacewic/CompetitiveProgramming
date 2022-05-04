@@ -51,7 +51,7 @@ void dbg_out(Head A, Tail... B) {
 #endif
 
 struct event {
-    uint8_t start_time, end_time; 
+    uint8_t start_time, end_time;
     uint16_t index;
 };
 
@@ -80,7 +80,8 @@ void run_case(const uint16_t& tc) {
             ans[e.index] = 'J';
             end_j = e.end_time;
         } else {
-            cout << "Case #" << tc << ": " << "IMPOSSIBLE" << '\n';
+            cout << "Case #" << tc << ": "
+                 << "IMPOSSIBLE" << '\n';
             return;
         }
     });

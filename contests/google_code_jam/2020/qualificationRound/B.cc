@@ -60,13 +60,19 @@ void run_case(const uint16_t& tc) {
     for_each(S.begin(), S.end(), [&](const char& ch) {
         uint16_t need_open = ch - '0';
 
-        while (need_open < open_count--) { ans += ')'; }
-        while (need_open > open_count++) { ans += '('; }
+        while (need_open < open_count--) {
+            ans += ')';
+        }
+        while (need_open > open_count++) {
+            ans += '(';
+        }
 
         ans += ch;
     });
 
-    while (open_count--) { ans += ')'; }
+    while (open_count--) {
+        ans += ')';
+    }
 
     cout << "Case #" << tc << ": " << ans << '\n';
 }
