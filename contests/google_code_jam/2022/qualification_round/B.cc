@@ -7,36 +7,37 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <map>
+#include <memory>
 #include <numeric>
 #include <queue>
 #include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 
-// dbg output stream handling for pairs
 template <typename A, typename B>
 std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
     return os << '(' << p.first << ", " << p.second << ')';
 }
 
-// dbg output stream handling for containers excluding type std::string
 template <typename T_container,
           typename T = typename std::enable_if<
               !std::is_same<T_container, std::string>::value,
               typename T_container::value_type>::type>
-std::ostream& operator<<(std::ostream& os, const T_container& A) {
-    std::string sep;
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
     os << '{';
+    std::string separator;
 
-    for (const T& a : A) {
-        os << sep << a, sep = ", ";
+    for (const T& item : container) {
+        os << separator << item, separator = ", ";
     }
 
     return os << '}';
 }
 
-// dbg
 #ifdef DBG_MODE
 void dbg_out() { std::cerr << std::endl; }
 template <typename Head, typename... Tail>
@@ -50,66 +51,75 @@ void dbg_out(Head A, Tail... B) {
 #endif
 
 template <typename T_container>
-void output_container(const T_container& container, const bool& space = true,
-                      const bool& new_line = true) {
-    int start = 0;
-    int end = int(container.size());
-
-    for (int i = start; i < end; ++i) {
+void output_container(const T_container& container, const bool space = true,
+                      const bool new_line = true) {
+    for (std::size_t i = 0; i < container.size(); ++i) {
         std::cout << container[i];
 
-        if (space && i < end - 1) std::cout << ' ';
+        if (space && i < container.size() - 1) {
+            std::cout << ' ';
+        }
     }
 
     std::cout << (new_line ? '\n' : ' ');
 }
 
-const int INF = int(1e9) + 5;
-const int target = int(1e6);
+const int32_t INF = int32_t(numeric_limits<int32_t>::max());
+const int32_t target = int32_t(1e6);
+const uint8_t printer_count = 3;
+const uint8_t cartridge_count = 4;
 
-void run_case(const int& tc) {
-    array<array<int, 4>, 3> printers;
+void run_case(const uint16_t& tc) {
+    array<array<int32_t, 4>, 3> printers;
 
-    for (auto& printer : printers)
-        for (auto& cartrage : printer) cin >> cartrage;
+    for_each(printers.begin(), printers.end(), [&](auto& printer) {
+        for_each(printer.begin(), printer.end(),
+                 [&](auto& cartridge) { cin >> cartridge; });
+    });
 
-    vector<int> min_cartrage(4, INF);
+    vector<int32_t> min_cartridge(cartridge_count, INF);
 
-    for (int i = 0; i < 3; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            min_cartrage[j] = min(min_cartrage[j], printers[i][j]);
+    for (uint8_t i = 0; i < printer_count; ++i) {
+        for (uint8_t j = 0; j < cartridge_count; ++j) {
+            min_cartridge[j] = min(min_cartridge[j], printers[i][j]);
         }
     }
 
-    int extra =
-        accumulate(min_cartrage.begin(), min_cartrage.end(), 0) - target;
+    int32_t extra =
+        accumulate(min_cartridge.begin(), min_cartridge.end(), 0) - target;
 
     if (extra < 0) {
         cout << "Case #" << tc << ": IMPOSSIBLE" << '\n';
         return;
     }
 
-    for (int i = 0; i < 4; ++i) {
-        int remove = min(min_cartrage[i], extra);
-        min_cartrage[i] -= remove;
+    for (uint16_t i = 0; i < cartridge_count; ++i) {
+        int32_t remove = min(min_cartridge[i], extra);
+        min_cartridge[i] -= remove;
         extra -= remove;
     }
 
     cout << "Case #" << tc << ": ";
-    output_container(min_cartrage);
+    output_container(min_cartridge);
 }
 
 int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
 
-    int test_cases;
+    uint16_t test_cases;
     std::cin >> test_cases;
 
-    for (int tc = 1; tc <= test_cases; tc++) {
+    for (uint16_t tc = 1; tc <= test_cases; tc++) {
         run_case(tc);
+#ifdef DBG_MODE
         std::cout << std::flush;
+#endif
     }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
+#endif
 
     return 0;
 }
