@@ -8,44 +8,61 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
-#include <unordered_map>
 #include <numeric>
 #include <queue>
 #include <random>
 #include <set>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
-//dbg
+// dbg
 #ifdef DBG_MODE
 int64_t DBG_COUNT = 0;
-void DBG_OUT() { cerr << endl; DBG_COUNT++; }
-template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
-template<typename T_List> void testList(T_List List) { cerr << '#' << DBG_COUNT << " __LIST_ARGS__: ("; DBG_COUNT++; for (int i = 0; i < List.size(); i++) { cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n"); } }
-#define testArgs(...) cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", DBG_OUT(__VA_ARGS__)
+void DBG_OUT() {
+    cerr << endl;
+    DBG_COUNT++;
+}
+template <typename Front, typename... Back>
+void DBG_OUT(Front K, Back... T) {
+    cerr << ' ' << K;
+    DBG_OUT(T...);
+}
+template <typename T_List>
+void testList(T_List List) {
+    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
+    DBG_COUNT++;
+    for (int i = 0; i < List.size(); i++) {
+        cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+    }
+}
+#define testArgs(...)                                                     \
+    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
+        DBG_OUT(__VA_ARGS__)
 #else
-template<typename T_List> void testList(T_List List) { return; }
+template <typename T_List>
+void testList(T_List List) {
+    return;
+}
 #define testArgs(...)
 #endif
-
 
 const int mxN = int(10e5);
 const int mLog = 20;
 
-int preCompute[mLog][mxN]; 
+int preCompute[mLog][mxN];
 
 void runCase() {
     int lower, upper;
     cin >> lower >> upper;
     int ans = 0;
 
-    for (int i = 0; i < mLog; i++) 
+    for (int i = 0; i < mLog; i++)
         ans = max(ans, preCompute[i][upper] - preCompute[i][lower - 1]);
 
     upper++;
     cout << upper - lower - ans << '\n';
 }
-
 
 int main() {
 #ifdef TEXT_IO
@@ -53,7 +70,7 @@ int main() {
     freopen("ou.txt", "w", stdout);
 #endif
 
-    for (int i = 0; i < mLog; i++) 
+    for (int i = 0; i < mLog; i++)
         for (int j = 1; j <= mxN; j++)
             preCompute[i][j] = preCompute[i][j - 1] + ((j >> i) & 1);
 

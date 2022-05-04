@@ -9,26 +9,44 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
-#include <unordered_map>
 #include <numeric>
 #include <queue>
 #include <random>
 #include <set>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
-//dbg
+// dbg
 #ifdef DBG_MODE
 int64_t DBG_COUNT = 0;
-void DBG_OUT() { cerr << endl; DBG_COUNT++; }
-template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
-template<typename T_List> void testList(T_List List) { cerr << '#' << DBG_COUNT << " __LIST_ARGS__: ("; DBG_COUNT++; for (int i = 0; i < List.size(); i++) { cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n"); } }
-#define testArgs(...) cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", DBG_OUT(__VA_ARGS__)
+void DBG_OUT() {
+    cerr << endl;
+    DBG_COUNT++;
+}
+template <typename Front, typename... Back>
+void DBG_OUT(Front K, Back... T) {
+    cerr << ' ' << K;
+    DBG_OUT(T...);
+}
+template <typename T_List>
+void testList(T_List List) {
+    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
+    DBG_COUNT++;
+    for (int i = 0; i < List.size(); i++) {
+        cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+    }
+}
+#define testArgs(...)                                                     \
+    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
+        DBG_OUT(__VA_ARGS__)
 #else
-template<typename T_List> void testList(T_List List) { return; }
+template <typename T_List>
+void testList(T_List List) {
+    return;
+}
 #define testArgs(...)
 #endif
-
 
 const int INF = int(1e9) + 5;
 
@@ -37,8 +55,7 @@ void runCase() {
     cin >> N;
     vector<int> A(N);
 
-    for (auto &a : A)
-        cin >> a;
+    for (auto &a : A) cin >> a;
 
     sort(A.begin(), A.end());
     int aprox = floor(A.back() / 3);
@@ -51,12 +68,12 @@ void runCase() {
 
     for (int ones = 0; ones <= 3; ones++) {
         for (int twos = 0; twos <= 3; twos++) {
-            for (int threes = max(aprox - 3, 0); threes <= aprox + 3; threes++) {
+            for (int threes = max(aprox - 3, 0); threes <= aprox + 3;
+                 threes++) {
                 int coins = ones + twos + threes;
                 bool works = true;
 
-                if (coins >= best)
-                    continue;
+                if (coins >= best) continue;
 
                 for (int a : A) {
                     bool good = false;
@@ -65,7 +82,8 @@ void runCase() {
                         for (int y = 0; y <= twos; y++) {
                             int need = a - x - (y * 2);
 
-                            if (need >= 0 && need % 3 == 0 && (need / 3) <= threes) {
+                            if (need >= 0 && need % 3 == 0 &&
+                                (need / 3) <= threes) {
                                 good = true;
                                 break;
                             }
@@ -78,15 +96,13 @@ void runCase() {
                     }
                 }
 
-                if (works)
-                    best = min(best, coins);
+                if (works) best = min(best, coins);
             }
         }
     }
 
     cout << best << '\n';
 }
-
 
 int main() {
 #ifdef TEXT_IO

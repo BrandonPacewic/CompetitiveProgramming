@@ -14,46 +14,50 @@
 #include <vector>
 
 // dbg output stream handling for pairs
-template<typename A, typename B> 
-std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) { 
-    return os << '(' << p.first << ", " << p.second << ')'; 
+template <typename A, typename B>
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
+    return os << '(' << p.first << ", " << p.second << ')';
 }
 
 // dbg output stream handling for containers excluding type std::string
-template<typename T_container, typename T = typename std::enable_if<
-        !std::is_same<T_container, std::string>::value, 
-        typename T_container::value_type>::type> 
-std::ostream& operator<<(std::ostream& os, const T_container& A) { 
-    std::string sep; 
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& A) {
+    std::string sep;
     os << '{';
 
-    for (const T& a : A) { 
+    for (const T& a : A) {
         os << sep << a, sep = ", ";
     }
 
-    return os << '}'; 
+    return os << '}';
 }
 
-//dbg
+// dbg
 #ifdef DBG_MODE
 void dbg_out() { std::cerr << std::endl; }
-template<typename Head, typename... Tail> 
-void dbg_out(Head A, Tail... B) { std::cerr << ' ' << A; dbg_out(B...); }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
+}
 #define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
 #define test(...)
 #endif
 
-template<typename _Tp>
+template <typename _Tp>
 struct _basic_matrix_row {
     _Tp* elements;
     std::size_t sz;
     int current_cell_index;
 
-    _basic_matrix_row() { }
+    _basic_matrix_row() {}
 
-    _basic_matrix_row(std::size_t _size) 
-        : elements{new _Tp[_size]}, sz{_size}, current_cell_index{0} { }
+    _basic_matrix_row(std::size_t _size)
+        : elements{new _Tp[_size]}, sz{_size}, current_cell_index{0} {}
 
     ~_basic_matrix_row() { delete[] elements; }
 
@@ -65,22 +69,22 @@ struct _basic_matrix_row {
         elements[current_cell_index++] = new_element;
 
         return current_cell_index;
-    }
-    catch (const std::out_of_range& error) {
+    } catch (const std::out_of_range& error) {
         std::cerr << "assign_back has no cell to assign" << '\n';
         throw error;
     }
 };
 
-template<typename _Tp>
+template <typename _Tp>
 struct basic_matrix {
     _basic_matrix_row<_Tp>* rows;
     std::size_t sz;
     int current_row_index;
 
-    basic_matrix(std::size_t _size) 
-        : rows{new _basic_matrix_row<_Tp>[_size]}, sz{_size},
-        current_row_index{0} { 
+    basic_matrix(std::size_t _size)
+        : rows{new _basic_matrix_row<_Tp>[_size]},
+          sz{_size},
+          current_row_index{0} {
         for (int i = 0; i < int(sz); i++) {
             rows[i] = _basic_matrix_row<_Tp>(sz);
         }
@@ -93,14 +97,15 @@ struct basic_matrix {
     void assign_back(const _Tp& new_element) try {
         int current = rows[current_row_index].assign_back(new_element);
 
-        if (current == sz) { ++current_row_index; }
-    }
-    catch (const std::out_of_range& error) {
+        if (current == sz) {
+            ++current_row_index;
+        }
+    } catch (const std::out_of_range& error) {
         std::cerr << "assign_back has no rows to assign" << '\n';
         throw error;
     }
 
-    template<class _Fun>
+    template <class _Fun>
     void for_all(_Fun function) const noexcept {
         for (int _row = 0; _row < int(sz); ++_row) {
             for (int _cell = 0; _cell < int(sz); ++_cell) {
@@ -131,8 +136,7 @@ void run_case() {
             ++count;
             cell += 2;
             item = 'R';
-        }
-        else {
+        } else {
             item = '.';
         }
     });

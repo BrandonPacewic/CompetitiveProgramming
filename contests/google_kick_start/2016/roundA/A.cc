@@ -14,19 +14,38 @@
 #include <vector>
 using namespace std;
 
-template<typename A, typename B> ostream& operator<<(ostream &os, const pair<A, B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
-template<typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &v) { os << '{'; string sep; for (const T &x : v) os << sep << x, sep = ", "; return os << '}'; }
+template <typename A, typename B>
+ostream &operator<<(ostream &os, const pair<A, B> &p) {
+    return os << '(' << p.first << ", " << p.second << ')';
+}
+template <typename T_container, typename T = typename enable_if<
+                                    !is_same<T_container, string>::value,
+                                    typename T_container::value_type>::type>
+ostream &operator<<(ostream &os, const T_container &v) {
+    os << '{';
+    string sep;
+    for (const T &x : v) os << sep << x, sep = ", ";
+    return os << '}';
+}
 
-//dbg
+// dbg
 #ifdef DBG_MODE
 int64_t DBG_COUNT = 0;
-void DBG_OUT() { cerr << endl; DBG_COUNT++; }
-template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
-#define testArgs(...) cerr << '#' << DBG_COUNT << " [" << #__VA_ARGS__ << "]:", DBG_OUT(__VA_ARGS__)
+void DBG_OUT() {
+    cerr << endl;
+    DBG_COUNT++;
+}
+template <typename Front, typename... Back>
+void DBG_OUT(Front K, Back... T) {
+    cerr << ' ' << K;
+    DBG_OUT(T...);
+}
+#define testArgs(...)                                         \
+    cerr << '#' << DBG_COUNT << " [" << #__VA_ARGS__ << "]:", \
+        DBG_OUT(__VA_ARGS__)
 #else
 #define testArgs(...)
 #endif
-
 
 void run_case(int tc) {
     auto to_set = [](string _x) -> set<char> {
@@ -41,7 +60,8 @@ void run_case(int tc) {
     for (int i = 0; i < N; i++) {
         getline(cin >> ws, names[i]);
         same[i] = names[i];
-        names[i].erase(remove(names[i].begin(), names[i].end(), ' '), names[i].end());
+        names[i].erase(remove(names[i].begin(), names[i].end(), ' '),
+                       names[i].end());
     }
 
     int best = -1, index = -1;
@@ -59,7 +79,6 @@ void run_case(int tc) {
 
     cout << "Case #" << tc << ": " << same[index] << '\n';
 }
-    
 
 int main() {
     ios::sync_with_stdio(false);

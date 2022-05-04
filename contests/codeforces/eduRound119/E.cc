@@ -8,37 +8,57 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
-#include <unordered_map>
 #include <numeric>
 #include <queue>
 #include <random>
 #include <set>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
-//dbg
+// dbg
 #ifdef DBG_MODE
 int64_t DBG_COUNT = 0;
-void DBG_OUT() { cerr << endl; DBG_COUNT++; }
-template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
-template<typename T_List> void testList(T_List List) { cerr << '#' << DBG_COUNT << " __LIST_ARGS__: ("; DBG_COUNT++; for (int i = 0; i < List.size(); i++) { cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n"); } }
-#define testArgs(...) cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", DBG_OUT(__VA_ARGS__)
+void DBG_OUT() {
+    cerr << endl;
+    DBG_COUNT++;
+}
+template <typename Front, typename... Back>
+void DBG_OUT(Front K, Back... T) {
+    cerr << ' ' << K;
+    DBG_OUT(T...);
+}
+template <typename T_List>
+void testList(T_List List) {
+    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
+    DBG_COUNT++;
+    for (int i = 0; i < List.size(); i++) {
+        cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+    }
+}
+#define testArgs(...)                                                     \
+    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
+        DBG_OUT(__VA_ARGS__)
 #else
-template<typename T_List> void testList(T_List List) { return; }
+template <typename T_List>
+void testList(T_List List) {
+    return;
+}
 #define testArgs(...)
 #endif
 
-template<typename T_List>
-void printList(const T_List &List, const bool space = true, const bool new_line = true) {
+template <typename T_List>
+void printList(const T_List &List, const bool space = true,
+               const bool new_line = true) {
     for (int i = 0; i < List.size(); i++) {
         cout << List[i];
-        
+
         if (space) cout << ' ';
-    }    
-        if (new_line)
-            cout << '\n';
-        else 
-            cout << ' ';
+    }
+    if (new_line)
+        cout << '\n';
+    else
+        cout << ' ';
 }
 
 const int mXN = int(5e5) + 5;
@@ -66,14 +86,12 @@ int main() {
         } else {
             cin >> y;
 
-            if (x == y)
-                continue;
+            if (x == y) continue;
 
             vector<int> &x_loc = locations[x];
             vector<int> &y_loc = locations[y];
 
-            if (y_loc.size() > x_loc.size())
-                y_loc.swap(x_loc);
+            if (y_loc.size() > x_loc.size()) y_loc.swap(x_loc);
 
             y_loc.insert(y_loc.end(), x_loc.begin(), x_loc.end());
             x_loc.clear();
@@ -83,8 +101,7 @@ int main() {
     vector<int> A(n, -1);
 
     for (int x = 0; x < mXN; x++) {
-        for (int loc : locations[x])
-            A[loc] = x;
+        for (int loc : locations[x]) A[loc] = x;
     }
 
     printList(A);

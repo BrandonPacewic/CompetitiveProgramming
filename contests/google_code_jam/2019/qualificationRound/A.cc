@@ -1,36 +1,52 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//dbg
+// dbg
 #define DBG_MODE
 long long DBG_COUNT = 0ll;
-void DBG_OUT() { cerr << endl; DBG_COUNT += 1ll; }
-template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
+void DBG_OUT() {
+    cerr << endl;
+    DBG_COUNT += 1ll;
+}
+template <typename Front, typename... Back>
+void DBG_OUT(Front K, Back... T) {
+    cerr << ' ' << K;
+    DBG_OUT(T...);
+}
 #ifdef DBG_MODE
-template<typename T_Ints> void testList(T_Ints List) { cerr << '#' << DBG_COUNT << " __LIST_ARGS__: ("; DBG_COUNT += 1ll; for (int i = 0; i < List.size(); i++) { cout << List[i] << (i < List.size() - 1 ? ", " : ")\n"); } }
-#define testArgs(...) cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", DBG_OUT(__VA_ARGS__)
+template <typename T_Ints>
+void testList(T_Ints List) {
+    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
+    DBG_COUNT += 1ll;
+    for (int i = 0; i < List.size(); i++) {
+        cout << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+    }
+}
+#define testArgs(...)                                                     \
+    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
+        DBG_OUT(__VA_ARGS__)
 #else
-template<typename T_Ints> void testList(T_Ints List) { return; }
+template <typename T_Ints>
+void testList(T_Ints List) {
+    return;
+}
 #define testArgs(...)
 #endif
 
-
-template<typename T_List>
+template <typename T_List>
 void printList(T_List List, bool space = true, bool new_line = true) {
     int k = 0;
 
-    while (List[k] == 0)
-        k++;
+    while (List[k] == 0) k++;
 
     for (int i = k; i < List.size(); i++) {
         cout << List[i];
-        
-        if (space)
-            cout << ' ';
-        
+
+        if (space) cout << ' ';
+
         if (new_line && i == List.size() - 1)
             cout << '\n';
-        else if (i == List.size() - 1) 
+        else if (i == List.size() - 1)
             cout << ' ';
     }
 }
