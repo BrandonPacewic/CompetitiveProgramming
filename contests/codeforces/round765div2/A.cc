@@ -15,26 +15,43 @@
 #include <vector>
 using namespace std;
 
-//dbg
+// dbg
 #ifdef DBG_MODE
 int64_t DBG_COUNT = 0;
-void DBG_OUT() { cerr << endl; DBG_COUNT++; }
-template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
-template<typename T_List> void testList(T_List List) { cerr << '#' << DBG_COUNT << " __LIST_ARGS__: ("; DBG_COUNT++; for (int i = 0; i < List.size(); i++) { cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n"); } }
-#define testArgs(...) cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", DBG_OUT(__VA_ARGS__)
+void DBG_OUT() {
+    cerr << endl;
+    DBG_COUNT++;
+}
+template <typename Front, typename... Back>
+void DBG_OUT(Front K, Back... T) {
+    cerr << ' ' << K;
+    DBG_OUT(T...);
+}
+template <typename T_List>
+void testList(T_List List) {
+    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
+    DBG_COUNT++;
+    for (int i = 0; i < List.size(); i++) {
+        cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+    }
+}
+#define testArgs(...)                                                     \
+    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
+        DBG_OUT(__VA_ARGS__)
 #else
-template<typename T_List> void testList(T_List List) { return; }
+template <typename T_List>
+void testList(T_List List) {
+    return;
+}
 #define testArgs(...)
 #endif
-
 
 void run_case() {
     int N, L;
     cin >> N >> L;
     vector<int> A(N);
 
-    for (auto &a : A)
-        cin >> a;
+    for (auto &a : A) cin >> a;
 
     auto to_binary = [](int a) -> vector<int> {
         vector<int> binary;
@@ -51,45 +68,39 @@ void run_case() {
 
     vector<vector<int>> binarys;
 
-    for (const auto a : A)
-        binarys.push_back(to_binary(a));
+    for (const auto a : A) binarys.push_back(to_binary(a));
 
     vector<int> common(N);
 
     for (auto &binary : binarys) {
-        if (binary.size() < binarys[0].size() || binary.size() < binarys[1].size()) {
+        if (binary.size() < binarys[0].size() ||
+            binary.size() < binarys[1].size()) {
             reverse(binary.begin(), binary.end());
             binary.push_back(0);
             reverse(binary.begin(), binary.end());
         }
 
-
-        for (int i = 0; i < binary.size(); i++)
-            common[i] += binary[i];
+        for (int i = 0; i < binary.size(); i++) common[i] += binary[i];
     }
 
     int best = *max_element(common.begin(), common.end());
 
-    for (auto i : binarys)
-        testList(i);
+    for (auto i : binarys) testList(i);
 
     testList(common);
     testArgs(best);
     vector<int> target(binarys.front().size());
 
     for (int i = 0; i < N; i++)
-        if (common[i] == best)
-            target[i]++;
+        if (common[i] == best) target[i]++;
 
     testList(target);
     int ans = 0;
 
-    for (int i = 0; i < target.size(); i++)
-        ans += pow(target[i], 2);
+    for (int i = 0; i < target.size(); i++) ans += pow(target[i], 2);
 
     cout << ans << '\n';
 }
-
 
 int main() {
     ios::sync_with_stdio(false);

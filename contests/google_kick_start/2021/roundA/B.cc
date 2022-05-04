@@ -1,30 +1,48 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-//dbg
+// dbg
 #define DBG_MODE
 int64_t DBG_COUNT = 0;
-void DBG_OUT() { cerr << endl; DBG_COUNT++; }
-template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
+void DBG_OUT() {
+    cerr << endl;
+    DBG_COUNT++;
+}
+template <typename Front, typename... Back>
+void DBG_OUT(Front K, Back... T) {
+    cerr << ' ' << K;
+    DBG_OUT(T...);
+}
 #ifdef DBG_MODE
-template<typename T_List> void testList(T_List List) { cerr << '#' << DBG_COUNT << " __LIST_ARGS__: ("; DBG_COUNT++; for (int i = 0; i < List.size(); i++) { cout << List[i] << (i < List.size() - 1 ? ", " : ")\n"); } }
-#define testArgs(...) cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", DBG_OUT(__VA_ARGS__)
+template <typename T_List>
+void testList(T_List List) {
+    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
+    DBG_COUNT++;
+    for (int i = 0; i < List.size(); i++) {
+        cout << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+    }
+}
+#define testArgs(...)                                                     \
+    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
+        DBG_OUT(__VA_ARGS__)
 #else
-template<typename T_List> void testList(T_List List) { return; }
+template <typename T_List>
+void testList(T_List List) {
+    return;
+}
 #define testArgs(...)
 #endif
 
-
 void runCase() {
-    int R, C;   
+    int R, C;
     cin >> R >> C;
-    vector<vector<int>> M(R, vector<int> (C));
+    vector<vector<int>> M(R, vector<int>(C));
 
     for (auto &i : M)
-        for (auto &k : i)
-            cin >> k;
+        for (auto &k : i) cin >> k;
 
-    vector<vector<int>> left(R, vector<int>(C, 0)), right(R, vector<int>(C, 0)), up(R, vector<int>(C, 0)), down(R, vector<int>(C, 0));
+    vector<vector<int>> left(R, vector<int>(C, 0)), right(R, vector<int>(C, 0)),
+        up(R, vector<int>(C, 0)), down(R, vector<int>(C, 0));
 
     for (int r = 0; r < R; r++)
         for (int c = 0; c < C; c++) {
@@ -55,14 +73,13 @@ void runCase() {
     cout << total << '\n';
 }
 
-
 // #define TEXT_IO
 int main() {
-    #ifdef TEXT_IO
+#ifdef TEXT_IO
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
     printf("Don't Forget to Submit Without DBG Enabled\n\n");
-    #endif
+#endif
 
     ios::sync_with_stdio(0);
     cin.tie(0);

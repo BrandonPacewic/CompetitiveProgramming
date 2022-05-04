@@ -15,40 +15,43 @@
 using namespace std;
 
 // dbg output stream handling for pairs
-template<typename A, typename B> 
-std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) { 
-    return os << '(' << p.first << ", " << p.second << ')'; 
+template <typename A, typename B>
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
+    return os << '(' << p.first << ", " << p.second << ')';
 }
 
 // dbg output stream handling for containers excluding type std::string
-template<typename T_container, typename T = typename std::enable_if<
-        !std::is_same<T_container, std::string>::value, 
-        typename T_container::value_type>::type> 
-std::ostream& operator<<(std::ostream& os, const T_container& A) { 
-    std::string sep; 
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& A) {
+    std::string sep;
     os << '{';
 
-    for (const T& a : A) { 
+    for (const T& a : A) {
         os << sep << a, sep = ", ";
     }
 
-    return os << '}'; 
+    return os << '}';
 }
 
-//dbg
+// dbg
 #ifdef DBG_MODE
 void dbg_out() { std::cerr << std::endl; }
-template<typename Head, typename... Tail> 
-void dbg_out(Head A, Tail... B) { std::cerr << ' ' << A; dbg_out(B...); }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
+}
 #define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
 #define test(...)
 #endif
 
-
-template<typename T_container>
+template <typename T_container>
 void output_container(const T_container& container, const bool& space = true,
-    const bool& new_line = true) {
+                      const bool& new_line = true) {
     int start = 0;
     int end = int(container.size());
 
@@ -68,8 +71,7 @@ void run_case(const int& tc) {
     array<array<int, 4>, 3> printers;
 
     for (auto& printer : printers)
-        for (auto& cartrage : printer)
-            cin >> cartrage;
+        for (auto& cartrage : printer) cin >> cartrage;
 
     vector<int> min_cartrage(4, INF);
 
@@ -79,8 +81,9 @@ void run_case(const int& tc) {
         }
     }
 
-    int extra = accumulate(min_cartrage.begin(), min_cartrage.end(), 0) - target;
-    
+    int extra =
+        accumulate(min_cartrage.begin(), min_cartrage.end(), 0) - target;
+
     if (extra < 0) {
         cout << "Case #" << tc << ": IMPOSSIBLE" << '\n';
         return;

@@ -9,47 +9,63 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
-#include <unordered_map>
 #include <numeric>
 #include <queue>
 #include <random>
 #include <set>
+#include <unordered_map>
 #include <vector>
 using namespace std;
 
-//dbg
+// dbg
 #ifdef DBG_MODE
 int64_t DBG_COUNT = 0;
-void DBG_OUT() { cerr << endl; DBG_COUNT++; }
-template<typename Front, typename... Back> void DBG_OUT(Front K, Back... T) { cerr << ' ' << K; DBG_OUT(T...); }
-template<typename T_List> void testList(T_List List) { cerr << '#' << DBG_COUNT << " __LIST_ARGS__: ("; DBG_COUNT++; for (int i = 0; i < List.size(); i++) { cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n"); } }
-#define testArgs(...) cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", DBG_OUT(__VA_ARGS__)
+void DBG_OUT() {
+    cerr << endl;
+    DBG_COUNT++;
+}
+template <typename Front, typename... Back>
+void DBG_OUT(Front K, Back... T) {
+    cerr << ' ' << K;
+    DBG_OUT(T...);
+}
+template <typename T_List>
+void testList(T_List List) {
+    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
+    DBG_COUNT++;
+    for (int i = 0; i < List.size(); i++) {
+        cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+    }
+}
+#define testArgs(...)                                                     \
+    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
+        DBG_OUT(__VA_ARGS__)
 #else
-template<typename T_List> void testList(T_List List) { return; }
+template <typename T_List>
+void testList(T_List List) {
+    return;
+}
 #define testArgs(...)
 #endif
 
-
-template<typename T, typename T_iterable>
+template <typename T, typename T_iterable>
 vector<pair<T, int>> run_length_encoding(const T_iterable &items) {
     vector<pair<T, int>> encoding;
     T previous;
     int count = 0;
- 
+
     for (const T &item : items)
         if (item == previous) {
             count++;
         } else {
-            if (count > 0)
-                encoding.emplace_back(previous, count);
- 
+            if (count > 0) encoding.emplace_back(previous, count);
+
             previous = item;
             count = 1;
         }
- 
-    if (count > 0)
-        encoding.emplace_back(previous, count);
- 
+
+    if (count > 0) encoding.emplace_back(previous, count);
+
     return encoding;
 }
 
@@ -64,8 +80,7 @@ void runCase() {
     vector<int64_t> bases;
 
     for (auto &pa : encoding)
-        if (pa.first == '*')
-            bases.push_back(pa.second * K + 1);
+        if (pa.first == '*') bases.push_back(pa.second * K + 1);
 
     vector<int64_t> stack;
 
@@ -88,7 +103,6 @@ void runCase() {
 
     cout << ans << '\n';
 }
-
 
 int main() {
 #ifdef TEXT_IO
