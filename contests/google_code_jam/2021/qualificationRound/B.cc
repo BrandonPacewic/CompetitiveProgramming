@@ -10,6 +10,7 @@
 #include <map>
 #include <memory>
 #include <numeric>
+#include <limits>
 #include <queue>
 #include <set>
 #include <unordered_map>
@@ -49,7 +50,7 @@ void dbg_out(Head A, Tail... B) {
 #define test(...)
 #endif
 
-const int INF = int(1e9) + 5;
+const int INF = int(numeric_limits<int>::max() / 2);
 
 void run_case(const uint16_t& tc) {
     int X, Y;
