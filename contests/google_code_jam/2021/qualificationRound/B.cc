@@ -49,25 +49,27 @@ void dbg_out(Head A, Tail... B) {
 #define test(...)
 #endif
 
+const int INF = int(1e9) + 5;
+
 void run_case(const uint16_t& tc) {
-    int N;
-    cin >> N;
-    vector<int> A(N);
+    int X, Y;
+    string S;
+    cin >> X >> Y >> S;
+    int end_c = (S[0] == '?' || S[0] == 'C') ? 0 : INF;
+    int end_j = (S[0] == '?' || S[0] == 'J') ? 0 : INF;
 
-    for_each(A.begin(), A.end(), [&](int& a) { cin >> a; });
+    for_each(S.begin() + 1, S.end(), [&](const char& ch) {
+        int nend_c = (ch == '?' || ch == 'C') ? min(end_j + Y, end_c) : INF;
+        int nend_j = (ch == '?' || ch == 'J') ? min(end_j, end_c + X) : INF;
+        end_c = nend_c;
+        end_j = nend_j;
+    });
 
-    int cost = 0;
-
-    for (int i = 0; i < N - 1; i++) {
-        int index = int(min_element(A.begin() + i, A.end()) - A.begin());
-        reverse(A.begin() + i, A.begin() + index + 1);
-        cost += index - i + 1;
-    }
-
-    cout << "Case #" << tc << ": " << cost << '\n';
+    cout << "Case #" << tc << ": " << min(end_c, end_j) << '\n';
 }
 
 int main() {
+    test(INF);
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
 
