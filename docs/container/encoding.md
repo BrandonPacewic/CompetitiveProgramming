@@ -1,4 +1,4 @@
-# Encoding 
+# [Encoding](https://github.com/BrandonPacewic/CompetitiveProgramming/blob/mega/src/container/encoding.cc)
 
 ## Run Length Encoding
 

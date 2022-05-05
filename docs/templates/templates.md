@@ -1,4 +1,4 @@
-# C++ Templates
+# [C++ Templates](https://github.com/BrandonPacewic/CompetitiveProgramming/tree/mega/templates)
 
 The templates that I use for contests are pretty straight forward.
 They combine the dbg `test(...)` macro with including lots and lots of 
