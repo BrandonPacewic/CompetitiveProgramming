@@ -50,56 +50,28 @@ void dbg_out(Head A, Tail... B) {
 #define test(...)
 #endif
 
-const int32_t INF = int32_t(numeric_limits<int32_t>::max());
-const string ALPH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+void run_case(const uint16_t&) {
+    int low, high, N;
+    cin >> low >> high >> N;
 
-void run_case(const uint16_t& tc) {
-    uint16_t N;
-    cin >> N;
+    int ans = low;
 
-    vector<int32_t> A(N);
+    while (true) {
+        cout << ans << endl;
 
-    for_each(A.begin(), A.end(), [&](uint32_t& a) { cin >> a; });
+        string responce;
+        cin >> responce;
 
-    vector<array<char, 2>> ans;
-    array<int32_t, 2> reduce = {0, -INF};
-
-    for (uint16_t i = 1; i < N; ++i) {
-        if (A[i] > A[reduce[0]]) {
-            reduce[0] = i;
-        }
-    }
-
-    reduce[1] = A[reduce[0]];
-    A[reduce[0]] = -INF;
-    int32_t target = *max_element(A.begin(), A.end());
-    A[reduce[0]] = target;
-
-    for (int32_t i = reduce[1]; i > target; i -= 2) {
-        ans.emplace_back(ALPH[reduce[0]], i - 2 >= target ? ALPH[reduce[0]] : ' ');
-    }
-
-    A[reduce[0]] = -INF;
-    reduce[1] = INF;
-
-    for (uint16_t i = 0; i < N; ++i) {
-        if (A[i] == target) {
-            reduce[0] == -INF ? reduce[0] = i : reduce[1] = i;
+        if (responce == "CORRECT") {
+            break;
         }
 
-        if (reduce[0] != -INF && reduce[1] != -INF) break;
+        if (responce == "TOO_BIG") {
+            ans--;
+        } else {
+            ans++;
+        }
     }
-
-    for (int32_t i = 0; i < target; i++) {
-        ans.emplace_back(ALPH[reduce[0]], ALPH[reduce[1]]);
-    }
-
-    cout << "Case #" << tc << ": ";
-    for_each(ans.begin(), ans.end(), [&](const array<char, 2>& a) {
-        cout << a[0] << a[1];
-    });
-
-    cout << '\n';
 }
 
 int main() {
