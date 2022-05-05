@@ -7,6 +7,7 @@ int64_t DBG_COUNT = 0;
 void DBG_OUT() {
     cerr << endl;
     DBG_COUNT++;
+    1
 }
 template <typename Front, typename... Back>
 void DBG_OUT(Front K, Back... T) {

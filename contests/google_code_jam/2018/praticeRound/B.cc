@@ -76,7 +76,8 @@ void run_case(const uint16_t& tc) {
     A[reduce[0]] = target;
 
     for (int32_t i = reduce[1]; i > target; i -= 2) {
-        ans.emplace_back(ALPH[reduce[0]], i - 2 >= target ? ALPH[reduce[0]] : ' ');
+        ans.emplace_back(ALPH[reduce[0]],
+                         i - 2 >= target ? ALPH[reduce[0]] : ' ');
     }
 
     A[reduce[0]] = -INF;
@@ -95,9 +96,8 @@ void run_case(const uint16_t& tc) {
     }
 
     cout << "Case #" << tc << ": ";
-    for_each(ans.begin(), ans.end(), [&](const array<char, 2>& a) {
-        cout << a[0] << a[1];
-    });
+    for_each(ans.begin(), ans.end(),
+             [&](const array<char, 2>& a) { cout << a[0] << a[1]; });
 
     cout << '\n';
 }

@@ -1,80 +1,110 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <array>
+#include <cassert>
+#include <chrono>
+#include <cmath>
+#include <cstring>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <limits>
+#include <map>
+#include <memory>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-// dbg
-//  #define DBG_MODE
-int64_t DBG_COUNT = 0;
-void DBG_OUT() {
-    cerr << endl;
-    DBG_COUNT++;
+template <typename A, typename B>
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
+    return os << '(' << p.first << ", " << p.second << ')';
 }
-template <typename Front, typename... Back>
-void DBG_OUT(Front K, Back... T) {
-    cerr << ' ' << K;
-    DBG_OUT(T...);
-}
-#ifdef DBG_MODE
-template <typename T_Ints>
-void testList(T_Ints List) {
-    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
-    DBG_COUNT++;
-    for (int i = 0; i < List.size(); i++) {
-        cout << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
+    os << '{';
+    std::string separator;
+
+    for (const T& item : container) {
+        os << separator << item, separator = ", ";
     }
+
+    return os << '}';
 }
-#define testArgs(...)                                                     \
-    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
-        DBG_OUT(__VA_ARGS__)
+
+#ifdef DBG_MODE
+void dbg_out() { std::cerr << std::endl; }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
+}
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
-template <typename T_Ints>
-void testList(T_Ints List) {
-    return;
-}
-#define testArgs(...)
+#define test(...)
 #endif
 
-void runCase(int tc) {
-    int D;
-    string P;
-    cin >> D >> P;
+void run_case(const uint16_t& tc) {
+    uint32_t D;
+    string S;
+    cin >> D >> S;
 
-    if (count(P.begin(), P.end(), 'S') > D) {
+    if (count(S.begin(), S.end(), 'S') > D) {
         cout << "Case #" << tc << ": IMPOSSIBLE" << '\n';
         return;
     }
 
-    auto countDamage = [&](string P) -> int {
+    auto count_damage = [&](string S) -> uint32_t {
         int damage = 0, charge = 1;
-        for (auto i : P)
-            if (i == 'S')
-                damage += charge;
-            else
-                charge *= 2;
 
-        testArgs(damage);
+        for_each(S.begin(), S.end(), [&](const char& ch) {
+            if (ch == 'S') {
+                damage += charge;
+            } else {
+                charge *= 2;
+            }
+        });
+
         return damage;
     };
 
-    int swaps = 0;
-    while (D < countDamage(P) && DBG_COUNT < 45) {
-        for (int i = P.length() - 1; i >= 0; i--)
-            if (P[i - 1] == 'C' && P[i] == 'S') {
-                swap(P[i - 1], P[i]);
+    uint32_t swaps = 0;
+
+    while (D < count_damage(S)) {
+        for (uint16_t i = uint16_t(S.length()) - 1; i >= 0; --i) {
+            if (S[i - 1] == 'C' && S[i] == 'S') {
+                swap(S[i - 1], S[i]);
+                ++swaps;
                 break;
             }
-        swaps++;
-        testArgs(P);
+        }
     }
 
     cout << "Case #" << tc << ": " << swaps << '\n';
 }
 
 int main() {
-    int test_cases;
-    cin >> test_cases;
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
 
-    for (int tc = 1; tc <= test_cases; tc++) {
-        runCase(tc);
-        cerr << flush;
+    uint16_t test_cases;
+    std::cin >> test_cases;
+
+    for (uint16_t tc = 1; tc <= test_cases; tc++) {
+        run_case(tc);
+#ifdef DBG_MODE
+        std::cout << std::flush;
+#endif
     }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
+#endif
+
+    return 0;
 }
