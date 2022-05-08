@@ -33,3 +33,18 @@ void output_container(const T_container& container, const bool space = true,
 
     std::cout << (new_line ? '\n' : ' ');
 }
+
+template <typename T_container>
+void output_reverse_container(const T_container& container,
+                              const bool space = true,
+                              const bool new_line = true) {
+    for (std::size_t i = container.size(); i > 0; --i) {
+        std::cout << container[i - 1];
+
+        if (space && i > 1) {
+            std::cout << ' ';
+        }
+    }
+
+    std::cout << (new_line ? '\n' : ' ');
+}
