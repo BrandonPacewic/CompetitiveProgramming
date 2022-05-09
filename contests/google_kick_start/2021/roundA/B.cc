@@ -1,95 +1,129 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <array>
+#include <cassert>
+#include <chrono>
+#include <cmath>
+#include <cstring>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <limits>
+#include <map>
+#include <memory>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-// dbg
-#define DBG_MODE
-int64_t DBG_COUNT = 0;
-void DBG_OUT() {
-    cerr << endl;
-    DBG_COUNT++;
+template <typename A, typename B>
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
+    return os << '(' << p.first << ", " << p.second << ')';
 }
-template <typename Front, typename... Back>
-void DBG_OUT(Front K, Back... T) {
-    cerr << ' ' << K;
-    DBG_OUT(T...);
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
+    os << '{';
+    std::string separator;
+
+    for (const T& item : container) {
+        os << separator << item, separator = ", ";
+    }
+
+    return os << '}';
 }
+
 #ifdef DBG_MODE
-template <typename T_List>
-void testList(T_List List) {
-    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
-    DBG_COUNT++;
-    for (int i = 0; i < List.size(); i++) {
-        cout << List[i] << (i < List.size() - 1 ? ", " : ")\n");
-    }
+void dbg_out() { std::cerr << std::endl; }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
 }
-#define testArgs(...)                                                     \
-    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
-        DBG_OUT(__VA_ARGS__)
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
-template <typename T_List>
-void testList(T_List List) {
-    return;
-}
-#define testArgs(...)
+#define test(...)
 #endif
 
-void runCase() {
-    int R, C;
+void run_case(const uint16_t& tc) {
+    uint32_t R, C;
     cin >> R >> C;
-    vector<vector<int>> M(R, vector<int>(C));
 
-    for (auto &i : M)
-        for (auto &k : i) cin >> k;
+    vector<vector<uint32_t>> M(R, vector<uint32_t>(C));
 
-    vector<vector<int>> left(R, vector<int>(C, 0)), right(R, vector<int>(C, 0)),
-        up(R, vector<int>(C, 0)), down(R, vector<int>(C, 0));
+    for_each(M.begin(), M.end(), [&](auto& row) {
+        for_each(row.begin(), row.end(), [&](auto& cell) { cin >> cell; });
+    });
 
-    for (int r = 0; r < R; r++)
-        for (int c = 0; c < C; c++) {
-            left[r][c] = M[r][c] ? (c > 0 ? left[r][c - 1] : 0) + 1 : 0;
-            up[r][c] = M[r][c] ? (r > 0 ? up[r - 1][c] : 0) + 1 : 0;
+    vector<vector<uint32_t>> left(R, vector<uint32_t>(C, 0)),
+        right(R, vector<uint32_t>(C, 0));
+    vector<vector<uint32_t>> up(R, vector<uint32_t>(C, 0)),
+        down(R, vector<uint32_t>(C, 0));
+
+    for (uint32_t r = 0; r < R; ++r) {
+        for (uint32_t c = 0; c < C; ++c) {
+            if (M[r][c]) {
+                left[r][c] = (c > 0) ? left[r][c - 1] : 0;
+                up[r][c] = (r > 0) ? up[r - 1][c] : 0;
+            } else {
+                left[r][c] = 0;
+                up[r][c] = 0;
+            }
         }
+    }
 
-    for (int r = R - 1; r >= 0; r--)
-        for (int c = C - 1; c >= 0; c--) {
-            right[r][c] = M[r][c] ? (c < C - 1 ? right[r][c + 1] : 0) + 1 : 0;
-            down[r][c] = M[r][c] ? (r < R - 1 ? down[r + 1][c] : 0) + 1 : 0;
+    for (uint32_t r = R - 1; r >= 0; --r) {
+        for (uint32_t c = C - 1; c >= 0; --c) {
+            if (M[r][c]) {
+                right[r][c] = (c < C - 1) ? right[r][c + 1] : 0;
+                down[r][c] = (r < R - 1) ? down[r + 1][c] : 0;
+            } else {
+                right[r][c] = 0;
+                down[r][c] = 0;
+            }
         }
+    }
 
-    int total = 0;
-    for (int r = 0; r < R; r++)
-        for (int c = 0; c < C; c++) {
-            total += max(min(left[r][c], up[r][c] / 2) - 1, 0);
-            total += max(min(up[r][c], right[r][c] / 2) - 1, 0);
-            total += max(min(right[r][c], down[r][c] / 2) - 1, 0);
-            total += max(min(down[r][c], left[r][c] / 2) - 1, 0);
+    uint32_t total = 0;
 
-            total += max(min(up[r][c], left[r][c] / 2) - 1, 0);
-            total += max(min(right[r][c], up[r][c] / 2) - 1, 0);
-            total += max(min(down[r][c], right[r][c] / 2) - 1, 0);
-            total += max(min(left[r][c], down[r][c] / 2) - 1, 0);
+    for (uint32_t r = 0; r < R; ++r) {
+        for (uint32_t c = 0; c < C; ++c) {
+            total += max<uint32_t>(min(left[r][c], up[r][c] / 2) - 1, 0);
+            total += max<uint32_t>(min(up[r][c], right[r][c] / 2) - 1, 0);
+            total += max<uint32_t>(min(right[r][c], down[r][c] / 2) - 1, 0);
+            total += max<uint32_t>(min(down[r][c], left[r][c] / 2) - 1, 0);
+
+            total += max<uint32_t>(min(up[r][c], left[r][c] / 2) - 1, 0);
+            total += max<uint32_t>(min(right[r][c], up[r][c] / 2) - 1, 0);
+            total += max<uint32_t>(min(down[r][c], right[r][c] / 2) - 1, 0);
+            total += max<uint32_t>(min(left[r][c], down[r][c] / 2) - 1, 0);
         }
+    }
 
-    cout << total << '\n';
+    cout << "Case #" << tc << ": " << total << '\n';
 }
 
-// #define TEXT_IO
 int main() {
-#ifdef TEXT_IO
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-    printf("Don't Forget to Submit Without DBG Enabled\n\n");
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+
+    uint16_t test_cases;
+    std::cin >> test_cases;
+
+    for (uint16_t tc = 1; tc <= test_cases; tc++) {
+        run_case(tc);
+#ifdef DBG_MODE
+        std::cout << std::flush;
+#endif
+    }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
 #endif
 
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
-    int test_cases;
-    cin >> test_cases;
-
-    for (int tc = 1; tc <= test_cases; tc++) {
-        cout << "Case #" << tc << ": ";
-        runCase();
-        cerr << flush;
-    }
+    return 0;
 }
