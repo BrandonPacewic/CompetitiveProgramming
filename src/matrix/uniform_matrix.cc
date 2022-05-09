@@ -87,6 +87,14 @@ class uniform_matrix {
 
     row_type& operator[](const int& i) const { return rows[i]; }
 
+    void for_each(std::function<void(_Tp&)> lambda) const {
+        for (std::size_t row = 0; row < sz; ++row) {
+            for (std::size_t cell = 0; cell < sz; ++cell) {
+                lambda(rows[row][cell]);
+            }
+        }
+    }
+
     void for_each(
         std::function<void(_Tp&, std::size_t&, std::size_t&)> lambda) const {
         for (std::size_t row = 0; row < sz; ++row) {
