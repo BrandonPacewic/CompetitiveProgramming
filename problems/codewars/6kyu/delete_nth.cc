@@ -22,10 +22,10 @@ std::vector<int> delete_nth(std::vector<int> sequence, int max_elements) {
     std::vector<int> result;
     std::unordered_map<int, int> occurences;
 
-    std::copy_if(sequence.begin(), sequence.end(), std::back_inserter(result), 
-        [&occurences, max_elements](int item) -> bool {
-        return ++occurences[item] <= max_elements;
-    });
+    std::copy_if(sequence.begin(), sequence.end(), std::back_inserter(result),
+                 [&occurences, max_elements](int item) -> bool {
+                     return ++occurences[item] <= max_elements;
+                 });
 
     return result;
 }

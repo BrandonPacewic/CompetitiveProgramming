@@ -1,13 +1,13 @@
 // Given a number and a binary tree
 // return true if number is in tree else false
 
-struct Node{
+struct Node {
     int val;
     Node *left = nullptr;
     Node *right = nullptr;
 };
 
-bool search(int n, Node* root) {
+bool search(int n, Node *root) {
     if (root == nullptr) {
         return false;
     }

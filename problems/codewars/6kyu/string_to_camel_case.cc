@@ -4,18 +4,18 @@
 #include <string>
 
 std::string to_camel_case(std::string text) {
-  std::string ans;
-  bool upper = false;
+    std::string ans;
+    bool upper = false;
 
-  for (const auto& ch : text) {
-    if (ch == '-' || ch == '_') {
-      upper = true;
-      continue;
+    for (const auto& ch : text) {
+        if (ch == '-' || ch == '_') {
+            upper = true;
+            continue;
+        }
+
+        ans += (!upper) ? ch : std::toupper(ch);
+        upper = false;
     }
 
-    ans += (!upper) ? ch : std::toupper(ch);
-    upper = false;
-  }
-
-  return ans;
+    return ans;
 }
