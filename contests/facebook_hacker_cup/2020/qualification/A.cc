@@ -7,88 +7,103 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <map>
+#include <memory>
 #include <numeric>
 #include <queue>
-#include <random>
 #include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 
-// dbg
-#ifdef DBG_MODE
-int64_t DBG_COUNT = 0;
-void DBG_OUT() {
-    cerr << endl;
-    DBG_COUNT++;
+template <typename A, typename B>
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
+    return os << '(' << p.first << ", " << p.second << ')';
 }
-template <typename Front, typename... Back>
-void DBG_OUT(Front K, Back... T) {
-    cerr << ' ' << K;
-    DBG_OUT(T...);
-}
-template <typename T_List>
-void testList(T_List List) {
-    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
-    DBG_COUNT++;
-    for (int i = 0; i < List.size(); i++) {
-        cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
+    os << '{';
+    std::string separator;
+
+    for (const T& item : container) {
+        os << separator << item, separator = ", ";
     }
+
+    return os << '}';
 }
-#define testArgs(...)                                                     \
-    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
-        DBG_OUT(__VA_ARGS__)
+
+#ifdef DBG_MODE
+void dbg_out() { std::cerr << std::endl; }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
+}
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
-template <typename T_List>
-void testList(T_List List) {
-    return;
-}
-#define testArgs(...)
+#define test(...)
 #endif
 
 template <typename T, class Fun>
-void print_empty_matrix(const int &_x, const int &_y, T _a, T _b, Fun condition,
-                        const bool space = false) {
+void print_empty_matrix(const int& _x, const int& _y, T a, T b, Fun condition,
+                        const bool& space = false) {
     for (int x = 0; x < _x; x++) {
         for (int y = 0; y < _y; y++) {
-            std::cout << (condition(x, y) ? _b : _a);
+            std::cout << (condition(x, y) ? b : a);
 
-            if (space) std::cout << ' ';
+            if (space) {
+                std::cout << ' ';
+            }
         }
 
         std::cout << '\n';
     }
 }
 
-void runCase(int tc) {
-    int N;
+void run_case(const uint16_t& tc) {
+    uint32_t N;
     cin >> N;
     string A, B;
     cin >> A >> B;
 
-    cout << "Case #" << tc << ":" << '\n';
+    cout << "Case #" << tc << ":\n";
+
     print_empty_matrix(N, N, 'N', 'Y', [&](int x, int y) -> bool {
         if (x == y) return true;
 
-        int starting = min(x, y), ending = max(x, y);
+        uint32_t starting = min(x, y), ending = max(x, y);
         bool conecting = B[x] == 'Y' && A[y] == 'Y';
 
-        for (int i = starting + 1; i < ending; i++)
+        for (uint32_t i = starting + 1; i < ending; ++i) {
             conecting = conecting && A[i] == 'Y' && B[i] == 'Y';
+        }
 
         return conecting;
     });
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
 
-    int test_cases;
-    cin >> test_cases;
+    uint16_t test_cases;
+    std::cin >> test_cases;
 
-    for (int tc = 1; tc <= test_cases; tc++) {
-        runCase(tc);
-        cout << flush;
+    for (uint16_t tc = 1; tc <= test_cases; tc++) {
+        run_case(tc);
+#ifdef DBG_MODE
+        std::cout << std::flush;
+#endif
     }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
+#endif
+
+    return 0;
 }
