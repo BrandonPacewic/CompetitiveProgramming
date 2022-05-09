@@ -24,8 +24,8 @@ std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
 }
 template <typename T_container,
           typename T = typename std::enable_if<
-             !std::is_same<T_container, std::string>::value,
-             typename T_container::value_type>::type>
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
 std::ostream& operator<<(std::ostream& os, const T_container& container) {
     os << '{';
     std::string separator;
@@ -161,7 +161,7 @@ void run_case(const uint16_t& tc) {
 
     static_mod_type<uint64_t, mod> ans{0};
 
-    for(uint64_t i = 1; i < R && i < C; ++i) {
+    for (uint64_t i = 1; i < R && i < C; ++i) {
         ans += (R - i) * (C - i) * i;
     }
 
