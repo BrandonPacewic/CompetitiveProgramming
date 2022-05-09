@@ -6,6 +6,8 @@ Ranges on the following chart are inclusive.
 
 | Type | Size in Bytes | Other Names | Minimum Value | Maximum Value |
 | ---- | ------------- | ------------ | ------------- | ------------- |
+| <code>int8_t</code> | 1 | none | -128 | 127 |
+| <code>uint8_t</code> | 1 | none | 0 | 255 |
 | <code>int16_t</code> | 2 | <code>short</code> | -32768 | 32767 |
 | <code>uint16_t</code> | 2 | <code>unsigned short</code> | 0 | 65535 |
 | <code>int32_t</code> | 4 | <code>int</code> | -2147483648 | 2147483647 |
@@ -36,6 +38,16 @@ always 16-bit and 32-bit respectively. For example, in arduino,
 <code>short</code> is 8-bit, and <code>long</code> is 32-bit.
 
 ### Size Macros
+
+```cpp
+#define INT8_MIN -128
+#define INT8_MAX 127
+```
+
+```cpp
+#define UINT8_MAX 255
+```
+
 
 ```cpp
 #define int_16_min -32768
