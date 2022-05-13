@@ -155,7 +155,7 @@ class uniform_matrix {
     }
 
     template <class UnaryPredicate>
-    size_type count_if(UnaryPredicate predicate) const {
+    size_type count(UnaryPredicate predicate) const {
         size_type count = 0;
 
         for (row_pointer it = begin(); it != end(); ++it) {
@@ -167,54 +167,6 @@ class uniform_matrix {
         }
 
         return count;
-    }
-
-    void iota(value_type& start) {
-        for (row_pointer it = begin(); it != end(); ++it) {
-            for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
-                *jt = start++;
-            }
-        }
-    }
-
-    template <class UnaryPredicate>
-    void iota(value_type& start, UnaryPredicate predicate) {
-        for (row_pointer it = begin(); it != end(); ++it) {
-            for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
-                if (predicate(*jt)) {
-                    *jt = start++;
-                }
-            }
-        }
-    }
-
-    bool is_sorted() const {
-        for (row_pointer it = begin(); it != end(); ++it) {
-            for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
-                if (jt != (*it).begin()) {
-                    if (*jt < *(jt - 1)) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-
-    template <class BinaryPredicate>
-    bool is_sorted(BinaryPredicate predicate) const {
-        for (row_pointer it = begin(); it != end(); ++it) {
-            for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
-                if (jt != (*it).begin()) {
-                    if (predicate(*jt, *(jt - 1))) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
     }
 
     void fill(const value_type& value) {
@@ -265,6 +217,55 @@ class uniform_matrix {
             }
         }
     }
+
+    void iota(value_type& start) {
+        for (row_pointer it = begin(); it != end(); ++it) {
+            for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
+                *jt = start++;
+            }
+        }
+    }
+
+    template <class UnaryPredicate>
+    void iota(value_type& start, UnaryPredicate predicate) {
+        for (row_pointer it = begin(); it != end(); ++it) {
+            for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
+                if (predicate(*jt)) {
+                    *jt = start++;
+                }
+            }
+        }
+    }
+
+    bool is_sorted() const {
+        for (row_pointer it = begin(); it != end(); ++it) {
+            for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
+                if (jt != (*it).begin()) {
+                    if (*jt < *(jt - 1)) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
+    template <class BinaryPredicate>
+    bool is_sorted(BinaryPredicate predicate) const {
+        for (row_pointer it = begin(); it != end(); ++it) {
+            for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
+                if (jt != (*it).begin()) {
+                    if (predicate(*jt, *(jt - 1))) {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
 
     const void output(const bool& space = true) const {
         for (size_type row = 0; row < n; ++row) {
