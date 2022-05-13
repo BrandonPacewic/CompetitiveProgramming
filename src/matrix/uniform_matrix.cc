@@ -25,88 +25,98 @@
 #include <memory>
 #include <unordered_set>
 
-template <typename _Tp>
+template <typename Ty>
 class _uniform_matrix_row {
    public:
-    typedef _Tp* iterator;
-    typedef const _Tp* const_iterator;
+    using iterator = Ty*;
+    using const_iterator = const Ty*;
+    using reference = Ty&;
+    using const_reference = const Ty&;
+    using size_type = std::size_t;
+    using size_type_reference = size_type&;
 
     _uniform_matrix_row() {}
 
-    _uniform_matrix_row(std::size_t _sz)
-        : elements{std::make_unique<_Tp[]>(_sz)}, sz{_sz} {}
+    _uniform_matrix_row(size_type_reference _n)
+        : elements{std::make_unique<Ty[]>(_n)}, n{_n} {}
 
-    _uniform_matrix_row(std::size_t _sz, const _Tp& _element)
-        : elements{std::make_unique<_Tp[]>(_sz)}, sz{_sz} {
-        std::fill(elements.get(), elements.get() + sz, _element);
+    _uniform_matrix_row(size_type_reference _n, const Ty& _element)
+        : elements{std::make_unique<Ty[]>(_n)}, n{_n} {
+        std::fill(elements.get(), elements.get() + n, _element);
     }
 
-    const std::size_t size() const { return sz; }
+    size_type_reference size() { return n; }
 
     iterator begin() { return &elements[0]; }
     const const_iterator begin() const { return &elements[0]; }
 
-    iterator end() { return &elements[sz]; }
-    const const_iterator end() const { return &elements[sz]; }
+    iterator end() { return &elements[n]; }
+    const const_iterator end() const { return &elements[n]; }
 
-    _Tp& operator[](const int& i) { return elements[i]; }
+    reference operator[](const int& i) { return elements[i]; }
+    const_reference operator[](const int& i) const { return elements[i]; }
 
    private:
-    std::unique_ptr<_Tp[]> elements;
-    std::size_t sz;
+    std::unique_ptr<Ty[]> elements;
+    size_type n;
 };
 
-template <typename _Tp>
+template <typename Ty>
 class uniform_matrix {
    public:
-    typedef _uniform_matrix_row<_Tp> row_type;
-    typedef row_type* iterator;
-    typedef const row_type* const_iterator;
+    using row_type = _uniform_matrix_row<Ty>;
+    using iterator = row_type*;
+    using const_iterator = const row_type*;
+    using reference = row_type&;
+    using const_reference = const row_type&;
+    using size_type = std::size_t;
+    using size_type_reference = size_type&;
 
-    uniform_matrix(std::size_t _sz)
-        : rows{std::make_unique<row_type[]>(_sz)}, sz{_sz} {
-        for (std::size_t i = 0; i < sz; ++i) {
-            rows[i] = _uniform_matrix_row<_Tp>(sz);
+    uniform_matrix(size_type _n)
+        : rows{std::make_unique<row_type[]>(_n)}, n{_n}, total_n{_n * _n} {
+        for (size_type i = 0; i < n; ++i) {
+            rows[i] = _uniform_matrix_row<Ty>(n);
         }
     }
 
-    uniform_matrix(std::size_t _sz, const _Tp& _element)
-        : rows{std::make_unique<row_type[]>(_sz)}, sz{_sz} {
-        for (std::size_t i = 0; i < sz; ++i) {
-            rows[i] = row_type(sz, _element);
+    uniform_matrix(size_type _n, const Ty& _element)
+        : rows{std::make_unique<row_type[]>(_n)}, n{_n} {
+        for (size_type i = 0; i < n; ++i) {
+            rows[i] = row_type(n, _element);
         }
     }
 
-    const std::size_t size() const { return sz; }
+    size_type_reference size() { return n; }
+    size_type_reference total_size() { return total_n; }
 
     iterator begin() { return &rows[0]; }
     const const_iterator begin() const { return &rows[0]; }
 
-    iterator end() { return &rows[sz]; }
-    const const_iterator end() const { return &rows[sz]; }
+    iterator end() { return &rows[n]; }
+    const const_iterator end() const { return &rows[n]; }
 
-    row_type& operator[](const int& i) const { return rows[i]; }
+    reference operator[](const int& i) { return rows[i]; }
+    const_reference operator[](const int& i) const { return rows[i]; }
 
-    void for_each(std::function<void(_Tp&)> lambda) const {
-        for (std::size_t row = 0; row < sz; ++row) {
-            for (std::size_t cell = 0; cell < sz; ++cell) {
+    void for_each(std::function<void(Ty&)> lambda) const {
+        for (size_type row = 0; row < n; ++row) {
+            for (size_type cell = 0; cell < n; ++cell) {
                 lambda(rows[row][cell]);
             }
         }
     }
 
     void for_each(
-        std::function<void(_Tp&, std::size_t&, std::size_t&)> lambda) const {
-        for (std::size_t row = 0; row < sz; ++row) {
-            for (std::size_t cell = 0; cell < sz; ++cell) {
+        std::function<void(Ty&, size_type&, size_type&)> lambda) const {
+        for (size_type row = 0; row < n; ++row) {
+            for (size_type cell = 0; cell < n; ++cell) {
                 lambda(rows[row][cell], row, cell);
             }
         }
     }
 
-    void iota(_Tp start,
-              std::unordered_set<_Tp> avoid = {static_cast<_Tp>(0)}) {
-        this->for_each([&](_Tp& element, std::size_t&, std::size_t&) {
+    void iota(Ty start, std::unordered_set<Ty> avoid = {static_cast<Ty>(0)}) {
+        this->for_each([&](Ty& element, size_type&, size_type&) {
             while (avoid.find(start) != avoid.end()) {
                 ++start;
             }
@@ -115,20 +125,56 @@ class uniform_matrix {
         });
     }
 
-    void sort_rows(std::function<bool(_Tp&, _Tp&)> lambda = [](_Tp& a, _Tp& b) {
-        return a < b;
-    }) {
-        for (std::size_t row = 0; row < sz; ++row) {
-            std::sort(rows[row].begin(), rows[row].end(), lambda);
+    void sort() {
+        size_type item_count = 0;
+        std::unique_ptr<Ty[]> listed_elements{std::make_unique<Ty[]>(total_n)};
+
+        this->for_each([&](const Ty& element) {
+            listed_elements[item_count++] = element;
+        });
+
+        std::sort(listed_elements.get(), listed_elements.get() + total_n);
+        item_count = 0;
+
+        this->for_each(
+            [&](Ty& element) { element = listed_elements[item_count++]; });
+    }
+
+    template <class Function>
+    void sort(Function func) {
+        size_type item_count = 0;
+        std::unique_ptr<Ty[]> listed_elements{std::make_unique<Ty[]>(total_n)};
+
+        this->for_each([&](const Ty& element) {
+            listed_elements[item_count++] = element;
+        });
+
+        std::sort(listed_elements.get(), listed_elements.get() + total_n, func);
+        item_count = 0;
+
+        this->for_each(
+            [&](Ty& element) { element = listed_elements[item_count++]; });
+    }
+
+    void sort_rows() {
+        for (size_type row = 0; row < n; ++row) {
+            std::sort(rows[row].begin(), rows[row].end());
         }
     }
 
-    const void output(const bool& space = false) const {
-        for (std::size_t row = 0; row < sz; ++row) {
-            for (std::size_t cell = 0; cell < sz; ++cell) {
+    template <class Function>
+    void sort_rows(Function func) {
+        for (size_type row = 0; row < n; ++row) {
+            std::sort(rows[row].begin(), rows[row].end(), func);
+        }
+    }
+
+    const void output(const bool& space = true) const {
+        for (size_type row = 0; row < n; ++row) {
+            for (size_type cell = 0; cell < n; ++cell) {
                 std::cout << rows[row][cell];
 
-                if (space && cell < sz - 1) {
+                if (space && cell < n - 1) {
                     std::cout << ' ';
                 }
             }
@@ -139,5 +185,6 @@ class uniform_matrix {
 
    private:
     std::unique_ptr<row_type[]> rows;
-    std::size_t sz;
+    size_type n;
+    size_type total_n;
 };
