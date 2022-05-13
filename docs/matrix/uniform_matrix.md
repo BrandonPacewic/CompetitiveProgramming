@@ -19,39 +19,39 @@ The type of element
 
 | Type Definition | Description |
 | --------------- | ----------- |
-| [`row_type'](#row_type) | A type that represents a row of the matrix, limited to [`_uniform_matrix_row`](#_uniform_matrix_row). |
-| ['row_pointer'](#row_pointer) | The type of a pointer to a [`row_type`](#row_type) element. |
-| ['row_const_pointer'](#row_const_pointer) | The type of a constant pointer to a [`row_type`](#row_type) element. |
-| ['type_pointer'](#type_pointer) | The type of a pointer to an element inside ['row_type'](#row_type). |
-| ['type_const_pointer'](#type_const_pointer) | The type of a constant pointer to an element inside ['row_type'](#row_type). |
-| ['row_reference'](#row_reference) | The type of a reference to a [`row_type`](#row_type) element. |
-| ['row_const_reference'](#row_const_reference) | The type of a constant reference to a [`row_type`](#row_type) element. |
-| ['type_reference'](#type_reference) | The type of a reference to an element inside ['row_type'](#row_type). |
-| ['type_const_reference'](#type_const_reference) | The type of a constant reference to an element inside ['row_type'](#row_type). |
-| ['size_type'](#size_type) | The type of an unsigned distance between two elements. |
-| ['value_type`](#value_type) | The type of an element. |
+| [`row_type`](#row_type) | A type that represents a row of the matrix, limited to [`_uniform_matrix_row`](#_uniform_matrix_row). |
+| [`row_pointer`](#row_pointer) | The type of a pointer to a [`row_type`](#row_type) element. |
+| [`row_const_pointer`](#row_const_pointer) | The type of a constant pointer to a [`row_type`](#row_type) element. |
+| [`type_pointer`](#type_pointer) | The type of a pointer to an element inside [`row_type`](#row_type). |
+| [`type_const_pointer`](#type_const_pointer) | The type of a constant pointer to an element inside [`row_type`](#row_type). |
+| [`row_reference`](#row_reference) | The type of a reference to a [`row_type`](#row_type) element. |
+| [`row_const_reference`](#row_const_reference) | The type of a constant reference to a [`row_type`](#row_type) element. |
+| [`type_reference`](#type_reference) | The type of a reference to an element inside [`row_type`](#row_type). |
+| [`type_const_reference`](#type_const_reference) | The type of a constant reference to an element inside [`row_type`](#row_type). |
+| [`size_type`](#size_type) | The type of an unsigned distance between two elements. |
+| [`value_type`](#value_type) | The type of an element. |
 
 | Member Function | Description |
 | ---------------- | ----------- |
-| ['uniform_matrix'](#uniform_matrix) | Constructs a new `uniform_matrix` object. |
-| ['any_of'](#any_of) | Returns **`true`** when a condition is present at least once in the complete range of elements.  |
-| ['all_of'](#all_of) | Returns **`true`** when a condition is present at all in the complete range of elements. |
-| ['none_of'](#none_of) | Returns **`true`** when a condition is not present at all in the complete range of elements. |
-| ['count'](#count) | Returns the number of elements in the matrix that satisfy the condition. |
-| ['count_if'](#count_if) | Returns the number of elements in the matrix that satisfy the condition. |
-| ['iota'](#iota) | Fills the matrix with a sequence of values starting at **`start`**. |
-| ['is_sorted'](#is_sorted) | Returns **`true`** when the complete matrix is sorted. |
-| ['fill'](#fill) | Fills the matrix with a value. |
-| ['find_if'](#find_if) | Returns the first element in the matrix that satisfies the condition. |
-| ['for_each'](#for_each) | Applies a function to each element in the matrix. |
-| ['output'](#output) | Outputs the matrix to specifyed output stream. |
-| ['rows_sorted'](#rows_sorted) | Returns **`true`** when the each row in the matrix is sorted. |
-| ['sort'](#sort) | Sorts the complete matrix. |
-| ['sort_rows'](#sort_rows) | Sorts each row in the matrix individually. |
+| [`uniform_matrix`](#uniform_matrix) | Constructs a new `uniform_matrix` object. |
+| [`any_of`](#any_of) | Returns **`true`** when a condition is present at least once in the complete range of elements.  |
+| [`all_of`](#all_of) | Returns **`true`** when a condition is present at all in the complete range of elements. |
+| [`none_of`](#none_of) | Returns **`true`** when a condition is not present at all in the complete range of elements. |
+| [`count`](#count) | Returns the number of elements in the matrix that satisfy the condition. |
+| [`count_if`](#count_if) | Returns the number of elements in the matrix that satisfy the condition. |
+| [`iota`](#iota) | Fills the matrix with a sequence of values starting at **`start`**. |
+| [`is_sorted`](#is_sorted) | Returns **`true`** when the complete matrix is sorted. |
+| [`fill`](#fill) | Fills the matrix with a value. |
+| [`find_if`](#find_if) | Returns the first element in the matrix that satisfies the condition. |
+| [`for_each`](#for_each) | Applies a function to each element in the matrix. |
+| [`output`](#output) | Outputs the matrix to specifyed output stream. |
+| [`rows_sorted`](#rows_sorted) | Returns **`true`** when the each row in the matrix is sorted. |
+| [`sort`](#sort) | Sorts the complete matrix. |
+| [`sort_rows`](#sort_rows) | Sorts each row in the matrix individually. |
 
 | Operator | Description |
 | -------- | ----------- |
-| ['uniform_matrix::operator[]'](#uniform_matrix::operator[]) | Accesses an element at a specified position. |
+| [`uniform_matrix::operator[]`](#uniform_matrix::operator[]) | Accesses an element at a specified position. |
 
 ## Remarks
 
