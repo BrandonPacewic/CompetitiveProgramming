@@ -177,8 +177,8 @@ class uniform_matrix {
         }
     }
 
-    template <class BinaryPredicate>
-    void fill(const value_type& value, BinaryPredicate predicate) {
+    template <class UnaryPredicate>
+    void fill(const value_type& value, UnaryPredicate predicate) {
         for (row_pointer it = begin(); it != end(); ++it) {
             for (type_pointer jt = it->begin(); jt != it->end(); ++jt) {
                 if (predicate(*jt)) {
@@ -186,6 +186,29 @@ class uniform_matrix {
                 }
             }
         }
+    }
+
+    template <class BinaryPredicate>
+    void fill_if(const value_type& value, BinaryPredicate predicate) {
+        for (size_type row = 0; row < n; ++row) {
+            for (size_type cell = 0; cell < n; ++cell) {
+                if (predicate(row, cell)) {
+                    rows[row][cell] = value;
+                }
+            }
+        }
+    }
+
+    type_pointer find_if(const value_type& target) {
+        for (row_pointer it = begin(); it != end(); ++it) {
+            for (type_pointer jt = it->begin(); jt != it->end(); ++jt) {
+                if (*jt == target) {
+                    return jt;
+                }
+            }
+        }
+
+        return end()->end();
     }
 
     template <class UnaryPredicate>
@@ -198,41 +221,30 @@ class uniform_matrix {
             }
         }
 
-        return end();
+        return end()->end();
     }
 
-    void for_each(std::function<void(value_type&)> lambda) const {
-        for (row_pointer it = begin(); it != end(); ++it) {
-            for (type_pointer jt = it->begin(); jt != it->end(); ++jt) {
-                lambda(*jt);
+    void for_each(std::function<void(value_type&)> function) {
+        for (size_type row = 0; row < n; ++row) {
+            for (size_type cell = 0; cell < n; ++cell) {
+                function(rows[row][cell]);
             }
         }
     }
 
     void for_each(
-        std::function<void(value_type&, size_type&, size_type&)> lambda) const {
+        std::function<void(value_type&, size_type&, size_type&)> function) {
         for (size_type row = 0; row < n; ++row) {
             for (size_type cell = 0; cell < n; ++cell) {
-                lambda(rows[row][cell], row, cell);
+                function(rows[row][cell], row, cell);
             }
         }
     }
 
-    void iota(value_type& start) {
+    void iota(value_type start) {
         for (row_pointer it = begin(); it != end(); ++it) {
             for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
-                *jt = start++;
-            }
-        }
-    }
-
-    template <class UnaryPredicate>
-    void iota(value_type& start, UnaryPredicate predicate) {
-        for (row_pointer it = begin(); it != end(); ++it) {
-            for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
-                if (predicate(*jt)) {
-                    *jt = start++;
-                }
+                *jt = start, ++start;
             }
         }
     }
@@ -265,7 +277,6 @@ class uniform_matrix {
 
         return true;
     }
-
 
     const void output(const bool& space = true) const {
         for (size_type row = 0; row < n; ++row) {
