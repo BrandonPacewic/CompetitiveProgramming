@@ -1,4 +1,4 @@
-# `uniform_matrix` Class
+# <a name="uniform_matrix"></a> `uniform_matrix` Class
 
 The `uniform_matrix` C++ Brandon Competitive Programming Library class describes
 an object that controls a two dimensional matrix of type `Ty` with a
