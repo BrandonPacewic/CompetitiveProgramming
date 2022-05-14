@@ -46,11 +46,17 @@ class _uniform_matrix_row {
 
     const size_type& size() const { return n; }
 
-    pointer begin() { return &elements[0]; }
-    const const_pointer begin() const { return &elements[0]; }
+    pointer begin() noexcept { return &elements[0]; }
+    const const_pointer begin() const noexcept { return &elements[0]; }
 
-    pointer end() { return &elements[n]; }
-    const const_pointer end() const { return &elements[n]; }
+    pointer end() noexcept { return &elements[n]; }
+    const const_pointer end() const noexcept { return &elements[n]; }
+
+    reference front() noexcept { return elements[0]; }
+    const_reference front() const noexcept { return elements[0]; }
+
+    reference back() noexcept { return elements[n - 1]; }
+    const_reference back() const noexcept { return elements[n - 1]; }
 
     reference operator[](const size_type& i) { return elements[i]; }
     const_reference operator[](const size_type& i) const { return elements[i]; }

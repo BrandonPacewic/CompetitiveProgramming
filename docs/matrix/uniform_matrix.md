@@ -66,7 +66,7 @@ auto m_element = m[1][2];
 Creates an object `m` that holds `3` by `3` values, initialized to `3`.
 assignes the value of `m_element` to the element at position `(1, 2)` in `m`.
 
-## Requirments
+## <a name="requirements"></a> Requirments
 
 **Headers:** `<algorithm>`, `<cstddef>`, `<functional>`, `<iostream>`, `<memory>`
 
@@ -1497,3 +1497,168 @@ m3:
 9 10 11 12
 13 14 15 16
 ```
+
+## Closing remarks
+
+Most class functions are designed to mimic simmilary standard library `<algorithm>'
+functions, and are modifyed to work with a two dimensional container. Any missing
+functionality can be obtained by using a [`for_each`](#for_each) function.
+
+# <a name="_uniform_matrix_row"></a> `_uniform_matrix_row` class (Brandon C++ Competitive Programming Library)
+
+Describes the inner row object of the [`uniform_matrix`](#uniform_matrix) class.
+
+## Syntax
+
+```cpp
+template <class Ty>
+class _uniform_matrix_row;
+```
+
+### Parameters
+
+`ty`\
+The type of the elements in the row.
+
+## Members
+
+| Type Definition | Description |
+|----------------|-------------|
+| [`value_type`](#value_type) | The type of the elements in the row. |
+| [`pointer`](#pointer) | The type of a pointer to a element. |
+| [`const_pointer`](#const_pointer) | The type of a pointer to a const element. |
+| [`reference`](#reference) | The type of a reference to a element. |
+| [`const_reference`](#const_reference) | The type of a reference to a const element. |
+| [`size_type`](#size_type) | The type of the size of the row. |
+
+| Member Function | Description |
+|----------------|-------------|
+| [`back`](#back) | Returns a reference to the last element of the row. |
+| [`begin`](#begin) | Returns a pointer to the first element of the row. |
+| [`end`](#end) | Returns a pointer to the element after the last element of the row. |
+| [`front`](#front) | Returns a reference to the first element of the row. |
+| [`size`](#size) | Returns the number of elements in the row. |
+
+| Operator | Description |
+|---------|-------------|
+| [`_uniform_matrix_row::operator[]`](#_uniform_matrix_row::operator[]) | Accesses an element at a specified position. |
+
+## Remarks
+
+**`IMPORTANT:`** This class is not meant to be used directly, never construct 
+an instance of this class. Simply allow the [`uniform_matrix`](#uniform_matrix)
+class to manage this class internally. The purpose of providing documentation
+for this class is to provide a reference for the functions that can be called
+on this class. Provided that it is stored within the [`uniform_matrix`](#uniform_matrix)
+class as it was designed to be.
+
+Constructors will not be documented, they should only be called by the 
+[`uniform_matrix`](#uniform_matrix) class.
+
+## Requirments
+
+Requirements are identical to `uniform_matrix` [requirments](#requirments).
+
+
+## <a name="back"></a> `_uniform_matrix_row::back`
+
+Returns a reference to the last element of the row.
+
+```cpp
+typename _uniform_matrix_row<implementation-specific>::reference back() noexcept;
+
+typename _uniform_matrix_row<implementation-specific>::const_reference back() const noexcept;
+```
+
+### Return value
+
+Retruns a reference to the last element of the row.
+
+### Remarks
+
+If the return value is assigned the `_uniform_matrix_row<Ty>::reference` type,
+then the object can be modified, else if the return value is assigned the
+`_uniform_matrix_row<Ty>::const_reference` type, then the object cannot be modified.
+
+
+## <a name="begin"></a> `_uniform_matrix_row::begin`
+
+Returns a pointer to the frist element of the row.
+
+```cpp
+typename _uniform_matrix_row<implementation-specific>::pointer begin() noexcept;
+
+typename _uniform_matrix_row<implementation-specific>::const_pointer begin() const noexcept;
+```
+
+### Return value
+
+Returns a pointer to the first element of the row.
+
+### Remarks
+
+If the return value is assigned the `_uniform_matrix_row<Ty>::pointer` type,
+then the object can be motifed, else if the return value is assigned the `_uniform_matrix_row<Ty>::const_pointer` than the object cannot be modified.
+
+## <a name="end"></a> `_uniform_matrix_row::end`
+
+Returns a pointer to the element after the last element of the row.
+
+```cpp
+typename _uniform_matrix_row<implementation-specific>::pointer end() noexcept;
+
+type_name _uniform_matrix_row<implementation-specific>::const_pointer end() const noexcept;
+```
+
+### Return value
+
+Returns a pointer to the element after the last element of the row.
+
+### Remarks
+
+If the return value is assigned the `_uniform_matrix_row<Ty>::pointer` type,
+then the object can be modified, else if the return value is assigned the 
+`_uniform_matrix_row<Ty>::const_pointer` than the object cannot be modified.
+
+## <a name="front"></a> `_uniform_matrix_row::front`
+
+Returns a reference to the first element of the row.
+
+```cpp
+typename _uniform_matrix_row<implementation-specific>::reference front() noexcept;
+
+type_name _uniform_matrix_row<implementation-specific>::const_reference front() const noexcept;
+```
+
+### Return value
+
+Returns a reference to the first element of the row.
+
+### Remarks
+
+If the return value is assigned the `_uniform_matrix_row<Ty>::reference` type,
+then the object can be modified, else if the return value is assigned the
+`_uniform_matrix_row<Ty>::const_reference` type, then the object cannot be modified.
+
+## <a name="size"></a> `_uniform_matrix_row::size`
+
+Returns the number of elements in the row.
+
+```cpp
+const typename _uniform_matrix_row::size_type size() const;
+```
+
+### Return value
+
+Returns the number of elements in the row.
+
+### Remarks
+
+The return value of the [`row_type`](#row_type) is the same as the return value of
+the [`uniform_matrix::size`](#uniform_matrix::size) function. There is no difference.
+
+## Closing remarks
+
+Any needed functionality that is needed from the [`_uniform_matrix_row`](#_uniform_matrix_row) class should be obtained from the standard library
+using range based functions.
+
