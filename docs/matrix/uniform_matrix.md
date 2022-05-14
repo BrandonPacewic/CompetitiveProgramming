@@ -1294,3 +1294,206 @@ m2 has sorted rows: 0
 m3 has sorted rows: 1
 ```
 
+## <a name="sort"></a> `uniform_matrix::sort`
+
+Sorts the complete range of elements in the matrix.
+
+```cpp
+void sort();
+
+template <class BinaryPredicate>
+void sort(BinaryPredicate predicate);
+```
+
+### Parameters
+
+*`predicate`*\
+A binary predicate function object that returns **`true`** if the first
+argument is less than or equal to the second argument. The default
+predicate is **`std::less<value_type>`**.
+
+### Remarks
+
+This class function does not sort the whole matrix if you only want to sort the
+individual rows, use the [`sort_rows`](#sort_rows) class function instead.
+
+```cpp
+// Example authored by Brandon Pacewic
+// uniform_matrix_sort.cc
+#include <algorithm>
+#include <cstddef>
+#include <functional>
+#include <iostream>
+#include <memory>
+
+template <class Ty>
+class _uniform_matrix_row;
+
+template <class Ty>
+class uniform_matrix;
+
+int main() {
+    // Construct a 3 by 3 matrix with no elements initialized.
+    uniform_matrix<int> m1(3);
+
+    // Construct a 6 by 6 matrix with no elements initialized.
+    uniform_matrix<int> m2(6);
+
+    // Construct a 4 by 4 matrix with no elements initialized.
+    uniform_matrix<int> m3(4);
+
+    // Fill m1 with the sequence of values starting at 0.
+    m1.iota(0);
+
+    // Fill m2 with the sequence of values starting at -9.
+    m2.iota(-9);
+    // Set the first element of m2 to 100.
+    m2[0][0] = 100;
+
+    // Fill m3 with the sequence of values starting at 100.
+    m3.iota(1);
+
+    // Fill m3's second row with a sequence of values starting at 100.
+    std::iota(m3[1].begin(), m3[1].end(), 100);
+
+    // Sort m1.
+    m1.sort();
+
+    // Sort m2.
+    m2.sort();
+
+    // Sort m3.
+    m3.sort();
+
+    // Print the results.
+    std::cout << "m1:\n";
+    m1.output();
+    std::cout << "m2:\n";
+    m2.output();
+    std::cout << "m3:\n";
+    m3.output();
+
+    return 0;
+}
+```
+
+```Output
+m1:
+0 1 2
+3 4 5
+6 7 8
+m2:
+-8 -7 -6 -5 -4 -3
+-2 -1 0 1 2 3
+4 5 6 7 8 9
+10 11 12 13 14 15
+16 17 18 19 20 21
+22 23 24 25 26 100
+m3:
+1 2 3 4
+9 10 11 12
+13 14 15 16
+100 101 102 103
+```
+
+## <a name="sort_rows"></a> `uniform_matrix::sort_rows`
+
+Sorts each individual row of the matrix separately.
+
+```cpp
+void sort_rows();
+
+template <class BinaryPredicate>
+void sort_rows(BinaryPredicate predicate);
+```
+
+### Parameters
+
+*`predicate`*\
+A binary predicate function object that returns **`true`** if the first
+argument is less than or equal to the second argument. The default
+predicate is **`std::less<value_type>`**.
+
+### Remarks
+
+If you want to sort the whole matrix, use the [`sort`](#sort) class function
+instead.
+
+```cpp
+// Example authored by Brandon Pacewic
+// uniform_matrix_sort_rows.cc
+#include <algorithm>
+#include <cstddef>
+#include <functional>
+#include <iostream>
+#include <memory>
+
+template <class Ty>
+class _uniform_matrix_row;
+
+template <class Ty>
+class uniform_matrix;
+
+int main() {
+    // Construct a 3 by 3 matrix with no elements initialized.
+    uniform_matrix<int> m1(3);
+
+    // Construct a 6 by 6 matrix with no elements initialized.
+    uniform_matrix<int> m2(6);
+
+    // Construct a 4 by 4 matrix with no elements initialized.
+    uniform_matrix<int> m3(4);
+
+    // Fill m1 with the sequence of values starting at 0.
+    m1.iota(0);
+
+    // Fill m2 with the sequence of values starting at -9.
+    m2.iota(-9);
+    // Set the first element of m2 to 100.
+    m2[0][0] = 100;
+
+    // Fill m3 with the sequence of values starting at 100.
+    m3.iota(1);
+
+    // Fill m3's second row with a sequence of values starting at 100.
+    std::iota(m3[1].begin(), m3[1].end(), 100);
+
+    // Sort m1's rows.
+    m1.sort_rows();
+
+    // Sort m2's rows.
+    m2.sort_rows();
+
+    // Sort m3's rows.
+    m3.sort_rows();
+
+    // Print the results.
+    std::cout << "m1:\n";
+    m1.output();
+    std::cout << "m2:\n";
+    m2.output();
+    std::cout << "m3:\n";
+    m3.output();
+
+    return 0;
+}
+```
+
+```Output
+m1:
+0 1 2
+3 4 5
+6 7 8
+m2:
+-8 -7 -6 -5 -4 100
+-3 -2 -1 0 1 2
+3 4 5 6 7 8
+9 10 11 12 13 14
+15 16 17 18 19 20
+21 22 23 24 25 26
+m3:
+1 2 3 4
+100 101 102 103
+9 10 11 12
+13 14 15 16
+```
