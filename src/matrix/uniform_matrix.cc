@@ -251,7 +251,8 @@ class uniform_matrix {
 
     bool is_sorted() const {
         for (row_const_pointer it = begin(); it != end(); ++it) {
-            for (type_const_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
+            for (type_const_pointer jt = (*it).begin(); jt != (*it).end();
+                 ++jt) {
                 if (jt != (*it).begin()) {
                     if (*jt < *(jt - 1)) {
                         return false;
