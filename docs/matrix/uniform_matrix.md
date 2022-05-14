@@ -45,7 +45,7 @@ The type of element
 | [`for_each`](#for_each) | Applies a function to each element in the matrix. |
 | [`iota`](#iota) | Fills the matrix with a sequence of values starting at **`start`**. |
 | [`is_sorted`](#is_sorted) | Returns **`true`** when the complete matrix is sorted. |
-| [`output`](#output) | Outputs the matrix to specifyed output stream. |
+| [`output`](#output) | Outputs the matrix to a specifyed output stream. |
 | [`rows_sorted`](#rows_sorted) | Returns **`true`** when the each row in the matrix is sorted. |
 | [`sort`](#sort) | Sorts the complete matrix. |
 | [`sort_rows`](#sort_rows) | Sorts each row in the matrix individually. |
@@ -71,6 +71,8 @@ assignes the value of `m_element` to the element at position `(1, 2)` in `m`.
 **Headers:** `<algorithm>`, `<cstddef>`, `<functional>`, `<iostream>`, `<memory>`
 
 **Namespaces:** None
+
+**Other Classes:** [`_uniform_matrix_row`](#_uniform_matrix_row)
 
 ## <a name="uniform_matrix"></a> `uniform_matrix::uniform_matrix`
 
@@ -1008,5 +1010,287 @@ m3:
 140 141 142 143 144 145 146 147
 148 149 150 151 152 153 154 155
 156 157 158 159 160 161 162 163
+```
+
+## <a name="is_sorted"></a> `uniform_matrix::is_sorted`
+
+Return **`true`** if the matrix is sorted in ascending order.
+
+```cpp
+bool is_sorted() const;
+
+template <class BinaryPredicate>
+bool is_sorted(BinaryPredicate predicate) const;
+```
+
+### Parameters
+
+*`predicate`*\
+A binary predicate function object that returns **`true`** if the first
+argument is less than or equal to the second argument. The default
+predicate is **`std::less<value_type>`**.
+
+### Return value
+
+Returns **`true`** if the matrix is sorted in ascending order according to the
+`predicate` function object or the `std::less<value_type>` predicate else **`false`**.
+
+### Remarks
+
+This class function tests if the whole matrix is sorted, if you only want to check
+if the rows of the matrix are sorted, use the [`rows_sorted`](#rows_sorted) class
+function instead.
+
+```cpp
+// Example authored by Brandon Pacewic
+// uniform_matrix_is_sorted.cc
+#include <algorithm>
+#include <cstddef>
+#include <functional>
+#include <iostream>
+#include <memory>
+
+template <class Ty>
+class _uniform_matrix_row;
+
+template <class Ty>
+class uniform_matrix;
+
+int main() {
+    // Construct a 3 by 3 matrix with no elements initialized.
+    uniform_matrix<int> m1(3);
+
+    // Construct a 6 by 6 matrix with no elements initialized.
+    uniform_matrix<int> m2(6);
+
+    // Construct a 4 by 4 matrix with no elements initialized.
+    uniform_matrix<int> m3(4);
+
+    // Fill m1 with the sequence of values starting at 0.
+    m1.iota(0);
+
+    // Fill m2 with the sequence of values starting at -9.
+    m2.iota(-9);
+
+    // Fill m3 with the sequence of values starting at 100.
+    m3.iota(100);
+
+    // Replace the last element of m1 with -1.
+    m1.back().back() = -1;
+
+    // Print the results.
+    std::cout << "m1:\n";
+    m1.output();
+    std::cout << "m2:\n";
+    m2.output();
+    std::cout << "m3:\n";
+    m3.output();
+
+    // Test if m1 is sorted.
+    std::cout << "m1 is sorted: " << m1.is_sorted() << '\n';
+
+    // Test if m2 is sorted.
+    std::cout << "m2 is sorted: " << m2.is_sorted() << '\n';
+
+    // Test if m3 is sorted.
+    std::cout << "m3 is sorted: " << m3.is_sorted() << '\n';
+
+    return 0;
+}
+```
+
+```Output
+m1:
+0 1 2
+3 4 5
+6 7 -1
+m2:
+-9 -8 -7 -6 -5 -4
+-3 -2 -1 0 1 2
+3 4 5 6 7 8
+9 10 11 12 13 14
+15 16 17 18 19 20
+21 22 23 24 25 26
+m3:
+100 101 102 103
+104 105 106 107
+108 109 110 111
+112 113 114 115
+m1 is sorted: 0
+m2 is sorted: 1
+m3 is sorted: 1
+```
+
+## <a name="output"></a> `uniform_matrix::output`
+
+Outputs the whole matrix to a specifyed output stream.
+
+```cpp
+void output(const bool& space = true) const;
+
+void output(std::ostream& os) const;
+```
+
+### Parameters
+
+*`space`*\
+If **`true`**, a space is inserted between each element.
+
+*`os`*\
+The output stream to write to.
+
+### Remarks
+
+There is no way to restrict the output to a specific range of the matrix or
+change the output stream and the format of the output at the same time. If this
+is functionality is needed, use the [`for_each`](#for_each) class function instead.
+
+```cpp
+// Example authored by Brandon Pacewic
+// uniform_matrix_output.cc
+#include <algorithm>
+#include <cstddef>
+#include <functional>
+#include <iostream>
+#include <memory>
+
+template <class Ty>
+class _uniform_matrix_row;
+
+template <class Ty>
+class uniform_matrix;
+
+int main() {
+    // Construct a 3 by 3 matrix with no elements initialized.
+    uniform_matrix<int> m(3);
+
+    // Fill m1 with the sequence of values starting at 0.
+    m.iota(0);
+
+    // Print the results.
+    std::cout << "m:\n";
+    m.output();
+
+    return 0;
+}
+```
+
+```Output
+m1:
+0 1 2
+3 4 5
+6 7 8
+```
+
+## <a name="rows_sorted"></a> `uniform_matrix::rows_sorted`
+
+Returns **`true`**  all rows of the matrix are sorted in ascending order.
+
+```cpp
+bool rows_sorted() const;
+
+template <class BinaryPredicate>
+bool rows_sorted(BinaryPredicate predicate) const;
+```
+
+### Parameters
+
+*`predicate`*\
+A binary predicate function object that returns **`true`** if the first
+argument is less than or equal to the second argument. The default
+predicate is **`std::less<value_type>`**.
+
+### Return value
+
+Returns **`true`** if all rows of the matrix are sorted in ascending order 
+according to the `predicate` function object or the `std::less<value_type>`
+predicate else **`false`**.
+
+### Remarks
+
+This class function does not test if the whole matrix is sorted only if all of
+the rows are. If you are looking for this functionality, use the [`is_sorted`](#is_sorted)
+class function instead.
+
+```cpp
+// Example authored by Brandon Pacewic
+// uniform_matrix_rows_sorted.cc
+#include <algorithm>
+#include <cstddef>
+#include <functional>
+#include <iostream>
+#include <memory>
+
+template <class Ty>
+class _uniform_matrix_row;
+
+template <class Ty>
+class uniform_matrix;
+
+int main() {
+    // Construct a 3 by 3 matrix with no elements initialized.
+    uniform_matrix<int> m1(3);
+
+    // Construct a 6 by 6 matrix with no elements initialized.
+    uniform_matrix<int> m2(6);
+
+    // Construct a 4 by 4 matrix with no elements initialized.
+    uniform_matrix<int> m3(4);
+
+    // Fill m1 with the sequence of values starting at 0.
+    m1.iota(0);
+
+    // Fill m2 with the sequence of values starting at -9.
+    m2.iota(-9);
+    // Set the first element of m2 to 100.
+    m2[0][0] = 100;
+
+    // Fill m3 with the sequence of values starting at 100.
+    m3.iota(1);
+
+    // Fill m3's second row with a sequence of values starting at 100.
+    std::iota(m3[1].begin(), m3[1].end(), 100);
+
+    // Print the results.
+    std::cout << "m1:\n";
+    m1.output();
+    std::cout << "m2:\n";
+    m2.output();
+    std::cout << "m3:\n";
+    m3.output();
+
+    // Test if m1 has sorted rows.
+    std::cout << "m1 has sorted rows: " << m1.rows_sorted() << '\n';
+
+    // Test if m2 has sorted rows.
+    std::cout << "m2 has sorted rows: " << m2.rows_sorted() << '\n';
+
+    // Test if m3 has sorted rows.
+    std::cout << "m3 has sorted rows: " << m3.rows_sorted() << '\n';
+
+    return 0;
+}
+```
+
+```Output
+m1:
+0 1 2
+3 4 5
+6 7 8
+m2:
+100 -8 -7 -6 -5 -4
+-3 -2 -1 0 1 2
+3 4 5 6 7 8
+9 10 11 12 13 14
+15 16 17 18 19 20
+21 22 23 24 25 26
+m3:
+1 2 3 4
+100 101 102 103
+9 10 11 12
+13 14 15 16
+m1 has sorted rows: 1
+m2 has sorted rows: 0
+m3 has sorted rows: 1
 ```
 

@@ -250,8 +250,8 @@ class uniform_matrix {
     }
 
     bool is_sorted() const {
-        for (row_pointer it = begin(); it != end(); ++it) {
-            for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
+        for (row_const_pointer it = begin(); it != end(); ++it) {
+            for (type_const_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
                 if (jt != (*it).begin()) {
                     if (*jt < *(jt - 1)) {
                         return false;
@@ -307,7 +307,7 @@ class uniform_matrix {
     }
 
     bool rows_sorted() const {
-        for (row_pointer it = begin(); it != end(); ++it) {
+        for (row_const_pointer it = begin(); it != end(); ++it) {
             if (!std::is_sorted(it->begin(), it->end())) {
                 return false;
             }
@@ -318,7 +318,7 @@ class uniform_matrix {
 
     template <class BinaryPredicate>
     bool rows_sorted(BinaryPredicate predicate) const {
-        for (row_pointer it = begin(); it != end(); ++it) {
+        for (row_const_pointer it = begin(); it != end(); ++it) {
             if (!std::is_sorted(it->begin(), it->end(), predicate)) {
                 return false;
             }
