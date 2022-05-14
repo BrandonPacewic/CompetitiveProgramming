@@ -1,7 +1,8 @@
-# `uniform_matrix` Class (Brandon C++ Competivite Programming Library)
+# `uniform_matrix` Class
 
-Describes an object that controls a two dimensional matrix of type `Ty` with a
-uniform size of `n` by `n`.
+The `uniform_matrix` C++ Brandon Competitive Programming Library class describes
+an object that controls a two dimensional matrix of type `Ty` with a
+uniform size of `n` by `n`. There is no way to dynamically resize this class.
 
 ## Syntax
 
