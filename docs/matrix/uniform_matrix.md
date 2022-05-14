@@ -40,7 +40,7 @@ The type of element
 | [`count`](#count) | Returns the number of elements in the matrix that satisfy the condition. |
 | [`count_if`](#count_if) | Returns the number of elements in the matrix that satisfy the condition. |
 | [`fill`](#fill) | Fills the matrix with a value. |
-| ['fill_if'](#fill_if) | Fills the matrix with a value if the position condition is satisfied. |
+| [`fill_if`](#fill_if) | Fills the matrix with a value if the position condition is satisfied. |
 | [`find_if`](#find_if) | Returns the first element in the matrix that satisfies the condition. |
 | [`for_each`](#for_each) | Applies a function to each element in the matrix. |
 | [`iota`](#iota) | Fills the matrix with a sequence of values starting at **`start`**. |
