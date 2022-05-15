@@ -34,6 +34,14 @@ If you are looking for people to watch I recommend the following people:
 - [Neal Wu](https://www.youtube.com/c/NealWuProgramming)
 - [William Lin](https://www.youtube.com/c/WilliamLin168)
 
+### How to consume
+
+Unlike most other projects you will need a copy of the source code saved locally
+in order to use it. Simply create a clone of the repository and put it in
+a easy to access location. Then you will need to copy and paste code whenever 
+you need it. I have the eventual goal of making this library a VS Code snippet
+extension so look forward to that in the future.
+
 ### Checkout my profiles
 - [Code Forces](https://codeforces.com/profile/BrandonPacewic)
 - [Code Wars](https://www.codewars.com/users/BrandonPacewic)
