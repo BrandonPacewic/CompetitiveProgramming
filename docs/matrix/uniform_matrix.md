@@ -1501,13 +1501,14 @@ m3:
 
 ## Closing remarks
 
-Most class functions are designed to mimic simmilary standard library `<algorithm>'
+Most class functions are designed to mimic simmilary standard library `<algorithm>`
 functions, and are modifyed to work with a two dimensional container. Any missing
 functionality can be obtained by using a [`for_each`](#for_each) function.
 
-# <a name="_uniform_matrix_row"></a> `_uniform_matrix_row` class (Brandon C++ Competitive Programming Library)
+# <a name="_uniform_matrix_row"></a> `_uniform_matrix_row`
 
-Describes the inner row object of the [`uniform_matrix`](#uniform_matrix) class.
+The `_uniform_matrix_row` C++ Brandon Competitive Programming Library class describes
+the inner row object of the [`uniform_matrix`](#uniform_matrix) class.
 
 ## Syntax
 
