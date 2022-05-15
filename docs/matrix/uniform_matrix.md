@@ -1408,9 +1408,7 @@ class function instead.
 Sorts the complete range of elements in the matrix.
 
 ```cpp
-void sort();
-
-template <class BinaryPredicate>
+template <class BinaryPredicate = std::less<value_type>>
 void sort(BinaryPredicate predicate);
 ```
 
