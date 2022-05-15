@@ -396,13 +396,17 @@ At least one element in the matrix is greater than 5.
 Returns the number of elements in the matrix that satisfy a condition.
 
 ```cpp
-size_type count(const value_type& value) const;
+template <typename ReturnValue = size_type>
+ReturnValue count(const value_type& value) const;
 
-template <class UnaryPredicate>
-size_type count(UnaryPredicate predicate) const;
+template <class UnaryPredicate, typename ReturnValue = size_type>
+ReturnValue count(UnaryPredicate predicate) const;
 ```
 
 ### Parameters
+
+*`ReturnValue`*\
+The type of the return value, **`size_type`** by default.
 
 *`value`*\
 The value to test for. Must be of equal type to the elements in the matrix.
@@ -416,7 +420,7 @@ tested. A unary predicate takes a single argument and returns **`true`** or
 ### Return value
 
 Returns the count of the number of elements in the matrix that satisfy the
-condition. Of type [`size_type`](#size_type).
+condition. Of type `ReturnValue`.
 
 ### Remarks
 
@@ -425,6 +429,9 @@ in the same way that [`total_size`](#total_size) can.
 
 It is not possible to restrict the range of the elements to be tested. If you
 need this functionality, use a [`for_each`](#for_each) loop instead.
+
+The following example also includes an example implementation of the [`iota`](#iota)
+class function.
 
 ```cpp
 // Example authored by Brandon Pacewic
@@ -446,31 +453,36 @@ int main() {
     uniform_matrix<int> m1(3, 3);
 
     // Construct a 6 by 6 matrix with all elements initialized to 0.
-    uniform_matrix<int> m2(6, 0);
+    uniform_matrix<int> m2(6, 6);
 
     // Construct a 10 by 10 matrix with no elements initialized.
     uniform_matrix<int> m3(10);
 
+    // Fill the matrix m3 with iota starting at 0
+    m3.iota(0);
+
     // Count the number of elements in the matrix m1 that are greater than 5.
-    std::cout << "The number of elements in m1 that are greater than 5 is "
+    std::cout << "The number of elements in m1 that are equal to 3 is "
               << m1.count(5) << ".\n";
         
     // Count the number of elements in the matrix m2 that are greater than 5.
-    std::cout << "The number of elements in m2 that are greater than 5 is "
+    std::cout << "The number of elements in m2 that are equal to 6 is "
               << m2.count(5) << ".\n";
 
     // Count the number of elements in the matrix m3 that are greater than 5.
     std::cout << "The number of elements in m3 that are greater than 5 is "
-              << m3.count(5) << ".\n";
+              << m3.count([](auto& value) {
+                  return value > 5;
+              }) << ".\n";
 
     return 0;
 }
 ```
 
 ```Output
-The number of elements in m1 that are greater than 5 is 0.
-The number of elements in m2 that are greater than 5 is 0.
-The number of elements in m3 that are greater than 5 is 0.
+The number of elements in m1 that are equal to 3 is 0.
+The number of elements in m2 that are equal to 6 is 0.
+The number of elements in m3 that are greater than 5 is 94.
 ```
 
 ## <a name="fill"></a> `uniform_matrix::fill`
@@ -1547,7 +1559,8 @@ The type of the elements in the row.
 
 ## Remarks
 
-**`IMPORTANT:`** This class is not meant to be used directly, never construct 
+#### *IMPORTANT:* 
+This class is not meant to be used directly, never construct 
 an instance of this class. Simply allow the [`uniform_matrix`](#uniform_matrix)
 class to manage this class internally. The purpose of providing documentation
 for this class is to provide a reference for the functions that can be called

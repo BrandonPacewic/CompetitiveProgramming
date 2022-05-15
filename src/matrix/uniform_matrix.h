@@ -37,33 +37,33 @@ class _uniform_matrix_row {
     _uniform_matrix_row() {}
 
     _uniform_matrix_row(size_type& _n)
-        : elements{std::make_unique<value_type[]>(_n)}, n{_n} {}
+        : elements{std::make_unique<value_type[]>(_n)}, length{_n} {}
 
     _uniform_matrix_row(size_type& _n, const value_type& _value)
-        : elements{std::make_unique<value_type[]>(_n)}, n{_n} {
-        std::fill(elements.get(), elements.get() + n, _value);
+        : elements{std::make_unique<value_type[]>(_n)}, length{_n} {
+        std::fill(elements.get(), elements.get() + length, _value);
     }
 
-    const size_type& size() const { return n; }
+    const size_type& size() const { return length; }
 
     pointer begin() noexcept { return &elements[0]; }
     const const_pointer begin() const noexcept { return &elements[0]; }
 
-    pointer end() noexcept { return &elements[n]; }
-    const const_pointer end() const noexcept { return &elements[n]; }
+    pointer end() noexcept { return &elements[length]; }
+    const const_pointer end() const noexcept { return &elements[length]; }
 
     reference front() noexcept { return elements[0]; }
     const_reference front() const noexcept { return elements[0]; }
 
-    reference back() noexcept { return elements[n - 1]; }
-    const_reference back() const noexcept { return elements[n - 1]; }
+    reference back() noexcept { return elements[length - 1]; }
+    const_reference back() const noexcept { return elements[length - 1]; }
 
     reference operator[](const size_type& i) { return elements[i]; }
     const_reference operator[](const size_type& i) const { return elements[i]; }
 
    private:
     std::unique_ptr<value_type[]> elements;
-    size_type n;
+    size_type length;
 };
 
 template <class Ty>
@@ -71,41 +71,51 @@ class uniform_matrix {
    public:
     typedef _uniform_matrix_row<Ty> row_type;
     typedef row_type* row_pointer;
-    typedef const row_type* row_const_pointer;
+    typedef const row_type* const_row_pointer;
     typedef Ty* type_pointer;
     typedef const Ty* type_const_pointer;
     typedef row_type& row_reference;
-    typedef const row_type& row_const_reference;
+    typedef const row_type& const_row_roference;
     typedef Ty& type_reference;
     typedef const Ty& type_const_reference;
     typedef std::size_t size_type;
     typedef Ty value_type;
 
     uniform_matrix(size_type _n)
-        : rows{std::make_unique<row_type[]>(_n)}, n{_n}, total_n{_n * _n} {
-        for (size_type i = 0; i < n; ++i) {
-            rows[i] = row_type(n);
+        : rows{std::make_unique<row_type[]>(_n)}, row_length{_n} {
+        for (size_type i = 0; i < row_length; ++i) {
+            rows[i] = row_type(row_length);
         }
     }
 
     uniform_matrix(size_type _n, const value_type& _value)
-        : rows{std::make_unique<row_type[]>(_n)}, n{_n} {
-        for (size_type i = 0; i < n; ++i) {
-            rows[i] = row_type(n, _value);
+        : rows{std::make_unique<row_type[]>(_n)}, row_length{_n} {
+        for (size_type i = 0; i < row_length; ++i) {
+            rows[i] = row_type(row_length, _value);
         }
     }
 
-    const size_type& size() const { return n; }
-    const size_type& total_size() const { return total_n; }
+    const size_type& size() const { return row_length; }
+
+    template <typename ReturnValue = size_type>
+    const ReturnValue total_size() const {
+        return (ReturnValue)row_length * row_length;
+    }
 
     row_pointer begin() { return &rows[0]; }
-    const row_const_pointer begin() const { return &rows[0]; }
+    const const_row_pointer begin() const { return &rows[0]; }
 
-    row_pointer end() { return &rows[n]; }
-    const row_const_pointer end() const { return &rows[n]; }
+    row_pointer end() { return &rows[row_length]; }
+    const const_row_pointer end() const { return &rows[row_length]; }
+
+    row_reference front() { return *begin(); }
+    const_row_roference front() const { return *begin(); }
+
+    row_reference back() { return *(end() - 1); }
+    const_row_roference back() const { return *(end() - 1); }
 
     row_reference operator[](const size_type& i) { return rows[i]; }
-    row_const_reference operator[](const size_type& i) const { return rows[i]; }
+    const_row_roference operator[](const size_type& i) const { return rows[i]; }
 
     template <class UnaryPredicate>
     bool any_of(UnaryPredicate predicate) const {
@@ -146,11 +156,13 @@ class uniform_matrix {
         return true;
     }
 
-    size_type count(const value_type& value) const {
-        size_type count = 0;
+    template <typename ReturnValue = size_type>
+    ReturnValue count(const value_type& value) const {
+        ReturnValue count = 0;
 
-        for (row_pointer it = begin(); it != end(); ++it) {
-            for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
+        for (const_row_pointer it = begin(); it != end(); ++it) {
+            for (type_const_pointer jt = (*it).begin(); jt != (*it).end();
+                 ++jt) {
                 if (*jt == value) {
                     ++count;
                 }
@@ -160,12 +172,13 @@ class uniform_matrix {
         return count;
     }
 
-    template <class UnaryPredicate>
-    size_type count(UnaryPredicate predicate) const {
-        size_type count = 0;
+    template <class UnaryPredicate, typename ReturnValue = size_type>
+    ReturnValue count(UnaryPredicate predicate) const {
+        ReturnValue count = 0;
 
-        for (row_pointer it = begin(); it != end(); ++it) {
-            for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
+        for (const_row_pointer it = begin(); it != end(); ++it) {
+            for (type_const_pointer jt = (*it).begin(); jt != (*it).end();
+                 ++jt) {
                 if (predicate(*jt)) {
                     ++count;
                 }
@@ -196,8 +209,8 @@ class uniform_matrix {
 
     template <class BinaryPredicate>
     void fill_if(const value_type& value, BinaryPredicate predicate) {
-        for (size_type row = 0; row < n; ++row) {
-            for (size_type cell = 0; cell < n; ++cell) {
+        for (size_type row = 0; row < row_length; ++row) {
+            for (size_type cell = 0; cell < row_length; ++cell) {
                 if (predicate(row, cell)) {
                     rows[row][cell] = value;
                 }
@@ -231,8 +244,8 @@ class uniform_matrix {
     }
 
     void for_each(std::function<void(value_type&)> function) {
-        for (size_type row = 0; row < n; ++row) {
-            for (size_type cell = 0; cell < n; ++cell) {
+        for (size_type row = 0; row < row_length; ++row) {
+            for (size_type cell = 0; cell < row_length; ++cell) {
                 function(rows[row][cell]);
             }
         }
@@ -240,8 +253,8 @@ class uniform_matrix {
 
     void for_each(
         std::function<void(value_type&, size_type&, size_type&)> function) {
-        for (size_type row = 0; row < n; ++row) {
-            for (size_type cell = 0; cell < n; ++cell) {
+        for (size_type row = 0; row < row_length; ++row) {
+            for (size_type cell = 0; cell < row_length; ++cell) {
                 function(rows[row][cell], row, cell);
             }
         }
@@ -256,7 +269,7 @@ class uniform_matrix {
     }
 
     bool is_sorted() const {
-        for (row_const_pointer it = begin(); it != end(); ++it) {
+        for (const_row_pointer it = begin(); it != end(); ++it) {
             for (type_const_pointer jt = (*it).begin(); jt != (*it).end();
                  ++jt) {
                 if (jt != (*it).begin()) {
@@ -286,11 +299,11 @@ class uniform_matrix {
     }
 
     const void output(const bool& space = true) const {
-        for (size_type row = 0; row < n; ++row) {
-            for (size_type cell = 0; cell < n; ++cell) {
+        for (size_type row = 0; row < row_length; ++row) {
+            for (size_type cell = 0; cell < row_length; ++cell) {
                 std::cout << rows[row][cell];
 
-                if (space && cell < n - 1) {
+                if (space && cell < row_length - 1) {
                     std::cout << ' ';
                 }
             }
@@ -300,11 +313,11 @@ class uniform_matrix {
     }
 
     const void output(std::ostream& os) const {
-        for (size_type row = 0; row < n; ++row) {
-            for (size_type cell = 0; cell < n; ++cell) {
+        for (size_type row = 0; row < row_length; ++row) {
+            for (size_type cell = 0; cell < row_length; ++cell) {
                 os << rows[row][cell];
 
-                if (cell < n - 1) {
+                if (cell < row_length - 1) {
                     os << ' ';
                 }
             }
@@ -314,7 +327,7 @@ class uniform_matrix {
     }
 
     bool rows_sorted() const {
-        for (row_const_pointer it = begin(); it != end(); ++it) {
+        for (const_row_pointer it = begin(); it != end(); ++it) {
             if (!std::is_sorted(it->begin(), it->end())) {
                 return false;
             }
@@ -325,7 +338,7 @@ class uniform_matrix {
 
     template <class BinaryPredicate>
     bool rows_sorted(BinaryPredicate predicate) const {
-        for (row_const_pointer it = begin(); it != end(); ++it) {
+        for (const_row_pointer it = begin(); it != end(); ++it) {
             if (!std::is_sorted(it->begin(), it->end(), predicate)) {
                 return false;
             }
@@ -337,7 +350,7 @@ class uniform_matrix {
     void sort() {
         size_type item_count = 0;
         std::unique_ptr<value_type[]> listed_elements{
-            std::make_unique<value_type[]>(total_n)};
+            std::make_unique<value_type[]>(this->total_size())};
 
         for (row_pointer it = begin(); it != end(); ++it) {
             for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
@@ -345,7 +358,8 @@ class uniform_matrix {
             }
         }
 
-        std::sort(listed_elements.get(), listed_elements.get() + total_n);
+        std::sort(listed_elements.get(),
+                  listed_elements.get() + this->total_size());
         item_count = 0;
 
         for (row_pointer it = begin(); it != end(); ++it) {
@@ -359,7 +373,7 @@ class uniform_matrix {
     void sort(BinaryPredicate predicate) {
         size_type item_count = 0;
         std::unique_ptr<value_type[]> listed_elements{
-            std::make_unique<value_type[]>(total_n)};
+            std::make_unique<value_type[]>(this->total_size())};
 
         for (row_pointer it = begin(); it != end(); ++it) {
             for (type_pointer jt = (*it).begin(); jt != (*it).end(); ++jt) {
@@ -367,8 +381,8 @@ class uniform_matrix {
             }
         }
 
-        std::sort(listed_elements.get(), listed_elements.get() + total_n,
-                  predicate);
+        std::sort(listed_elements.get(),
+                  listed_elements.get() + this->total_size(), predicate);
         item_count = 0;
 
         for (row_pointer it = begin(); it != end(); ++it) {
@@ -393,6 +407,5 @@ class uniform_matrix {
 
    private:
     std::unique_ptr<row_type[]> rows;
-    size_type n;
-    size_type total_n;
+    size_type row_length;
 };
