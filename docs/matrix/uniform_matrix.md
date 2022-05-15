@@ -37,6 +37,10 @@ The type of element
 | [`uniform_matrix`](#uniform_matrix) | Constructs a new `uniform_matrix` object. |
 | [`any_of`](#any_of) | Returns **`true`** when a condition is present in at least once in the complete range of elements.  |
 | [`all_of`](#all_of) | Returns **`true`** when a condition is present in all positions in the complete range of elements. |
+| [`back`](#back) | Returns a reference to the last element in the range. |
+| [`begin`](#begin) | Returns a pointer to the first element of the matrix. |
+| ['end'](#end) | Returns a pointer to the element after the last element of the matrix. |
+| [`front`](#front) | Returns a reference to the first element in the range. |
 | [`none_of`](#none_of) | Returns **`true`** when a condition is not present at all in the complete range of elements. |
 | [`count`](#count) | Returns the number of elements in the matrix that satisfy the condition. |
 | [`count_if`](#count_if) | Returns the number of elements in the matrix that satisfy the condition. |
@@ -48,8 +52,10 @@ The type of element
 | [`is_sorted`](#is_sorted) | Returns **`true`** when the complete matrix is sorted. |
 | [`output`](#output) | Outputs the matrix to a specifyed output stream. |
 | [`rows_sorted`](#rows_sorted) | Returns **`true`** when the each row in the matrix is sorted. |
+| [`size`](#size) | Returns the number of elements in each row of the matrix. |
 | [`sort`](#sort) | Sorts the complete matrix. |
 | [`sort_rows`](#sort_rows) | Sorts each row in the matrix individually. |
+| [`total_size`](#total_size) | Returns the total number of elements in the matrix. |
 
 | Operator | Description |
 | -------- | ----------- |
@@ -305,6 +311,86 @@ All elements in the matrix are greater than 3.
 Not all elements in the matrix are less than 5.
 ```
 
+## <a name="back"></a> `uniform_matrix::back`
+
+Returns a reference to the last row of the matrix.
+
+```cpp
+row_reference back() noexcept;
+
+const_row_reference back() const noexcept;
+```
+
+### Return value
+
+Returns a reference to the last row of the matrix.
+
+### Remarks
+
+If the return value is assigned the `_uniform_matrix_row<Ty>::row_reference` type,
+then the object can be modified, else if the return value is assigned the
+`const_row_reference` type, then the object cannot be modified.
+
+## <a name="begin"></a> `uniform_matrix::begin`
+
+Returns a pointer to the first row of the matrix.
+
+```cpp
+row_pointer begin() noexcept;
+
+const_row_pointer begin() const noexcept;
+```
+
+### Return value
+
+Returns a pointer to the first row of the matrix.
+
+### Remarks
+
+If the return value is assigned the `_uniform_matrix_row<Ty>::row_pointer` type,
+then the object can be modified, else if the return value is assigned the
+`const_row_pointer` type, then the object cannot be modified.
+
+## <a name="end"></a> `uniform_matrix::end`
+
+Returns a pointer to the last row of the matrix.
+
+```cpp
+row_pointer end() noexcept;
+
+const_row_pointer end() const noexcept;
+```
+
+### Return value
+
+Returns a pointer to the last row of the matrix.
+
+### Remarks
+
+If the return value is assigned the `_uniform_matrix_row<Ty>::row_pointer` type,
+then the object can be modified, else if the return value is assigned the
+`const_row_pointer` type, then the object cannot be modified.
+
+## <a name="front"></a> `uniform_matrix::front`
+
+Returns a reference to the first row of the matrix.
+
+```cpp
+row_reference front() noexcept;
+
+const_row_reference front() const noexcept;
+```
+
+### Return value
+
+Returns a reference to the first row of the matrix.
+
+### Remarks
+
+If the return value is assigned the `_uniform_matrix_row<Ty>::row_reference` type,
+then the object can be modified, else if the return value is assigned the
+`const_row_reference` type, then the object cannot be modified.
+
 ## <a name="none_of"></a> `uniform_matrix::none_of`
 
 Returns **`true`** when a condition is not present at all the values in the
@@ -492,9 +578,6 @@ that satisfy the condition.
 
 ```cpp
 void fill(const value_type& value);
-
-template <class UnaryPredicate>
-void fill(const value_type&, UnaryPredicate predicate);
 ```
 
 ### Parameters
@@ -502,12 +585,6 @@ void fill(const value_type&, UnaryPredicate predicate);
 *`value`*\
 The value to assign to all elements in the matrix. Must be of equal type to the
 elements in the matrix.
-
-*`predicate`*\
-A condition to test for. This is provided by a user-defined predicate function
-object. The predicate defines the condition to be satisfied by the element being
-tested. A unary predicate takes a single argument and returns **`true`** or
-**`false`**.
 
 ### Remarks
 
@@ -1307,6 +1384,25 @@ m2 has sorted rows: 0
 m3 has sorted rows: 1
 ```
 
+## <a name="size"></a> `uniform_matrix::size`
+
+Returns the number of elements in each row and column of the matrix.
+    
+```cpp
+const size_type size() const;
+```
+
+### Return value
+
+* `size_type`\
+The number of elements in each row and column of the matrix. Always of type
+`std::size_t` regardless of implementation.
+
+### Remarks
+
+To get the total number of elements in the matrix use the [`total_size`](#total_size)
+class function instead.
+
 ## <a name="sort"></a> `uniform_matrix::sort`
 
 Sorts the complete range of elements in the matrix.
@@ -1511,6 +1607,30 @@ m3:
 13 14 15 16
 ```
 
+## <a name="total_size"></a> `uniform_matrix::total_size`
+
+Returns the total number of elements in the matrix.
+
+```cpp
+template <typename ReturnType = size_type>
+const ReturnType total_size() const;
+```
+
+### Parameters
+
+*`ReturnType`*\
+The type of the return value, defaults to **`size_type`**.
+
+### Return value
+
+Returns the total number of elements in the matrix.
+
+### Remarks
+
+The default return type can overflow if the matrix is too close to the max size.
+This will not raise an error however, the result will be narrowed to the max
+capasity of **`size_type`**. 
+
 ## Closing remarks
 
 Most class functions are designed to mimic simmilary standard library `<algorithm>`
@@ -1640,9 +1760,9 @@ then the object can be modified, else if the return value is assigned the
 Returns a reference to the first element of the row.
 
 ```cpp
-typename _uniform_matrix_row<implementation-specific>::reference front() noexcept;
+reference front() noexcept;
 
-type_name _uniform_matrix_row<implementation-specific>::const_reference front() const noexcept;
+const_reference front() const noexcept;
 ```
 
 ### Return value
@@ -1660,7 +1780,7 @@ then the object can be modified, else if the return value is assigned the
 Returns the number of elements in the row.
 
 ```cpp
-const typename _uniform_matrix_row::size_type size() const;
+const size_type size() const;
 ```
 
 ### Return value

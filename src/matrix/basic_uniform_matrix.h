@@ -18,11 +18,10 @@
  * SOFTWARE.
  */
 
-/**
- * @file matrix/basic_uniform_matrix.h
- * @author Brandon Pacewic
- * This file contains the shell of the uniform_matrix class.
- * Move needed functions into this file as needed.
+/** @file matrix/basic_uniform_matrix.h
+ *  @author Brandon Pacewic
+ *  This file contains the shell of the uniform_matrix class.
+ *  Move needed functions into this file as needed.
  */
 
 #include <algorithm>
