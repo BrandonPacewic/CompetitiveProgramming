@@ -9,7 +9,7 @@ It is my intention to maintain this library and to make it as easy as possible
 for anyone to use it as they wish. For the time being I will leave my own problem
 solutions in this repository for examples of how to use the library.
 
-### Library Languages
+## Library Languages
 
 If you where to pick any language to use for competitive programming it would
 definitely be C++. Just in terms of efficiency and the capabilities of the 
@@ -18,7 +18,7 @@ Standard Library. For this reason all of the source code is written in C++.
 My codewars problem solutions are written in many different languages but that is
 mostly for the sake of practice.
 
-### Starting Competitive Programming
+## Starting Competitive Programming
 
 If your not sure where to start I recommend HackerRank, Codewars, LeetCode, and
 CodeForces to start. The bigger competitions such as Google Code Jam and 
@@ -34,13 +34,14 @@ If you are looking for people to watch I recommend the following people:
 - [Neal Wu](https://www.youtube.com/c/NealWuProgramming)
 - [William Lin](https://www.youtube.com/c/WilliamLin168)
 
-### How to consume
+## How to consume
 
-Unlike most other projects you will need a copy of the source code saved locally
+You will need a copy of the source code saved locally
 in order to use it. Simply create a clone of the repository and put it in
-a easy to access location. Then you will need to copy and paste code whenever 
-you need it. I have the eventual goal of making this library a VS Code snippet
-extension so look forward to that in the future.
+a easy to access location. Then just copy and paste code whenever you need it. 
+
+This is an unfortunate side effect of how competitive programming contests work.
+All source code needs to be placed in one file.
 
 ### Checkout my profiles
 - [Code Forces](https://codeforces.com/profile/BrandonPacewic)
