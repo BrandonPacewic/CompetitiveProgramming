@@ -210,7 +210,12 @@ class uniform_matrix {
         _matrix_initializer_list;
 
    protected:
-    inline const bool is_square(const _matrix_initializer_list& _list) const {
+   /**
+    *  @brief Tests if a two dimensional initializer list is a perfect square.
+    *  @param _list The two dimensional initializer list to test.
+    *  @return true if the list is square, else false.
+    */
+    inline static const bool is_square(const _matrix_initializer_list& _list) {
         for (const std::initializer_list<value_type>& row : _list) {
             if (row.size() != _list.size()) {
                 return false;
@@ -423,7 +428,7 @@ class uniform_matrix {
      *         are equal to the given value.
      *  @tparam ReturnType The type of the return value
      *  @param value The value to count.
-     * @return const ReturnType
+     *  @return const ReturnType
      */
     template <typename ReturnType = size_type>
     ReturnType count(const value_type& value) const {
@@ -615,7 +620,7 @@ class uniform_matrix {
      *
      *  The base increment is one, there is no way to change this. If this
      *  functionality is needed, use a modified version of the
-     *  uniform_matrix::for_each function insted.
+     *  @a uniform_matrix::for_each function insted.
      */
     void iota(value_type start) {
         for (row_reference& row : *this) {
@@ -693,6 +698,11 @@ class uniform_matrix {
     /**
      *  @brief Tests if the matrix is sorted or not.
      *  @return true if the matrix is sorted, false otherwise.
+     *
+     *  Constructs a temporary linear container of all the matrix elements and
+     *  tests against that. 
+     * 
+     *  Time complexity is O(n^2).
      */
     template <class BinaryPredicate = std::less<value_type>>
     bool is_sorted(BinaryPredicate predicate) const {
@@ -701,6 +711,10 @@ class uniform_matrix {
                               predicate);
     }
 
+    /**
+     *  @brief Outputs the matrix to the std::cout stream.
+     *  @param space Determines if there should be a space between each element.
+     */
     const void output(const bool& space = true) const {
         for (size_type row = 0; row < row_length; ++row) {
             for (size_type cell = 0; cell < row_length; ++cell) {
@@ -715,6 +729,10 @@ class uniform_matrix {
         }
     }
 
+    /**
+     *  @brief Outputs the matrix to the specified stream.
+     *  @param os The stream to output to.
+     */
     const void output(std::ostream& os) const {
         for (size_type row = 0; row < row_length; ++row) {
             for (size_type cell = 0; cell < row_length; ++cell) {
@@ -729,6 +747,14 @@ class uniform_matrix {
         }
     }
 
+    /** 
+     *  @brief Tests if each row in the matrix is sorted.
+     *  @tparam BinaryPredicate The predicate to test against.
+     *  @return true if each row is sorted, false otherwise.
+     *
+     *  This function only tests each row individually. It does not test the
+     *  matrix as a whole.
+     */
     template <class BinaryPredicate = std::less<value_type>>
     bool rows_sorted(BinaryPredicate predicate) const {
         for (const_row_reference& row : *this) {
@@ -740,6 +766,14 @@ class uniform_matrix {
         return true;
     }
 
+    /**
+     *  @brief Sorts the whole matrix.
+     *  @tparam BinaryPredicate The predicate to test against.
+     *
+     *  This function sorts the whole matrix. It must first create a linear
+     *  container of all the matrix elements to sort them with the lowest
+     *  complexity.
+     */
     template <class BinaryPredicate = std::less<value_type>>
     void sort(BinaryPredicate predicate) {
         _list_matrix_elements linear_matrix{*this};
@@ -747,6 +781,13 @@ class uniform_matrix {
         this->fill(linear_matrix.begin(), linear_matrix.end());
     }
 
+    /**
+     *  @brief Sorts each row of the matrix individually.
+     *  @tparam BinaryPredicate The predicate to test against.
+     *
+     *  This function does not sort the whole matrix. Only each 
+     *  row individually.
+     */
     template <class BinaryPredicate = std::less<value_type>>
     void sort_rows(BinaryPredicate predicate) {
         for (row_reference& row : *this) {
