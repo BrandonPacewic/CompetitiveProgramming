@@ -31,7 +31,7 @@
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row {
+class uniform_matrix_row {
    public:
     typedef Ty* pointer;
     typedef const Ty* const_pointer;
@@ -41,31 +41,31 @@ class _uniform_matrix_row {
     typedef Ty value_type;
 
     /**
-     *  @brief Constructs an empty _uniform_matrix_row.
+     *  @brief Constructs an empty uniform_matrix_row.
      *
      *  Never construct this object outside of an @a uniform_matrix object
      */
-    _uniform_matrix_row() {}
+    uniform_matrix_row() {}
 
     /**
-     *  @brief Constructs an _uniform_matrix_row with a given size.
-     *  @param _n Number of elements in the row.
+     *  @brief Constructs an uniform_matrix_row with a given size.
+     *  @param t_n Number of elements in the row.
      *
      *  Never construct this object outside of an @a uniform_matrix object
      */
-    _uniform_matrix_row(size_type& _n)
-        : elements{std::make_unique<value_type[]>(_n)}, length{_n} {}
+    uniform_matrix_row(size_type& t_n)
+        : elements{std::make_unique<value_type[]>(t_n)}, length{t_n} {}
 
     /**
-     *  @brief Constructs an _uniform_matrix_row with a given size and value.
-     *  @param _n Number of elements in the row.
-     *  @param _value Value to initialize each element with.
+     *  @brief Constructs an uniform_matrix_row with a given size and value.
+     *  @param t_n Number of elements in the row.
+     *  @param t_value Value to initialize each element with.
      *
      *  Never construct this object outside of an @a uniform_matrix object
      */
-    _uniform_matrix_row(size_type& _n, const value_type& _value)
-        : elements{std::make_unique<value_type[]>(_n)}, length{_n} {
-        std::fill(elements.get(), elements.get() + length, _value);
+    uniform_matrix_row(size_type& t_n, const value_type& t_value)
+        : elements{std::make_unique<value_type[]>(t_n)}, length{t_n} {
+        std::fill(elements.get(), elements.get() + length, t_value);
     }
 
     /**
@@ -149,7 +149,7 @@ class _uniform_matrix_row {
 template <class Ty>
 class uniform_matrix {
    public:
-    typedef _uniform_matrix_row<Ty> row_type;
+    typedef uniform_matrix_row<Ty> row_type;
     typedef row_type* row_pointer;
     typedef const row_type* const_row_pointer;
     typedef Ty* type_pointer;
@@ -163,10 +163,10 @@ class uniform_matrix {
 
     /**
      *  @brief Constructs an uniform_matrix object with a given size
-     *  @param _n Number of rows and columns in the matrix.
+     *  @param t_n Number of rows and columns in the matrix.
      */
-    uniform_matrix(size_type _n)
-        : rows{std::make_unique<row_type[]>(_n)}, row_length{_n} {
+    uniform_matrix(size_type t_n)
+        : rows{std::make_unique<row_type[]>(t_n)}, row_length{t_n} {
         for (size_type i = 0; i < row_length; ++i) {
             rows[i] = row_type(row_length);
         }
@@ -174,31 +174,31 @@ class uniform_matrix {
 
     /**
      *  @brief Constructs an uniform_matrix object with a given size and value
-     *  @param _n Number of rows and columns in the matrix.
-     *  @param _value Value to initialize each element with.
+     *  @param t_n Number of rows and columns in the matrix.
+     *  @param t_value Value to initialize each element with.
      */
-    uniform_matrix(size_type _n, const value_type& _value)
-        : rows{std::make_unique<row_type[]>(_n)}, row_length{_n} {
+    uniform_matrix(size_type t_n, const value_type& t_value)
+        : rows{std::make_unique<row_type[]>(t_n)}, row_length{t_n} {
         for (size_type i = 0; i < row_length; ++i) {
-            rows[i] = row_type(row_length, _value);
+            rows[i] = row_type(row_length, t_value);
         }
     }
 
     /**
      *  @brief Constructs an uniform_matrix object from a linear
      *         initializer list.
-     *  @param _list Initializer list to construct the matrix from.
+     *  @param t_list Initializer list to construct the matrix from.
      */
-    uniform_matrix(std::initializer_list<value_type> _list)
-        : rows{std::make_unique<row_type[]>(_list.size())},
-          row_length{_list.size()} {
+    uniform_matrix(std::initializer_list<value_type> t_list)
+        : rows{std::make_unique<row_type[]>(t_list.size())},
+          row_length{t_list.size()} {
         size_type i = 0;
 
         for (row_reference row : rows) {
             for (type_reference cell : row) {
-                cell = *(_list.begin() + i), ++i;
+                cell = *(t_list.begin() + i), ++i;
 
-                if (i >= _list.size()) {
+                if (i >= t_list.size()) {
                     break;
                 }
             }
@@ -207,17 +207,17 @@ class uniform_matrix {
 
    private:
     typedef std::initializer_list<std::initializer_list<value_type>>
-        _matrix_initializer_list;
+        m_matrix_initializer_list;
 
    protected:
-   /**
-    *  @brief Tests if a two dimensional initializer list is a perfect square.
-    *  @param _list The two dimensional initializer list to test.
-    *  @return true if the list is square, else false.
-    */
-    inline static const bool is_square(const _matrix_initializer_list& _list) {
-        for (const std::initializer_list<value_type>& row : _list) {
-            if (row.size() != _list.size()) {
+    /**
+     *  @brief Tests if a two dimensional initializer list is a perfect square.
+     *  @param list The two dimensional initializer list to test.
+     *  @return true if the list is square, else false.
+     */
+    inline static const bool is_square(const m_matrix_initializer_list& list) {
+        for (const std::initializer_list<value_type>& row : list) {
+            if (row.size() != list.size()) {
                 return false;
             }
         }
@@ -229,14 +229,14 @@ class uniform_matrix {
     /**
      *  @brief Constructs an uniform_matrix object from a two dimentional
      *         initializer list.
-     *  @param _list Initializer list to construct the matrix from.
+     *  @param list Initializer list to construct the matrix from.
      *  @throw std::invalid_argument if the initializer list is not a perfect
      *        square.
      */
-    uniform_matrix(_matrix_initializer_list _list)
-        : rows{std::make_unique<row_type[]>(_list.size())},
-          row_length{_list.size()} {
-        if (!is_square(_list)) {
+    uniform_matrix(m_matrix_initializer_list list)
+        : rows{std::make_unique<row_type[]>(list.size())},
+          row_length{list.size()} {
+        if (!is_square(list)) {
             throw std::invalid_argument(
                 "Invalid uniform_matrix to be constructed from initializer "
                 "list. Initializer list is not a perfect square.");
@@ -244,33 +244,33 @@ class uniform_matrix {
 
         for (size_type row = 0; row < row_length; ++row) {
             for (size_type cell = 0; cell < row_length; ++cell) {
-                rows[row][cell] = _list[row][cell];
+                rows[row][cell] = list[row][cell];
             }
         }
     }
 
     /**
      *  @brief Constructs an uniform_matrix object from a range of values.
-     *  @param _n Number of rows and columns in the matrix.
-     *  @param _begin Iterator to the first element in the range.
-     *  @param _end Iterator to the element one past the last element in the
+     *  @param t_n Number of rows and columns in the matrix.
+     *  @param t_begin Iterator to the first element in the range.
+     *  @param t_end Iterator to the element one past the last element in the
      *         range.
      *  @throw std::invalid_argument if the range is not a perfect square.
      */
     template <class InputIterator>
-    uniform_matrix(size_type _n, InputIterator _begin, InputIterator _end)
-        : rows{std::make_unique<row_type[]>(_n)}, row_length{_n} {
+    uniform_matrix(size_type t_n, InputIterator t_begin, InputIterator t_end)
+        : rows{std::make_unique<row_type[]>(t_n)}, row_length{t_n} {
         for (row_reference row : rows) {
             for (type_reference cell : row) {
-                cell = *_begin, ++_begin;
+                cell = *t_begin, ++t_begin;
 
-                if (_begin == _end) {
+                if (t_begin == t_end) {
                     break;
                 }
             }
         }
 
-        if (_begin != _end) {
+        if (t_begin != t_end) {
             throw std::invalid_argument(
                 "Invalid uniform_matrix to be constructed from range. "
                 "Range is not a perfect square.");
@@ -639,25 +639,25 @@ class uniform_matrix {
      *  This container should not be used outside of this class. Once
      *  constructed the contents cannot be modified.
      */
-    template <class _Ty>
-    struct __list_matrix_elements {
-        typedef const _Ty* const_pointer;
-        typedef const _Ty& const_reference;
-        typedef _Ty value_type;
+    template <class MTy>
+    struct m_list_matrix_elements {
+        typedef const MTy* const_pointer;
+        typedef const MTy& const_reference;
+        typedef MTy value_type;
         typedef std::size_t size_type;
 
         /**
          *  @brief Constructor.
-         *  @param _matrix The matrix to convert.
+         *  @param t_matrix The matrix to convert.
          */
-        __list_matrix_elements(const uniform_matrix& _matrix)
-            : _linear_size{_matrix.total_size()},
-              _linear_data{std::make_unique<value_type[]>(_linear_size)} {
+        m_list_matrix_elements(const uniform_matrix& t_matrix)
+            : m_linear_size{t_matrix.total_size()},
+              m_linear_data{std::make_unique<value_type[]>(m_linear_size)} {
             size_type linear_index = 0;
 
-            for (const_row_reference row : _matrix) {
-                for (const_reference cell : row) {
-                    _linear_data[linear_index] = cell, ++linear_index;
+            for (const_row_reference& row : t_matrix) {
+                for (const_reference& cell : row) {
+                    m_linear_data[linear_index] = cell, ++linear_index;
                 }
             }
         }
@@ -667,7 +667,7 @@ class uniform_matrix {
          *         container.
          *  @return constant pointer to the first element in the container.
          */
-        const const_pointer begin() const { return _linear_data.get(); }
+        const const_pointer begin() const { return m_linear_data.get(); }
 
         /**
          *  @brief Returns a constant pointer to the element one past the end
@@ -676,7 +676,7 @@ class uniform_matrix {
          *          container.
          */
         const const_pointer end() const {
-            return _linear_data.get() + _linear_size;
+            return m_linear_data.get() + m_linear_size;
         }
 
         /**
@@ -685,14 +685,14 @@ class uniform_matrix {
          *  @return reference to the element at the given index.
          */
         const_reference operator[](const size_type& index) const {
-            return _linear_data[index];
+            return m_linear_data[index];
         }
 
-        std::unique_ptr<value_type[]> _linear_data;
-        size_type _linear_size;
+        std::unique_ptr<value_type[]> m_linear_data;
+        size_type m_linear_size;
     };
 
-    typedef __list_matrix_elements<value_type> _list_matrix_elements;
+    typedef m_list_matrix_elements<value_type> list_matrix_elements;
 
    public:
     /**
@@ -700,13 +700,13 @@ class uniform_matrix {
      *  @return true if the matrix is sorted, false otherwise.
      *
      *  Constructs a temporary linear container of all the matrix elements and
-     *  tests against that. 
-     * 
+     *  tests against that.
+     *
      *  Time complexity is O(n^2).
      */
     template <class BinaryPredicate = std::less<value_type>>
     bool is_sorted(BinaryPredicate predicate) const {
-        _list_matrix_elements linear_matrix{*this};
+        list_matrix_elements linear_matrix{*this};
         return std::is_sorted(linear_matrix.begin(), linear_matrix.end(),
                               predicate);
     }
@@ -747,7 +747,7 @@ class uniform_matrix {
         }
     }
 
-    /** 
+    /**
      *  @brief Tests if each row in the matrix is sorted.
      *  @tparam BinaryPredicate The predicate to test against.
      *  @return true if each row is sorted, false otherwise.
@@ -776,7 +776,7 @@ class uniform_matrix {
      */
     template <class BinaryPredicate = std::less<value_type>>
     void sort(BinaryPredicate predicate) {
-        _list_matrix_elements linear_matrix{*this};
+        list_matrix_elements linear_matrix{*this};
         std::sort(linear_matrix.begin(), linear_matrix.end(), predicate);
         this->fill(linear_matrix.begin(), linear_matrix.end());
     }
@@ -785,7 +785,7 @@ class uniform_matrix {
      *  @brief Sorts each row of the matrix individually.
      *  @tparam BinaryPredicate The predicate to test against.
      *
-     *  This function does not sort the whole matrix. Only each 
+     *  This function does not sort the whole matrix. Only each
      *  row individually.
      */
     template <class BinaryPredicate = std::less<value_type>>
