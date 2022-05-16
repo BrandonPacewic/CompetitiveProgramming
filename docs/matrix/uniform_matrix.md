@@ -20,7 +20,7 @@ The type of element
 
 | Type Definition | Description |
 | --------------- | ----------- |
-| [`row_type`](#row_type) | A type that represents a row of the matrix, limited to [`_uniform_matrix_row`](#_uniform_matrix_row). |
+| [`row_type`](#row_type) | A type that represents a row of the matrix, limited to [`uniform_matrix_row`](#uniform_matrix_row). |
 | [`row_pointer`](#row_pointer) | The type of a pointer to a [`row_type`](#row_type) element. |
 | [`row_const_pointer`](#row_const_pointer) | The type of a constant pointer to a [`row_type`](#row_type) element. |
 | [`type_pointer`](#type_pointer) | The type of a pointer to an element inside [`row_type`](#row_type). |
@@ -34,7 +34,6 @@ The type of element
 
 | Member Function | Description |
 | ---------------- | ----------- |
-| [`uniform_matrix`](#uniform_matrix) | Constructs a new `uniform_matrix` object. |
 | [`any_of`](#any_of) | Returns **`true`** when a condition is present in at least once in the complete range of elements.  |
 | [`all_of`](#all_of) | Returns **`true`** when a condition is present in all positions in the complete range of elements. |
 | [`back`](#back) | Returns a reference to the last element in the range. |
@@ -56,6 +55,7 @@ The type of element
 | [`sort`](#sort) | Sorts the complete matrix. |
 | [`sort_rows`](#sort_rows) | Sorts each row in the matrix individually. |
 | [`total_size`](#total_size) | Returns the total number of elements in the matrix. |
+| [`uniform_matrix`](#uniform_matrix) | Constructs a new `uniform_matrix` object. |
 
 | Operator | Description |
 | -------- | ----------- |
@@ -79,59 +79,7 @@ assignes the value of `m_element` to the element at position `(1, 2)` in `m`.
 
 **Namespaces:** None
 
-**Other Classes:** [`_uniform_matrix_row`](#_uniform_matrix_row)
-
-## <a name="uniform_matrix"></a> `uniform_matrix::uniform_matrix`
-
-Constructs an new `uniform_matrix` object.
-
-```cpp
-uniform_matrix(size_type _n);
-
-uniform_matrix(size_type _n, const value_type& _value);
-```
-
-### Parameters
-
-*`_n`*\
-The size of the matrix.
-
-*`_value`*\
-The base value to initialize the matrix with.
-
-### Remarks
-
-It is not valid to construct a `uniform_matrix` object with an undefined size
-as there is no way to redefine the size of `uniform_matrix` in any way.
-
-### Example
-
-```cpp
-// Example authored by Brandon Pacewic
-// uniform_matrix_constructor.cc
-#include <algorithm>
-#include <cstddef>
-#include <functional>
-#include <iostream>
-#include <memory>
-
-template <class Ty>
-class _uniform_matrix_row;
-
-template <class Ty>
-class uniform_matrix;
-
-int main() {
-    // Construct a 3 by 3 matrix with all elements initialized to 3.
-    uniform_matrix<int> m(3, 3);
-
-    // Construct a 6 by 6 matrix with all elements initialized to 0.
-    uniform_matrix<int> m(6, 0);
-
-    // Construct a 10 by 10 matrix with no elements initialized.
-    uniform_matrix<int> m(10);
-}
-```
+**Other Classes:** [`uniform_matrix_row`](#uniform_matrix_row)
 
 ## <a name="any_of"></a> `uniform_matrix::any_of`
 
@@ -173,7 +121,7 @@ this functionality, use a [`for_each`](#for_each) loop instead.
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -262,7 +210,7 @@ class function.
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -327,7 +275,7 @@ Returns a reference to the last row of the matrix.
 
 ### Remarks
 
-If the return value is assigned the `_uniform_matrix_row<Ty>::row_reference` type,
+If the return value is assigned the `uniform_matrix_row<Ty>::row_reference` type,
 then the object can be modified, else if the return value is assigned the
 `const_row_reference` type, then the object cannot be modified.
 
@@ -347,7 +295,7 @@ Returns a pointer to the first row of the matrix.
 
 ### Remarks
 
-If the return value is assigned the `_uniform_matrix_row<Ty>::row_pointer` type,
+If the return value is assigned the `uniform_matrix_row<Ty>::row_pointer` type,
 then the object can be modified, else if the return value is assigned the
 `const_row_pointer` type, then the object cannot be modified.
 
@@ -367,7 +315,7 @@ Returns a pointer to the last row of the matrix.
 
 ### Remarks
 
-If the return value is assigned the `_uniform_matrix_row<Ty>::row_pointer` type,
+If the return value is assigned the `uniform_matrix_row<Ty>::row_pointer` type,
 then the object can be modified, else if the return value is assigned the
 `const_row_pointer` type, then the object cannot be modified.
 
@@ -387,7 +335,7 @@ Returns a reference to the first row of the matrix.
 
 ### Remarks
 
-If the return value is assigned the `_uniform_matrix_row<Ty>::row_reference` type,
+If the return value is assigned the `uniform_matrix_row<Ty>::row_reference` type,
 then the object can be modified, else if the return value is assigned the
 `const_row_reference` type, then the object cannot be modified.
 
@@ -421,6 +369,8 @@ This class function is the inverse of the [`any_of`](#any_of) class function.
 There is no way to restrict the range of the elements to be tested. If you need
 this functionality, use a [`for_each`](#for_each) loop instead.
 
+### Example
+
 ```cpp
 // Example authored by Brandon Pacewic
 // uniform_matrix_none_of.cc
@@ -431,7 +381,7 @@ this functionality, use a [`for_each`](#for_each) loop instead.
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -519,6 +469,8 @@ need this functionality, use a [`for_each`](#for_each) loop instead.
 The following example also includes an example implementation of the [`iota`](#iota)
 class function.
 
+### Example
+
 ```cpp
 // Example authored by Brandon Pacewic
 // uniform_matrix_count.cc
@@ -529,7 +481,7 @@ class function.
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -597,6 +549,8 @@ class function instead.
 The following example also includes an implementation of the [`output`](#output)
 class function.
 
+### Example
+
 ```cpp
 // Example authored by Brandon Pacewic
 // uniform_matrix_fill.cc
@@ -607,7 +561,7 @@ class function.
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -703,6 +657,8 @@ function.
 The following example also includes an implementation of the [`output`](#output)
 class function as well as the [`for_each`](#for_each) class function.
 
+### Example
+
 ```cpp
 // Example authored by Brandon Pacewic
 // uniform_matrix_fill_if.cc
@@ -713,7 +669,7 @@ class function as well as the [`for_each`](#for_each) class function.
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -832,6 +788,8 @@ There is no way to restrict the range of the elements to be tested.
 If you require this functionality, use the [`for_each`](#for_each) class function
 instead.
 
+### Example
+
 ```cpp
 // Example authored by Brandon Pacewic
 // uniform_matrix_find_if.cc
@@ -842,7 +800,7 @@ instead.
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -936,6 +894,8 @@ the `for_each` class function as a fallback.
 The following example also includes an example implementation of the [`output`](#output)
 class function.
 
+### Example
+
 ```cpp
 // Example authored by Brandon Pacewic
 // uniform_matrix_for_each.cc
@@ -949,7 +909,7 @@ class function.
 #include <time.h>       // time
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -1033,6 +993,8 @@ class function instead.
 The following example also includes an example implementation of the [`output`](#output)
 class function.
 
+### Example
+
 ```cpp
 // Example authored by Brandon Pacewic
 // uniform_matrix_iota.cc
@@ -1043,7 +1005,7 @@ class function.
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -1131,6 +1093,8 @@ This class function tests if the whole matrix is sorted, if you only want to che
 if the rows of the matrix are sorted, use the [`rows_sorted`](#rows_sorted) class
 function instead.
 
+### Example
+
 ```cpp
 // Example authored by Brandon Pacewic
 // uniform_matrix_is_sorted.cc
@@ -1141,7 +1105,7 @@ function instead.
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -1235,6 +1199,8 @@ There is no way to restrict the output to a specific range of the matrix or
 change the output stream and the format of the output at the same time. If this
 is functionality is needed, use the [`for_each`](#for_each) class function instead.
 
+### Example
+
 ```cpp
 // Example authored by Brandon Pacewic
 // uniform_matrix_output.cc
@@ -1245,7 +1211,7 @@ is functionality is needed, use the [`for_each`](#for_each) class function inste
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -1302,6 +1268,8 @@ This class function does not test if the whole matrix is sorted only if all of
 the rows are. If you are looking for this functionality, use the [`is_sorted`](#is_sorted)
 class function instead.
 
+### Example
+
 ```cpp
 // Example authored by Brandon Pacewic
 // uniform_matrix_rows_sorted.cc
@@ -1312,7 +1280,7 @@ class function instead.
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -1424,6 +1392,8 @@ predicate is **`std::less<value_type>`**.
 This class function does not sort the whole matrix if you only want to sort the
 individual rows, use the [`sort_rows`](#sort_rows) class function instead.
 
+### Example
+
 ```cpp
 // Example authored by Brandon Pacewic
 // uniform_matrix_sort.cc
@@ -1434,7 +1404,7 @@ individual rows, use the [`sort_rows`](#sort_rows) class function instead.
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -1526,6 +1496,8 @@ predicate is **`std::less<value_type>`**.
 If you want to sort the whole matrix, use the [`sort`](#sort) class function
 instead.
 
+### Example
+
 ```cpp
 // Example authored by Brandon Pacewic
 // uniform_matrix_sort_rows.cc
@@ -1536,7 +1508,7 @@ instead.
 #include <memory>
 
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 
 template <class Ty>
 class uniform_matrix;
@@ -1629,39 +1601,134 @@ The default return type can overflow if the matrix is too close to the max size.
 This will not raise an error however, the result will be narrowed to the max
 capasity of **`size_type`**. 
 
+
+## <a name="uniform_matrix"></a> `uniform_matrix::uniform_matrix`
+
+Constructs an new `uniform_matrix` object. Overloads create a new object with a
+base value, from a one dimensional initializer list, from a two dimensional
+initializer list, or from a square range of elements.
+
+```cpp
+uniform_matrix(size_type t_n);
+
+uniform_matrix(size_type t_n, const value_type& t_value);
+
+uniform_matrix(const std::initializer_list<value_type>& t_list)
+
+private:
+typedef std::initalizer_list<std::initializer_list<value_type>>
+    m_matrix_initializer_list;
+
+public:
+uniform_matrix(const m_matrix_initializer_list& t_list);
+
+template <class InputIterator>
+uniform_matrix(size_type t_n, InputIterator t_first, InputIterator t_last);
+```
+
+### Parameters
+
+*`t_n`*\
+The size of the matrix.
+
+*`t_value`*\
+The base value to initialize the matrix with.
+
+*`t_list`*\
+A one or two dimensional initializer list.
+
+*`t_first`*\
+An iterator to the first element in the range to initialize the matrix with.
+
+*`t_last`*\
+An iterator to the element after the last element in the range to initialize
+the matrix with.
+
+### Remarks
+
+It is not valid to construct a `uniform_matrix` object with an undefined size
+as there is no way to redefine the size of `uniform_matrix` in any way.
+
+When trying to initalize a `uniform_matrix` object with a two dimensional
+initializer list, the initializer list must be a perfect square.
+
+When trying to initialize a `uniform_matrix` object with a range of elements,
+the range must be a square. That is to have exactly *`t_n`* by *`t_n`* elements.
+
+### Example
+
+```cpp
+// Example authored by Brandon Pacewic
+// uniform_matrix_constructor.cc
+#include <algorithm>
+#include <array>
+#include <cstddef>
+#include <functional>
+#include <iostream>
+#include <memory>
+
+template <class Ty>
+class uniform_matrix_row;
+
+template <class Ty>
+class uniform_matrix;
+
+int main() {
+    // Construct a 3 by 3 matrix with all elements initialized to 3.
+    uniform_matrix<int> m(3, 3);
+
+    // Construct a 6 by 6 matrix with all elements initialized to 0.
+    uniform_matrix<int> m(6, 0);
+
+    // Construct a 10 by 10 matrix with no elements initialized.
+    uniform_matrix<int> m(10);
+
+    // Construct a 2 by 2 matrix from a one dimensional initializer list.
+    uniform_matrix<int> m = { { 1, 2, 3, 4 };
+
+    // Construct a 2 by 2 matrix from a two dimensional initializer list.
+    uniform_matrix<int> m = { { { 1, 2 }, { 3, 4 } };
+
+    std::array<int, 9> a = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+    // Construct a 3 by 3 matrix from range of elements a.
+    uniform_matrix<int> m(3, a.begin(), a.end());
+}
+```
+
 ## Closing remarks
 
 Most class functions are designed to mimic simmilary standard library `<algorithm>`
 functions, and are modifyed to work with a two dimensional container. Any missing
 functionality can be obtained by using a [`for_each`](#for_each) function.
 
-# <a name="_uniform_matrix_row"></a> `_uniform_matrix_row`
+# <a name="uniform_matrix_row"></a> `uniform_matrix_row`
 
-The `_uniform_matrix_row` C++ Brandon Competitive Programming Library class describes
+The `uniform_matrix_row` C++ Brandon Competitive Programming Library class describes
 the inner row object of the [`uniform_matrix`](#uniform_matrix) class.
 
 ## Syntax
 
 ```cpp
 template <class Ty>
-class _uniform_matrix_row;
+class uniform_matrix_row;
 ```
 
 ### Parameters
 
-`ty`\
+`Ty`\
 The type of the elements in the row.
 
 ## Members
 
 | Type Definition | Description |
 |----------------|-------------|
-| [`value_type`](#value_type) | The type of the elements in the row. |
-| [`pointer`](#pointer) | The type of a pointer to a element. |
 | [`const_pointer`](#const_pointer) | The type of a pointer to a const element. |
-| [`reference`](#reference) | The type of a reference to a element. |
 | [`const_reference`](#const_reference) | The type of a reference to a const element. |
+| [`pointer`](#pointer) | The type of a pointer to a element. |
+| [`reference`](#reference) | The type of a reference to a element. |
 | [`size_type`](#size_type) | The type of the size of the row. |
+| [`value_type`](#uniform_matrix_row::value_type) | The type of the elements in the row. |
 
 | Member Function | Description |
 |----------------|-------------|
@@ -1673,7 +1740,7 @@ The type of the elements in the row.
 
 | Operator | Description |
 |---------|-------------|
-| [`_uniform_matrix_row::operator[]`](#_uniform_matrix_row::operator[]) | Accesses an element at a specified position. |
+| [`uniform_matrix_row::operator[]`](#uniform_matrix_row::operator[]) | Accesses an element at a specified position. |
 
 ## Remarks
 
@@ -1693,14 +1760,14 @@ Constructors will not be documented, they should only be called by the
 Requirements are identical to `uniform_matrix` [requirments](#requirments).
 
 
-## <a name="back"></a> `_uniform_matrix_row::back`
+## <a name="back"></a> `uniform_matrix_row::back`
 
 Returns a reference to the last element of the row.
 
 ```cpp
-typename _uniform_matrix_row<implementation-specific>::reference back() noexcept;
+reference back() noexcept;
 
-typename _uniform_matrix_row<implementation-specific>::const_reference back() const noexcept;
+const_reference back() const noexcept;
 ```
 
 ### Return value
@@ -1709,19 +1776,19 @@ Retruns a reference to the last element of the row.
 
 ### Remarks
 
-If the return value is assigned the `_uniform_matrix_row<Ty>::reference` type,
+If the return value is assigned the `uniform_matrix_row<Ty>::reference` type,
 then the object can be modified, else if the return value is assigned the
-`_uniform_matrix_row<Ty>::const_reference` type, then the object cannot be modified.
+`uniform_matrix_row<Ty>::const_reference` type, then the object cannot be modified.
 
 
-## <a name="begin"></a> `_uniform_matrix_row::begin`
+## <a name="begin"></a> `uniform_matrix_row::begin`
 
 Returns a pointer to the frist element of the row.
 
 ```cpp
-typename _uniform_matrix_row<implementation-specific>::pointer begin() noexcept;
+pointer begin() noexcept;
 
-typename _uniform_matrix_row<implementation-specific>::const_pointer begin() const noexcept;
+const const_pointer begin() const noexcept;
 ```
 
 ### Return value
@@ -1730,17 +1797,33 @@ Returns a pointer to the first element of the row.
 
 ### Remarks
 
-If the return value is assigned the `_uniform_matrix_row<Ty>::pointer` type,
-then the object can be motifed, else if the return value is assigned the `_uniform_matrix_row<Ty>::const_pointer` than the object cannot be modified.
+If the return value is assigned the `uniform_matrix_row<Ty>::pointer` type,
+then the object can be motifed, else if the return value is assigned the `uniform_matrix_row<Ty>::const_pointer` than the object cannot be modified.
 
-## <a name="end"></a> `_uniform_matrix_row::end`
+## <a name="const_pointer"></a> `uniform_matrix_row::const_pointer`
+
+The type of a pointer to a const element.
+
+```cpp
+typedef const Ty* const_pointer;
+```
+
+## <a name="const_reference"></a> `uniform_matrix_row::const_reference`
+
+The type of a reference to a const element.
+
+```cpp
+typedef const Ty& const_reference;
+```
+
+## <a name="end"></a> `uniform_matrix_row::end`
 
 Returns a pointer to the element after the last element of the row.
 
 ```cpp
-typename _uniform_matrix_row<implementation-specific>::pointer end() noexcept;
+pointer end() noexcept;
 
-type_name _uniform_matrix_row<implementation-specific>::const_pointer end() const noexcept;
+const const_pointer end() const noexcept;
 ```
 
 ### Return value
@@ -1749,11 +1832,11 @@ Returns a pointer to the element after the last element of the row.
 
 ### Remarks
 
-If the return value is assigned the `_uniform_matrix_row<Ty>::pointer` type,
+If the return value is assigned the `uniform_matrix_row<Ty>::pointer` type,
 then the object can be modified, else if the return value is assigned the 
-`_uniform_matrix_row<Ty>::const_pointer` than the object cannot be modified.
+`uniform_matrix_row<Ty>::const_pointer` than the object cannot be modified.
 
-## <a name="front"></a> `_uniform_matrix_row::front`
+## <a name="front"></a> `uniform_matrix_row::front`
 
 Returns a reference to the first element of the row.
 
@@ -1769,11 +1852,47 @@ Returns a reference to the first element of the row.
 
 ### Remarks
 
-If the return value is assigned the `_uniform_matrix_row<Ty>::reference` type,
+If the return value is assigned the `uniform_matrix_row<Ty>::reference` type,
 then the object can be modified, else if the return value is assigned the
-`_uniform_matrix_row<Ty>::const_reference` type, then the object cannot be modified.
+`uniform_matrix_row<Ty>::const_reference` type, then the object cannot be modified.
 
-## <a name="size"></a> `_uniform_matrix_row::size`
+## <a name="uniform_matrix_row::operator[]"></a> `uniform_matrix_row::operator[]`
+
+Accesses an element at a specified position.
+
+```cpp
+reference operator[](const size_type& index);
+
+const_reference operator[](const size_type& index) const;
+```
+
+### Return value
+
+Returns a reference to the element at the specified position.
+
+### Remarks
+
+If the return value is assigned the `uniform_matrix_row<Ty>::reference` type,
+then the object can be modified, else if the return value is assigned the
+`uniform_matrix_row<Ty>::const_reference` type, then the object cannot be modified.
+
+## <a name="pointer"></a> `uniform_matrix_row::pointer`
+
+The type of a pointer to a element.
+
+```cpp
+typedef Ty* pointer;
+```
+
+## <a name="reference"></a> `uniform_matrix_row::reference`
+
+The type of a reference to a element.
+
+```cpp
+typedef Ty& reference;
+```
+
+## <a name="size"></a> `uniform_matrix_row::size`
 
 Returns the number of elements in the row.
 
@@ -1790,8 +1909,18 @@ Returns the number of elements in the row.
 The return value of the [`row_type`](#row_type) is the same as the return value of
 the [`uniform_matrix::size`](#uniform_matrix::size) function. There is no difference.
 
+## <a name="size_type"></a> `uniform_matrix_row::size_type`
+
+The type of the size of the row.
+
+```cpp
+typedef std::size_t size_type;
+```
+
+## <a name="uniform_matrix_row::value_type"></a> `uniform_matrix_row::value_type`
+
 ## Closing remarks
 
-Any needed functionality that is needed from the [`_uniform_matrix_row`](#_uniform_matrix_row) class should be obtained from the standard library
+Any needed functionality that is needed from the [`uniform_matrix_row`](#uniform_matrix_row) class should be obtained from the standard library
 using range based functions.
 

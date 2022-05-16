@@ -189,7 +189,7 @@ class uniform_matrix {
      *         initializer list.
      *  @param t_list Initializer list to construct the matrix from.
      */
-    uniform_matrix(std::initializer_list<value_type> t_list)
+    uniform_matrix(const std::initializer_list<value_type>& t_list)
         : rows{std::make_unique<row_type[]>(t_list.size())},
           row_length{t_list.size()} {
         size_type i = 0;
@@ -233,7 +233,7 @@ class uniform_matrix {
      *  @throw std::invalid_argument if the initializer list is not a perfect
      *        square.
      */
-    uniform_matrix(m_matrix_initializer_list list)
+    uniform_matrix(const m_matrix_initializer_list& list)
         : rows{std::make_unique<row_type[]>(list.size())},
           row_length{list.size()} {
         if (!is_square(list)) {
@@ -258,19 +258,19 @@ class uniform_matrix {
      *  @throw std::invalid_argument if the range is not a perfect square.
      */
     template <class InputIterator>
-    uniform_matrix(size_type t_n, InputIterator t_begin, InputIterator t_end)
+    uniform_matrix(size_type t_n, InputIterator t_first, InputIterator t_last)
         : rows{std::make_unique<row_type[]>(t_n)}, row_length{t_n} {
         for (row_reference row : rows) {
             for (type_reference cell : row) {
-                cell = *t_begin, ++t_begin;
+                cell = *t_first, ++t_last;
 
-                if (t_begin == t_end) {
+                if (t_first == t_last) {
                     break;
                 }
             }
         }
 
-        if (t_begin != t_end) {
+        if (t_first != t_last) {
             throw std::invalid_argument(
                 "Invalid uniform_matrix to be constructed from range. "
                 "Range is not a perfect square.");
