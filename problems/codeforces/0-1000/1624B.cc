@@ -8,77 +8,85 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <numeric>
 #include <queue>
-#include <random>
 #include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 
-// dbg
-#ifdef DBG_MODE
-int64_t DBG_COUNT = 0;
-void DBG_OUT() {
-    cerr << endl;
-    DBG_COUNT++;
+template <typename A, typename B>
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
+    return os << '(' << p.first << ", " << p.second << ')';
 }
-template <typename Front, typename... Back>
-void DBG_OUT(Front K, Back... T) {
-    cerr << ' ' << K;
-    DBG_OUT(T...);
-}
-template <typename T_List>
-void testList(T_List List) {
-    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
-    DBG_COUNT++;
-    for (int i = 0; i < List.size(); i++) {
-        cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
+    os << '{';
+    std::string separator;
+
+    for (const T& item : container) {
+        os << separator << item, separator = ", ";
     }
+
+    return os << '}';
 }
-#define testArgs(...)                                                     \
-    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
-        DBG_OUT(__VA_ARGS__)
+
+#ifdef DBG_MODE
+void dbg_out() { std::cerr << std::endl; }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
+}
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
-template <typename T_List>
-void testList(T_List List) {
-    return;
-}
-#define testArgs(...)
+#define test(...)
 #endif
 
-// https://codeforces.com/problemset/problem/1624/B
 void run_case() {
-    array<int, 3> A;
-    cin >> A[0] >> A[1] >> A[2];
+    int64_t A, B, C;
+    cin >> A >> B >> C;
+
+    int64_t g1 = (C - A) / 2;
+    int64_t g2 = B - A + B;
+    int64_t g3 = B - (C - B);
+
     bool ans = false;
 
-    for (int i = 0; i < 2; i++) {
-        int64_t g1 = (A[2] - A[0]) / 2;
-        int64_t g2 = A[1] - A[0] + A[1];
-        int64_t g3 = A[1] - (A[2] - A[1]);
-
-        if (g1 > 0 && g1 % A[1] == 0)
-            ans = true;
-        else if (g2 > 0 && g2 % A[2] == 0)
-            ans = true;
-        else if (g3 > 0 && g3 % A[0] == 0)
-            ans = true;
-
-        if (i == 0) reverse(A.begin(), A.end());
+    if (g1 > 0 && g1 % B == 0) {
+        ans = true;
+    } else if (g2 > 0 && g2 % C == 0) {
+        ans = true;
+    } else if (g3 > 0 && g3 % A == 0) {
+        ans = true;
     }
 
     cout << (ans ? "YES" : "NO") << '\n';
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
 
-    int test_cases;
-    cin >> test_cases;
+    uint16_t test_cases;
+    std::cin >> test_cases;
 
     while (test_cases--) {
         run_case();
-        cout << flush;
+#ifdef DBG_MODE
+        std::cout << std::flush;
+#endif
     }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
+#endif
+
+    return 0;
 }
