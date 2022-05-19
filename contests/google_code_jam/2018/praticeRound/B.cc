@@ -1,154 +1,124 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <array>
+#include <cassert>
+#include <chrono>
+#include <cmath>
+#include <cstring>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <limits>
+#include <map>
+#include <memory>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-// dbg
-//  #define DBG_MODE
-int64_t DBG_COUNT = 0;
-void DBG_OUT() {
-    cerr << endl;
-    DBG_COUNT++;
+template <typename A, typename B>
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
+    return os << '(' << p.first << ", " << p.second << ')';
 }
-template <typename Front, typename... Back>
-void DBG_OUT(Front K, Back... T) {
-    cerr << ' ' << K;
-    DBG_OUT(T...);
-}
-#ifdef DBG_MODE
-template <typename T_Ints>
-void testList(T_Ints List) {
-    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
-    DBG_COUNT++;
-    for (int i = 0; i < List.size(); i++) {
-        cout << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
+    os << '{';
+    std::string separator;
+
+    for (const T& item : container) {
+        os << separator << item, separator = ", ";
     }
+
+    return os << '}';
 }
-#define testArgs(...)                                                     \
-    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
-        DBG_OUT(__VA_ARGS__)
+
+#ifdef DBG_MODE
+void dbg_out() { std::cerr << std::endl; }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
+}
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
-template <typename T_Ints>
-void testList(T_Ints List) {
-    return;
-}
-#define testArgs(...)
+#define test(...)
 #endif
 
-// dbg pairs
-#ifdef DBG_MODE
-template <typename T_Pairs>
-void testPairs(T_Pairs Pairs) {
-    cerr << '#' << DBG_COUNT << " __PAIR_ARGS__: (";
-    DBG_COUNT++;
-    for (int i = 0; i < Pairs.size(); i++) {
-        cout << Pairs[i].first << '-' << Pairs[i].second
-             << (i < Pairs.size() - 1 ? ", " : ")\n");
-    }
-}
-#else
-template <typename T_Pairs>
-void testPairs(T_Pairs Pairs) {
-    return;
-}
-#endif
-
-const int NVL = int(1e9) + 5;
+const int32_t INF = int32_t(numeric_limits<int32_t>::max());
 const string ALPH = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-// max function
-int local_max(vector<int> x, const int size) {
-    int y = -NVL;
-    for (int i = 0; i < size; i++)
-        if (x[i] > y) y = x[i];
-    return (y);
-}
-
-template <typename T_Pairs>
-void printPairs(T_Pairs pairs, const bool pairSpacing = true,
-                const bool accountForWhiteSpace = false,
-                const bool newPairSpace = true, const bool newLine = true) {
-    for (int i = 0; i < pairs.size(); i++) {
-        cout << pairs[i].first;
-
-        if (pairSpacing) cout << ' ';
-
-        cout << pairs[i].second;
-
-        if (!(pairs[i].second == ' ' && accountForWhiteSpace))
-            cout << (newPairSpace ? ' ' : '\n');
-    }
-
-    if (newLine) cout << '\n';
-}
-
-void runCase(int tc) {
-    int N;
+void run_case(const uint16_t& tc) {
+    uint16_t N;
     cin >> N;
-    vector<int> p(N);
 
-    for (auto &i : p) cin >> i;
+    vector<int32_t> A(N);
 
-    vector<pair<char, char>> ans;
+    for_each(A.begin(), A.end(), [&](uint32_t& a) { cin >> a; });
 
-    pair<int, int> reduce(0, -NVL);
-    for (int i = 1; i < N; i++) {
-        if (p[i] > p[reduce.first]) reduce.first = i;
+    vector<array<char, 2>> ans;
+    array<int32_t, 2> reduce = {0, -INF};
+
+    for (uint16_t i = 1; i < N; ++i) {
+        if (A[i] > A[reduce[0]]) {
+            reduce[0] = i;
+        }
     }
 
-    reduce.second = p[reduce.first];
-    p[reduce.first] = -NVL;
+    reduce[1] = A[reduce[0]];
+    A[reduce[0]] = -INF;
+    int32_t target = *max_element(A.begin(), A.end());
+    A[reduce[0]] = target;
 
-    int target = local_max(p, N);
-    p[reduce.first] = target;
-    for (int i = reduce.second; i > target; i -= 2) {
-        ans.push_back(pair<char, char>(
-            ALPH[reduce.first], i - 2 >= target ? ALPH[reduce.first] : ' '));
-        testArgs(i - 2, target);
+    for (int32_t i = reduce[1]; i > target; i -= 2) {
+        ans.emplace_back(ALPH[reduce[0]],
+                         i - 2 >= target ? ALPH[reduce[0]] : ' ');
     }
 
-    for (int i = 0; i < N - 2; i++) {
-        testList(p);
-        testPairs(ans);
+    A[reduce[0]] = -INF;
+    reduce[1] = INF;
 
-        for (int k = 0; k < N; k++)
-            if (p[k] <= reduce.second && p[k] != -NVL) {
-                reduce.second = p[k];
-                reduce.first = k;
-            }
+    for (uint16_t i = 0; i < N; ++i) {
+        if (A[i] == target) {
+            reduce[0] == -INF ? reduce[0] = i : reduce[1] = i;
+        }
 
-        testArgs(reduce.first, reduce.second);
-
-        for (int k = reduce.second; k > 0; k -= 2)
-            ans.push_back(pair<char, char>(
-                ALPH[reduce.first], k - 2 >= 0 ? ALPH[reduce.first] : ' '));
-
-        p[reduce.first] = -NVL;
-        reduce.second = NVL;
+        if (reduce[0] != -INF && reduce[1] != -INF) break;
     }
 
-    reduce.first = reduce.second = -NVL;
-    for (int i = 0; i < N; i++) {
-        if (p[i] == target)
-            reduce.first == -NVL ? reduce.first = i : reduce.second = i;
-
-        if (reduce.first != -NVL && reduce.second != -NVL) break;
+    for (int32_t i = 0; i < target; i++) {
+        ans.emplace_back(ALPH[reduce[0]], ALPH[reduce[1]]);
     }
-
-    assert(reduce.first != -NVL && reduce.second != -NVL);
-
-    for (int i = 0; i < target; i++)
-        ans.push_back(
-            pair<char, char>(ALPH[reduce.first], ALPH[reduce.second]));
 
     cout << "Case #" << tc << ": ";
-    printPairs(ans, false, true);
+    for_each(ans.begin(), ans.end(),
+             [&](const array<char, 2>& a) { cout << a[0] << a[1]; });
+
+    cout << '\n';
 }
 
 int main() {
-    int test_cases;
-    cin >> test_cases;
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
 
-    for (int tc = 1; tc <= test_cases; tc++) {
-        runCase(tc);
-        cerr << flush;
+    uint16_t test_cases;
+    std::cin >> test_cases;
+
+    for (uint16_t tc = 1; tc <= test_cases; tc++) {
+        run_case(tc);
+#ifdef DBG_MODE
+        std::cout << std::flush;
+#endif
     }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
+#endif
+
+    return 0;
 }

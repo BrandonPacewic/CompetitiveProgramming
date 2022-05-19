@@ -1,86 +1,104 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <array>
+#include <cassert>
+#include <chrono>
+#include <cmath>
+#include <cstring>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <limits>
+#include <map>
+#include <memory>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-// dbg
-#ifdef DBG_MODE
-int64_t DBG_COUNT = 0;
-void DBG_OUT() {
-    cerr << endl;
-    DBG_COUNT++;
+template <typename A, typename B>
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
+    return os << '(' << p.first << ", " << p.second << ')';
 }
-template <typename Front, typename... Back>
-void DBG_OUT(Front K, Back... T) {
-    cerr << ' ' << K;
-    DBG_OUT(T...);
-}
-template <typename T_List>
-void testList(T_List List) {
-    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
-    DBG_COUNT++;
-    for (int i = 0; i < List.size(); i++) {
-        cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
+    os << '{';
+    std::string separator;
+
+    for (const T& item : container) {
+        os << separator << item, separator = ", ";
     }
+
+    return os << '}';
 }
-#define testArgs(...)                                                     \
-    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
-        DBG_OUT(__VA_ARGS__)
+
+#ifdef DBG_MODE
+void dbg_out() { std::cerr << std::endl; }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
+}
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
-template <typename T_List>
-void testList(T_List List) {
-    return;
-}
-#define testArgs(...)
+#define test(...)
 #endif
 
-void runCase(int tc) {
-    int N, D, M;
-    int64_t C;
+void run_case(const uint16_t& tc) {
+    uint32_t N, D, M;
+    uint64_t C;
     string S;
     cin >> N >> D >> C >> M >> S;
 
-    int dogs = count(S.begin(), S.end(), 'D');
+    uint32_t dogs = count(S.begin(), S.end(), 'D');
 
     if (D < dogs) {
         cout << "Case #" << tc << ": NO" << '\n';
         return;
     }
 
-    int found = 0;
+    uint32_t found = 0;
+    bool all_fed = true;
 
-    for (int i = 0; i < N; i++) {
-        testArgs(found, dogs, C);
+    for_each(S.begin(), S.end(), [&](const char& ch) {
+        if (found == dogs) return;
 
-        if (found == dogs) break;
-
-        if (S[i] == 'D') {
-            found++;
+        if (ch == 'D') {
+            ++found;
             C += M;
-
         } else if (C > 0) {
-            C--;
+            --C;
         } else {
-            cout << "Case #" << tc << ": NO" << '\n';
+            all_fed = false;
             return;
         }
-    }
+    });
 
-    cout << "Case #" << tc << ": YES" << '\n';
+    cout << "Case #" << tc << ": " << (all_fed ? "YES" : "NO") << '\n';
 }
 
 int main() {
-#ifdef TEXT_IO
-    freopen("in.txt", "r", stdin);
-    freopen("ou.txt", "w", stdout);
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+
+    uint16_t test_cases;
+    std::cin >> test_cases;
+
+    for (uint16_t tc = 1; tc <= test_cases; tc++) {
+        run_case(tc);
+#ifdef DBG_MODE
+        std::cout << std::flush;
+#endif
+    }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
 #endif
 
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-
-    int test_cases;
-    cin >> test_cases;
-
-    for (int tc = 1; tc <= test_cases; tc++) {
-        runCase(tc);
-        cout << flush;
-    }
+    return 0;
 }

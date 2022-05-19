@@ -1,100 +1,190 @@
-#include <bits/stdint-intn.h>
-
 #include <algorithm>
 #include <array>
 #include <cassert>
 #include <chrono>
 #include <cmath>
-#include <cstdint>
 #include <cstring>
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <map>
+#include <memory>
 #include <numeric>
 #include <queue>
-#include <random>
 #include <set>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 
-// dbg
-#ifdef DBG_MODE
-int64_t DBG_COUNT = 0;
-void DBG_OUT() {
-    cerr << endl;
-    DBG_COUNT++;
+template <typename A, typename B>
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
+    return os << '(' << p.first << ", " << p.second << ')';
 }
-template <typename Front, typename... Back>
-void DBG_OUT(Front K, Back... T) {
-    cerr << ' ' << K;
-    DBG_OUT(T...);
-}
-template <typename T_List>
-void testList(T_List List) {
-    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
-    DBG_COUNT++;
-    for (int i = 0; i < List.size(); i++) {
-        cerr << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
+    os << '{';
+    std::string separator;
+
+    for (const T& item : container) {
+        os << separator << item, separator = ", ";
     }
+
+    return os << '}';
 }
-#define testArgs(...)                                                     \
-    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
-        DBG_OUT(__VA_ARGS__)
+
+#ifdef DBG_MODE
+void dbg_out() { std::cerr << std::endl; }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
+}
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
-template <typename T_List>
-void testList(T_List List) {
-    return;
-}
-#define testArgs(...)
+#define test(...)
 #endif
 
-// modulo http://www.cplusplus.com/forum/general/19502/
-template <typename T, typename OP>
-struct modulo {
-    T bace;
-};
-enum { mod };
-template <typename T>
-modulo<T, decltype(mod)> operator<(const T& front, decltype(mod)) {
-    return {front};
-}
-template <typename T>
-T operator>(modulo<T, decltype(mod)> tail, T exponent) {
-    T& bace = tail.bace;
-    return bace % exponent < 0 ? (bace % exponent) + exponent : bace % exponent;
-}
+template <typename _Tp, const uint64_t Ceil>
+struct static_mod_type {
+    _Tp value;
 
-const int64_t modVal = 1000000007;
+    static_mod_type() : value{0} {}
+    static_mod_type(_Tp _value) : value{_value} {}
+    ~static_mod_type() = default;
 
-void runCase(int tc) {
-    int64_t R, C;
-    cin >> R >> C;
+    explicit operator int() const { return value; }
+    explicit operator int64_t() const { return value; }
+    explicit operator float() const { return value; }
+    explicit operator double() const { return value; }
+    explicit operator long double() const { return value; }
 
-    int64_t total = 0;
-
-    for (int i = 1; i < R && i < C; i++) {
-        total += (R - i) * (C - i) * i;
+    static_mod_type& operator%=(const static_mod_type& other) {
+        value %= other.value;
+        if (value < 0) {
+            value += other.value;
+        }
+        return *this;
     }
 
-    cout << "Case #" << tc << ": " << (total<mod> modVal) << '\n';
+    static_mod_type& operator+=(const static_mod_type& other) {
+        value += other.value;
+        return *this %= Ceil;
+    }
+
+    static_mod_type& operator-=(const static_mod_type& other) {
+        value -= other.value;
+        return *this %= Ceil;
+    }
+
+    static_mod_type& operator*=(const static_mod_type& other) {
+        value *= other.value;
+        return *this %= Ceil;
+    }
+
+    static_mod_type& operator/=(const static_mod_type& other) {
+        return value /= other.value;
+    }
+
+    static_mod_type operator+(const static_mod_type& other) const {
+        auto tmp = *this;
+        return tmp += other;
+    }
+
+    static_mod_type operator-(const static_mod_type& other) const {
+        auto tmp = *this;
+        return tmp -= other;
+    }
+
+    static_mod_type operator*(const static_mod_type& other) const {
+        auto tmp = *this;
+        return tmp *= other;
+    }
+
+    static_mod_type operator/(const static_mod_type& other) const {
+        auto tmp = *this;
+        return tmp /= other;
+    }
+
+    static_mod_type operator%(const static_mod_type& other) const {
+        auto tmp = *this;
+        return tmp %= other;
+    }
+
+    static_mod_type operator++() { return *this += 1; }
+
+    static_mod_type operator--() { return *this -= 1; }
+
+    bool operator==(const static_mod_type& other) const {
+        return value == other.value;
+    }
+
+    bool operator!=(const static_mod_type& other) const {
+        return value != other.value;
+    }
+
+    bool operator<(const static_mod_type& other) const {
+        return value < other.value;
+    }
+
+    bool operator>(const static_mod_type& other) const {
+        return value > other.value;
+    }
+
+    bool operator<=(const static_mod_type& other) const {
+        return value <= other.value;
+    }
+
+    bool operator>=(const static_mod_type& other) const {
+        return value >= other.value;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os,
+                                    const static_mod_type& a) {
+        return os << a.value;
+    }
+
+    friend std::istream& operator>>(std::istream& is, static_mod_type& a) {
+        return is >> a.value;
+    }
+};
+
+constexpr uint64_t mod = 1e9 + 7;
+
+void run_case(const uint16_t& tc) {
+    uint64_t R, C;
+    cin >> R >> C;
+
+    static_mod_type<uint64_t, mod> ans{0};
+
+    for (uint64_t i = 1; i < R && i < C; ++i) {
+        ans += (R - i) * (C - i) * i;
+    }
+
+    cout << "Case #" << tc << ": " << ans << '\n';
 }
 
 int main() {
-#ifdef TEXT_IO
-    freopen("in.txt", "r", stdin);
-    freopen("ou.txt", "w", stdout);
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+
+    uint16_t test_cases;
+    std::cin >> test_cases;
+
+    for (uint16_t tc = 1; tc <= test_cases; tc++) {
+        run_case(tc);
+#ifdef DBG_MODE
+        std::cout << std::flush;
+#endif
+    }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
 #endif
 
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int test_cases;
-    cin >> test_cases;
-
-    for (int tc = 1; tc <= test_cases; tc++) {
-        runCase(tc);
-        cout << flush;
-    }
+    return 0;
 }

@@ -50,38 +50,28 @@ void dbg_out(Head A, Tail... B) {
 #define test(...)
 #endif
 
-void run_case(const uint16_t& tc) {
-    int N;
-    cin >> N;
-    array<vector<int>, 2> A;
+void run_case(const uint16_t&) {
+    int low, high, N;
+    cin >> low >> high >> N;
 
-    for (int i = 0; i < N; ++i) {
-        int k;
-        cin >> k;
+    int ans = low;
 
-        A[i % 2].push_back(k);
-    }
+    while (true) {
+        cout << ans << endl;
 
-    sort(A[0].begin(), A[0].end());
-    sort(A[1].begin(), A[1].end());
+        string responce;
+        cin >> responce;
 
-    vector<int> ans;
-
-    for (int i = 0; i < (N % 2 == 0) ? N / 2 : (N - 1) / 2; ++i) {
-        ans.push_back(A[0][i]);
-        ans.push_back(A[1][i]);
-    }
-
-    if (N % 2 != 0) ans.push_back(A[0][N - 1]);
-
-    for_each(ans.begin(), ans.end() - 1, [&](const int& x, const auto& i) {
-        if (x > ans[i + 1]) {
-            cout << "Case #" << tc << ": " << i << '\n';
-            return;
+        if (responce == "CORRECT") {
+            break;
         }
-    });
 
-    cout << "Case #" << tc << ": OK" << '\n';
+        if (responce == "TOO_BIG") {
+            ans--;
+        } else {
+            ans++;
+        }
+    }
 }
 
 int main() {

@@ -7,88 +7,110 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <map>
+#include <memory>
 #include <numeric>
 #include <queue>
 #include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 
 template <typename A, typename B>
-ostream &operator<<(ostream &os, const pair<A, B> &p) {
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
     return os << '(' << p.first << ", " << p.second << ')';
 }
-template <typename T_container, typename T = typename enable_if<
-                                    !is_same<T_container, string>::value,
-                                    typename T_container::value_type>::type>
-ostream &operator<<(ostream &os, const T_container &v) {
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
     os << '{';
-    string sep;
-    for (const T &x : v) os << sep << x, sep = ", ";
+    std::string separator;
+
+    for (const T& item : container) {
+        os << separator << item, separator = ", ";
+    }
+
     return os << '}';
 }
 
-// dbg
 #ifdef DBG_MODE
-int64_t DBG_COUNT = 0;
-void DBG_OUT() {
-    cerr << endl;
-    DBG_COUNT++;
+void dbg_out() { std::cerr << std::endl; }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
 }
-template <typename Front, typename... Back>
-void DBG_OUT(Front K, Back... T) {
-    cerr << ' ' << K;
-    DBG_OUT(T...);
-}
-#define testArgs(...)                                         \
-    cerr << '#' << DBG_COUNT << " [" << #__VA_ARGS__ << "]:", \
-        DBG_OUT(__VA_ARGS__)
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
-#define testArgs(...)
+#define test(...)
 #endif
 
-void run_case(int tc) {
-    auto to_set = [](string _x) -> set<char> {
-        set<char> set_obj(_x.begin(), _x.end());
-        return set_obj;
-    };
+template <typename T_container>
+std::set<char> to_set(const T_container& container) {
+    std::set<char> set_obj(container.begin(), container.end());
+    return set_obj;
+}
 
-    int N;
-    cin >> N;
-    vector<string> names(N), same(N);
+struct Name {
+    string name, unchanged_name;
 
-    for (int i = 0; i < N; i++) {
-        getline(cin >> ws, names[i]);
-        same[i] = names[i];
-        names[i].erase(remove(names[i].begin(), names[i].end(), ' '),
-                       names[i].end());
+    Name(string& _name) : name(_name), unchanged_name(_name) {
+        name.erase(remove(name.begin(), name.end(), ' '), name.end());
     }
 
-    int best = -1, index = -1;
+    friend ostream& operator<<(ostream& os, const Name& name) {
+        return os << name.unchanged_name;
+    }
+};
 
-    for (int i = 0; i < N; i++) {
-        int unique = int(to_set(names[i]).size());
+void run_case(const uint16_t& tc) {
+    uint16_t N;
+    cin >> N;
 
-        testArgs(best, unique, names[i]);
+    vector<Name> names(N);
 
-        if (unique > best || (unique == best && names[i] < names[index])) {
-            best = unique;
+    for (uint16_t i = 0; i < N; ++i) {
+        string name;
+        getline(cin >> ws, name);
+        names[i] = Name(name);
+    }
+
+    uint16_t best = 0, index = 0;
+
+    for_each(names.begin(), names.end(), [&](const Name& name, const auto& i) {
+        uint16_t unique_letters = uint16_t(to_set(name.name).size());
+
+        if (unique_letters > best ||
+            (unique_letters == best && name.name < names[index].name)) {
+            best = unique_letters;
             index = i;
         }
-    }
+    });
 
-    cout << "Case #" << tc << ": " << same[index] << '\n';
+    cout << "Case #" << tc << ": " << names[index] << '\n';
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
 
-    int test_cases;
-    cin >> test_cases;
+    uint16_t test_cases;
+    std::cin >> test_cases;
 
-    for (int tc = 1; tc <= test_cases; tc++) {
+    for (uint16_t tc = 1; tc <= test_cases; tc++) {
         run_case(tc);
-        cout << flush;
+#ifdef DBG_MODE
+        std::cout << std::flush;
+#endif
     }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
+#endif
+
+    return 0;
 }

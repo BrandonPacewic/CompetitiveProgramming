@@ -18,28 +18,32 @@
  * SOFTWARE.
  */
 
+#include <algorithm>
+#include <cstdint>
 #include <vector>
 
 template <typename T, typename T_iterable>
-std::vector<std::pair<T, int>> run_length_encoding(const T_iterable& items) {
-    std::vector<std::pair<T, int>> encoding;
-    T previous;
-    int count = 0;
+std::vector<std::pair<T, uint16_t>> run_length_encoding(
+    const T_iterable& items) {
+    std::vector<std::pair<T, uint16_t>> encoding;
+    T previous_item;
+    uint16_t current_count = 0;
 
-    for (const T& item : items)
-        if (item == previous) {
-            ++count;
+    std::for_each(items.begin(), items.end(), [&](const T& item) {
+        if (item == previous_item) {
+            ++current_count;
         } else {
-            if (count > 0) {
-                encoding.emplace_back(previous, count);
+            if (current_count) {
+                encoding.emplace_back(previous_item, current_count);
             }
 
-            previous = item;
-            count = 1;
+            previous_item = item;
+            current_count = 1;
         }
+    });
 
-    if (count) {
-        encoding.emplace_back(previous, count);
+    if (current_count) {
+        encoding.emplace_back(previous_item, current_count);
     }
 
     return encoding;

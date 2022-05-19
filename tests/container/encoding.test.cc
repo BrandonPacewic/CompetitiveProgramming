@@ -8,7 +8,7 @@
 
 constexpr uint16_t total_tests = 5;
 
-using encoding_output = std::vector<std::pair<char, int>>;
+using encoding_output = std::vector<std::pair<char, uint16_t>>;
 
 std::array<std::pair<std::string, encoding_output>, total_tests> test_cases;
 

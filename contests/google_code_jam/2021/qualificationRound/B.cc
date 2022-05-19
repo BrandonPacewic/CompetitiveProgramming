@@ -50,41 +50,27 @@ void dbg_out(Head A, Tail... B) {
 #define test(...)
 #endif
 
+const int INF = int(numeric_limits<int>::max() / 2);
+
 void run_case(const uint16_t& tc) {
-    int N;
-    cin >> N;
-    array<vector<int>, 2> A;
+    int X, Y;
+    string S;
+    cin >> X >> Y >> S;
+    int end_c = (S[0] == '?' || S[0] == 'C') ? 0 : INF;
+    int end_j = (S[0] == '?' || S[0] == 'J') ? 0 : INF;
 
-    for (int i = 0; i < N; ++i) {
-        int k;
-        cin >> k;
-
-        A[i % 2].push_back(k);
-    }
-
-    sort(A[0].begin(), A[0].end());
-    sort(A[1].begin(), A[1].end());
-
-    vector<int> ans;
-
-    for (int i = 0; i < (N % 2 == 0) ? N / 2 : (N - 1) / 2; ++i) {
-        ans.push_back(A[0][i]);
-        ans.push_back(A[1][i]);
-    }
-
-    if (N % 2 != 0) ans.push_back(A[0][N - 1]);
-
-    for_each(ans.begin(), ans.end() - 1, [&](const int& x, const auto& i) {
-        if (x > ans[i + 1]) {
-            cout << "Case #" << tc << ": " << i << '\n';
-            return;
-        }
+    for_each(S.begin() + 1, S.end(), [&](const char& ch) {
+        int nend_c = (ch == '?' || ch == 'C') ? min(end_j + Y, end_c) : INF;
+        int nend_j = (ch == '?' || ch == 'J') ? min(end_j, end_c + X) : INF;
+        end_c = nend_c;
+        end_j = nend_j;
     });
 
-    cout << "Case #" << tc << ": OK" << '\n';
+    cout << "Case #" << tc << ": " << min(end_c, end_j) << '\n';
 }
 
 int main() {
+    test(INF);
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
 

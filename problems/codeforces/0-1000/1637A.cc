@@ -8,52 +8,53 @@
 #include <iomanip>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <numeric>
 #include <queue>
 #include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 
 template <typename A, typename B>
-ostream &operator<<(ostream &os, const pair<A, B> &p) {
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
     return os << '(' << p.first << ", " << p.second << ')';
 }
-template <typename T_container, typename T = typename enable_if<
-                                    !is_same<T_container, string>::value,
-                                    typename T_container::value_type>::type>
-ostream &operator<<(ostream &os, const T_container &v) {
+
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
     os << '{';
-    string sep;
-    for (const T &x : v) os << sep << x, sep = ", ";
+    std::string separator;
+
+    for (const T& item : container) {
+        os << separator << item, separator = ", ";
+    }
+
     return os << '}';
 }
 
-// dbg
 #ifdef DBG_MODE
-int64_t DBG_COUNT = 0;
-void DBG_OUT() {
-    cerr << endl;
-    DBG_COUNT++;
+void dbg_out() { std::cerr << std::endl; }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
 }
-template <typename Front, typename... Back>
-void DBG_OUT(Front K, Back... T) {
-    cerr << ' ' << K;
-    DBG_OUT(T...);
-}
-#define test(...)                                             \
-    cerr << '#' << DBG_COUNT << " [" << #__VA_ARGS__ << "]:", \
-        DBG_OUT(__VA_ARGS__)
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
 #define test(...)
 #endif
 
-// https://codeforces.com/problemset/problem/1637/A
 void run_case() {
     int N;
     cin >> N;
     vector<int> A(N);
 
-    for (auto &a : A) cin >> a;
+    for_each(A.begin(), A.end(), [](int& a) { cin >> a; });
 
     bool ans = false;
 
@@ -68,14 +69,22 @@ void run_case() {
 }
 
 int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
 
-    int test_cases;
-    cin >> test_cases;
+    uint16_t test_cases;
+    std::cin >> test_cases;
 
     while (test_cases--) {
         run_case();
-        cout << flush;
+#ifdef DBG_MODE
+        std::cout << std::flush;
+#endif
     }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
+#endif
+
+    return 0;
 }

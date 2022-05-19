@@ -1,81 +1,90 @@
-#include <bits/stdc++.h>
+#include <algorithm>
+#include <array>
+#include <cassert>
+#include <chrono>
+#include <cmath>
+#include <cstring>
+#include <functional>
+#include <iomanip>
+#include <iostream>
+#include <limits>
+#include <map>
+#include <memory>
+#include <numeric>
+#include <queue>
+#include <set>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
 using namespace std;
 
-// dbg
-#define DBG_MODE
-long long DBG_COUNT = 0ll;
-void DBG_OUT() {
-    cerr << endl;
-    DBG_COUNT += 1ll;
+template <typename A, typename B>
+std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
+    return os << '(' << p.first << ", " << p.second << ')';
 }
-template <typename Front, typename... Back>
-void DBG_OUT(Front K, Back... T) {
-    cerr << ' ' << K;
-    DBG_OUT(T...);
-}
-#ifdef DBG_MODE
-template <typename T_Ints>
-void testList(T_Ints List) {
-    cerr << '#' << DBG_COUNT << " __LIST_ARGS__: (";
-    DBG_COUNT += 1ll;
-    for (int i = 0; i < List.size(); i++) {
-        cout << List[i] << (i < List.size() - 1 ? ", " : ")\n");
+
+template <typename T_container,
+          typename T = typename std::enable_if<
+              !std::is_same<T_container, std::string>::value,
+              typename T_container::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
+    os << '{';
+    std::string separator;
+
+    for (const T& item : container) {
+        os << separator << item, separator = ", ";
     }
+
+    return os << '}';
 }
-#define testArgs(...)                                                     \
-    cerr << '#' << DBG_COUNT << " __VA_ARGS__ (" << #__VA_ARGS__ << "):", \
-        DBG_OUT(__VA_ARGS__)
+
+#ifdef DBG_MODE
+void dbg_out() { std::cerr << std::endl; }
+template <typename Head, typename... Tail>
+void dbg_out(Head A, Tail... B) {
+    std::cerr << ' ' << A;
+    dbg_out(B...);
+}
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
 #else
-template <typename T_Ints>
-void testList(T_Ints List) {
-    return;
-}
-#define testArgs(...)
+#define test(...)
 #endif
 
-template <typename T_List>
-void printList(T_List List, bool space = true, bool new_line = true) {
-    int k = 0;
+void run_case(const uint16_t& tc) {
+    string S;
+    cin >> S;
 
-    while (List[k] == 0) k++;
+    string a(S.length(), '0'), b(S.length(), '0');
 
-    for (int i = k; i < List.size(); i++) {
-        cout << List[i];
-
-        if (space) cout << ' ';
-
-        if (new_line && i == List.size() - 1)
-            cout << '\n';
-        else if (i == List.size() - 1)
-            cout << ' ';
-    }
-}
-
-void runCase(int tc) {
-    string N;
-    cin >> N;
-
-    vector<int> A(N.length()), B(N.length());
-    for (int i = 0; i < N.length(); i++) {
-        if (N[i] == '4') {
-            A[i] = 2;
-            B[i] = 2;
+    for_each(S.begin(), S.end(), [&](const char& ch, const auto& i) {
+        if (ch == '4') {
+            a[i] = '2';
+            b[i] = '2';
         } else {
-            A[i] = N[i] - '0';
+            a[i] = ch;
         }
-    }
+    });
 
-    cout << "Case #" << tc << ": ";
-    printList(A, false, false);
-    printList(B, false, true);
+    cout << "Case #" << tc << ": " << a << ' ' << b << '\n';
 }
 
 int main() {
-    int test_cases;
-    cin >> test_cases;
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(nullptr);
 
-    for (int tc = 1; tc <= test_cases; tc++) {
-        runCase(tc);
-        cerr << flush;
+    uint16_t test_cases;
+    std::cin >> test_cases;
+
+    for (uint16_t tc = 1; tc <= test_cases; tc++) {
+        run_case(tc);
+#ifdef DBG_MODE
+        std::cout << std::flush;
+#endif
     }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
+#endif
+
+    return 0;
 }

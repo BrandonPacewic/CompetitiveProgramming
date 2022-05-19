@@ -7,36 +7,37 @@
 #include <functional>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <map>
+#include <memory>
 #include <numeric>
 #include <queue>
 #include <set>
+#include <unordered_map>
+#include <unordered_set>
 #include <vector>
 using namespace std;
 
-// dbg output stream handling for pairs
 template <typename A, typename B>
 std::ostream& operator<<(std::ostream& os, const std::pair<A, B>& p) {
     return os << '(' << p.first << ", " << p.second << ')';
 }
 
-// dbg output stream handling for containers excluding type std::string
 template <typename T_container,
           typename T = typename std::enable_if<
               !std::is_same<T_container, std::string>::value,
               typename T_container::value_type>::type>
-std::ostream& operator<<(std::ostream& os, const T_container& A) {
-    std::string sep;
+std::ostream& operator<<(std::ostream& os, const T_container& container) {
     os << '{';
+    std::string separator;
 
-    for (const T& a : A) {
-        os << sep << a, sep = ", ";
+    for (const T& item : container) {
+        os << separator << item, separator = ", ";
     }
 
     return os << '}';
 }
 
-// dbg
 #ifdef DBG_MODE
 void dbg_out() { std::cerr << std::endl; }
 template <typename Head, typename... Tail>
@@ -50,52 +51,58 @@ void dbg_out(Head A, Tail... B) {
 #endif
 
 template <typename T, typename T_iterable>
-vector<pair<T, int>> run_length_encoding(const T_iterable& items) {
-    vector<pair<T, int>> encoding;
-    T previous;
-    int count = 0;
+std::vector<std::pair<T, uint16_t>> run_length_encoding(
+    const T_iterable& items) {
+    std::vector<std::pair<T, uint16_t>> encoding;
+    T previous_item;
+    uint16_t current_count = 0;
 
-    for (const T& item : items)
-        if (item == previous) {
-            count++;
+    std::for_each(items.begin(), items.end(), [&](const T& item) {
+        if (item == previous_item) {
+            ++current_count;
         } else {
-            if (count > 0) encoding.emplace_back(previous, count);
+            if (current_count) {
+                encoding.emplace_back(previous_item, current_count);
+            }
 
-            previous = item;
-            count = 1;
+            previous_item = item;
+            current_count = 1;
         }
+    });
 
-    if (count > 0) encoding.emplace_back(previous, count);
+    if (current_count) {
+        encoding.emplace_back(previous_item, current_count);
+    }
 
     return encoding;
 }
 
-void run_case(const int& tc) {
+void run_case(const uint16_t& tc) {
     string S;
     cin >> S;
 
     auto occurrences = run_length_encoding<char>(S);
-    test(occurrences);
 
     cout << "Case #" << tc << ": ";
 
-    auto output = [](const pair<char, int>& a) -> void {
-        for (int i = 0; i < a.second; ++i) {
+    auto output = [](const pair<char, uint16_t>& a) -> void {
+        for (uint16_t i = 0; i < a.second; ++i) {
             cout << a.first;
         }
     };
 
-    auto output_double = [](const pair<char, int>& a) -> void {
-        for (int i = 0; i < a.second * 2; ++i) {
-            cout << a.first;
+    auto output_double = [](const pair<char, uint16_t>& a) -> void {
+        for (uint16_t i = 0; i < a.second; ++i) {
+            cout << a.first << a.first;
         }
     };
 
-    for (int i = 0; i < int(occurrences.size()) - 1; ++i) {
-        if (occurrences[i].first < occurrences[i + 1].first) {
-            output_double(occurrences[i]);
-        } else
-            output(occurrences[i]);
+    for (auto i = occurrences.begin(); i != occurrences.end() - 1; ++i) {
+        if (i->first < (i + 1)->first) {
+            output_double(*i);
+        } else {
+            output(*i);
+        }
     }
 
     output(occurrences.back());
@@ -106,13 +113,19 @@ int main() {
     std::ios::sync_with_stdio(false);
     std::cin.tie(nullptr);
 
-    int test_cases;
+    uint16_t test_cases;
     std::cin >> test_cases;
 
-    for (int tc = 1; tc <= test_cases; tc++) {
+    for (uint16_t tc = 1; tc <= test_cases; tc++) {
         run_case(tc);
+#ifdef DBG_MODE
         std::cout << std::flush;
+#endif
     }
+
+#ifndef DBG_MODE
+    std::cout << std::flush;
+#endif
 
     return 0;
 }
