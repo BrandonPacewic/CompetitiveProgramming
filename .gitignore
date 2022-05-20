@@ -35,8 +35,8 @@
 __pycache__/
 
 # test
-*test.cc
-*test.cpp
+test.cc
+test.cpp
 
 # test files
 *test.py
@@ -51,11 +51,6 @@ in.txt
 ou.txt
 ex.txt
 *.zip
-
-# Source code testing
-!tests/container/encoding.test.cc
-!tests/container/to_set.test.cc
-!tests/test.py
 
 # Other Things
 googleKickStart/2018/
