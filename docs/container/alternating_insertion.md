@@ -42,6 +42,11 @@ An output iterator to the front of the resulting range.
 
 An output iterator to the front of the resulting range.
 
+### Remarks
+
+Slightly different from the standard library's `merge` as it does not
+modify the original ranges or require a sorted range.
+
 ### Example
 
 ```cpp
@@ -52,7 +57,12 @@ An output iterator to the front of the resulting range.
 #include <vector>
 
 template <class ForwardIterator1, class ForwardIterator2, class OutputIterator>
-OutputIterator alternating_insertion();
+OutputIterator alternating_insertion(
+    ForwardIterator1 first1,
+    ForwardIterator1 last1,
+    ForwardIterator2 first2,
+    ForwardIterator2 last2,
+    OutputIterator result);
 
 int main() {
     std::vector<int> a = {1, 2, 3, 4, 5};
