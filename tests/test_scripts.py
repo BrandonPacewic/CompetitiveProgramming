@@ -16,7 +16,7 @@ class Test:
         os.chdir(self.file_dir)
 
         try:
-            os.system(f'{COMPILER} {FLAGS} {self.fname}.cc -o {self.fname}.out')
+            os.system(f'{COMPILER} {FLAGS} {self.fname}.cpp -o {self.fname}.out')
         except:
             print('Compile Error')
             return False
@@ -46,8 +46,8 @@ def create_tests() -> List[Test]:
 
     for root, _, files in os.walk('./'):
         for file in files:
-            if file.endswith('.test.cc'):
-                tests.append(Test(file[:-3], f'{root}/'))
+            if file.endswith('.test.cpp'):
+                tests.append(Test(file[:-4], f'{root}/'))
                 print(f'Found file {file}')
 
     return tests
