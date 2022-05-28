@@ -46,6 +46,7 @@ An output iterator to the front of the resulting range.
 
 ```cpp
 // example authored by Brandon Pacewic
+// alternate_insertion.cpp
 #include <algorithm>
 #include <iostream>
 #include <vector>
