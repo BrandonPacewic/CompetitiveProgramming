@@ -18,13 +18,7 @@
  * SOFTWARE.
  */
 
-/** @file matrix/basic_uniform_matrix.h
- *  @author Brandon Pacewic
- *  Basic uniform matrix extending std::array.
- */
-
 #include <array>
-#include <cstddef>
 
 template <class Ty, std::size_t N>
 class basic_uniform_matrix {
@@ -38,34 +32,35 @@ class basic_uniform_matrix {
     using size_type = std::size_t;
 
     basic_uniform_matrix() = default;
+
     basic_uniform_matrix(const basic_uniform_matrix&) = default;
-    basic_uniform_matrix(basic_uniform_matrix&&) = default;
+
+    basic_uniform_matrix(basic_uniform_matrix&&) noexcept = default;
+
     basic_uniform_matrix& operator=(const basic_uniform_matrix&) = default;
+
     basic_uniform_matrix& operator=(basic_uniform_matrix&&) = default;
 
-    reference operator[](size_type index) { return rows[index]; }
+    [[nodiscard]] reference operator[](size_type index) { return rows[index]; }
 
-    constexpr const_reference operator[](size_type index) const {
+    [[nodiscard]] const_reference operator[](size_type index) const {
         return rows[index];
     }
 
-    constexpr size_type size() const { return N; }
+    // The number of rows and cols are the same.
+    [[nodiscard]] constexpr size_type size() const { return N; }
 
-    constexpr pointer begin() { return rows.begin(); }
+    [[nodiscard]] constexpr pointer begin() { return rows.begin(); }
+    [[nodiscard]] constexpr const_pointer begin() const { return rows.begin(); }
 
-    constexpr const_pointer begin() const { return rows.begin(); }
+    [[nodiscard]] constexpr pointer end() { return rows.end(); }
+    [[nodiscard]] constexpr const_pointer end() const { return rows.end(); }
 
-    constexpr pointer end() { return rows.end(); }
+    [[nodiscard]] reference front() { return rows.front(); }
+    [[nodiscard]] const_reference front() const { return rows.front(); }
 
-    constexpr const_pointer end() const { return rows.end(); }
-
-    reference front() { return rows.front(); }
-
-    constexpr const_reference front() const { return rows.front(); }
-
-    reference back() { return rows.back(); }
-
-    constexpr const_reference back() const { return rows.back(); }
+    [[nodiscard]] reference back() { return rows.back(); }
+    [[nodiscard]] const_reference back() const { return rows.back(); }
 
    private:
     std::array<std::array<Ty, N>, N> rows;
