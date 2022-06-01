@@ -27,8 +27,8 @@
 namespace matrix_standard_algorithms {
 
 template <class ForwardIterator, class UnaryPredicate>
-[[nodiscard]] bool any_of(ForwardIterator first, ForwardIterator last,
-                          UnaryPredicate pred) {
+[[nodiscard]] const bool any_of(ForwardIterator first, ForwardIterator last,
+                                UnaryPredicate pred) {
     for (; first != last; ++first) {
         if (!std::any_of(*first.begin(), *first.end(), pred)) {
             return false;
@@ -39,8 +39,8 @@ template <class ForwardIterator, class UnaryPredicate>
 }
 
 template <class ForwardIterator, class UnaryPredicate>
-[[nodiscard]] bool all_of(ForwardIterator first, ForwardIterator last,
-                          UnaryPredicate pred) {
+[[nodiscard]] const bool all_of(ForwardIterator first, ForwardIterator last,
+                                UnaryPredicate pred) {
     for (; first != last; ++first) {
         if (!std::all_of(*first.begin(), *first.end(), pred)) {
             return false;
@@ -51,8 +51,8 @@ template <class ForwardIterator, class UnaryPredicate>
 }
 
 template <class ForwardIterator, class UnaryPredicate>
-[[nodiscard]] bool none_of(ForwardIterator first, ForwardIterator last,
-                           UnaryPredicate pred) {
+[[nodiscard]] const bool none_of(ForwardIterator first, ForwardIterator last,
+                                 UnaryPredicate pred) {
     for (; first != last; ++first) {
         if (std::none_of((*first).begin(), (*first).end(), pred)) {
             return false;
@@ -62,7 +62,6 @@ template <class ForwardIterator, class UnaryPredicate>
     return true;
 }
 
-// fill
 template <class ForwardIterator, class ValueType>
 void fill(ForwardIterator first, ForwardIterator last, const ValueType& value) {
     for (; first != last; ++first) {
@@ -70,10 +69,10 @@ void fill(ForwardIterator first, ForwardIterator last, const ValueType& value) {
     }
 }
 
-// find
 template <class ForwardIterator, class ValueType>
-[[nodiscard]] ForwardIterator find(ForwardIterator first, ForwardIterator last,
-                                   const ValueType& value) {
+[[nodiscard]] const ForwardIterator find(ForwardIterator first,
+                                         ForwardIterator last,
+                                         const ValueType& value) {
     for (; first != last; ++first) {
         auto it = std::find((*first).begin(), (*first).end(), value);
         if (it != (*first).end()) {
@@ -81,13 +80,13 @@ template <class ForwardIterator, class ValueType>
         }
     }
 
-    return last;
+    return last.end();
 }
 
 template <class ForwardIterator, class UnaryPredicate>
-[[nodiscard]] ForwardIterator find_if(ForwardIterator first,
-                                      ForwardIterator last,
-                                      UnaryPredicate pred) {
+[[nodiscard]] const ForwardIterator find_if(ForwardIterator first,
+                                            ForwardIterator last,
+                                            UnaryPredicate pred) {
     for (; first != last; ++first) {
         auto it = std::find_if((*first).begin(), (*first).end(), pred);
         if (it != (*first).end()) {
@@ -105,6 +104,28 @@ void for_each(ForwardIterator first, ForwardIterator last, UnaryFunction func) {
     }
 }
 
+template <class ForwardIterator, class LinearContainer>
+void fill_from_linear_container(ForwardIterator first, ForwardIterator last,
+                                const LinearContainer& container) {
+    std::size_t linear_index = 0;
+
+    for_each(first, last, [&](auto& cell) {
+        cell = container[linear_index], ++linear_index;
+    });
+
+#ifdef DBG_MODE  // Extra cost of time complexity
+    auto linear_container_size =
+        std::distance(container.begin(), container.end());
+
+    if (linear_index != linear_container_size) {
+        throw std::out_of_range(
+            "fill_from_linear: container size does not "
+            "match matrix size; invalid conversion of "
+            "linear container to matrix");
+    }
+#endif
+}
+
 template <class ForwardIterator, class ValueType>
 void iota(ForwardIterator first, ForwardIterator last, ValueType value) {
     for (; first != last; ++first) {
@@ -115,10 +136,12 @@ void iota(ForwardIterator first, ForwardIterator last, ValueType value) {
     }
 }
 
-template <class ForwardIterator, class ValueType, 
+template <class ForwardIterator, class ValueType,
           class ReturnContainerType = std::vector<ValueType>>
 [[nodiscard]] ReturnContainerType create_linear_sequence(ForwardIterator first,
                                                          ForwardIterator last) {
+    // TODO: Vector is needed for an undefined matrix but other containers can
+    // Be used for a %basic_uniform_matrix type
     ReturnContainerType sequence;
 
     for (; first != last; ++first) {
@@ -131,8 +154,8 @@ template <class ForwardIterator, class ValueType,
 }
 
 template <class ForwardIterator, class BinaryPredicate>
-[[nodiscard]] bool is_sorted(ForwardIterator first, ForwardIterator last,
-                             BinaryPredicate pred = std::less<>()) {
+[[nodiscard]] const bool is_sorted(ForwardIterator first, ForwardIterator last,
+                                   BinaryPredicate pred = std::less<>()) {
     for (; first != last; ++first) {
         if (!std::is_sorted((*first).begin(), (*first).end(), pred)) {
             return false;
@@ -145,10 +168,11 @@ template <class ForwardIterator, class BinaryPredicate>
 template <class ForwardIterator, class BinaryPredicate>
 void sort(ForwardIterator first, ForwardIterator last,
           BinaryPredicate pred = std::less<>()) {
+    // Requires `create_linear_sequence` and `fill_from_linear_container`
     auto linear_matrix = create_linear_sequence(first, last);
     std::sort(linear_matrix.begin(), linear_matrix.end(), pred);
 
-    // TODO
+    fill_from_linear_container(first, last, linear_matrix);
 }
 
 }  // namespace matrix_standard_algorithms
