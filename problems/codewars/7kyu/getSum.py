@@ -1,1 +1,0 @@
-get_sum = lambda a, b: sum(range(min(a, b), max(a, b) + 1))
