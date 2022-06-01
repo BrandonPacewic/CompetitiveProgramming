@@ -64,10 +64,7 @@ template <class ForwardIterator, class ValueType>
 void m_fill(ForwardIterator first, ForwardIterator last,
             const ValueType& value) {
     for (; first != last; ++first) {
-        // std::fill((*first).begin(), (*first).end(), value);
-        for (auto it = (*first).begin(); it != (*first).end(); ++it) {
-            *it = value;
-        }
+        std::fill((*first).begin(), (*first).end(), value);
     }
 }
 
