@@ -23,7 +23,7 @@
 #include <vector>
 
 template <typename T, typename T_iterable>
-std::vector<std::pair<T, uint16_t>> run_length_encoding(
+[[nodiscard]] std::vector<std::pair<T, uint16_t>> run_length_encoding(
     const T_iterable& items) {
     std::vector<std::pair<T, uint16_t>> encoding;
     T previous_item;

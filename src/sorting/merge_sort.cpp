@@ -22,8 +22,9 @@
 #include <cstdint>
 
 template <typename T_container>
-T_container merge(T_container& container, std::size_t leftIndex,
-                  std::size_t middleIndex, std::size_t rightIndex) {
+[[nodiscard]] T_container merge(T_container& container, std::size_t leftIndex,
+                                std::size_t middleIndex,
+                                std::size_t rightIndex) {
     T_container left_array(container.begin() + leftIndex,
                            container.begin() + middleIndex + 1);
     T_container right_array(container.begin() + middleIndex + 1,
@@ -58,8 +59,9 @@ T_container merge(T_container& container, std::size_t leftIndex,
 }
 
 template <typename T_container>
-T_container merge_sort(T_container& container, std::size_t left_index,
-                       std::size_t right_index) {
+[[nodiscard]] T_container merge_sort(T_container& container,
+                                     std::size_t left_index,
+                                     std::size_t right_index) {
     if (left_index < right_index) {
         std::size_t middle_index = left_index + (right_index - left_index) / 2;
 
