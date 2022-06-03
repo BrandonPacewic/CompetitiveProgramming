@@ -21,7 +21,7 @@
 #include <algorithm>
 
 template <typename T_container>
-T_container reverse_sort(T_container& container) {
+[[nodiscard]] T_container reverse_sort(T_container& container) {
     std::for_each(
         container.begin(), container.end(), [&](auto& element, const auto& i) {
             auto index =
