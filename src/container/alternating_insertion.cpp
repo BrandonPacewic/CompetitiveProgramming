@@ -20,18 +20,6 @@
 
 #include <algorithm>
 
-/**
- *  @brief Combines two containers into one taking alternating elements.
- *  @param first1 Forward iterator to the first element of the first container.
- *  @param last1 Forward iterator to one past the last element of the first
- *               container.
- *  @param first2 Forward iterator to the first element of the second container.
- *  @param last2 Forward iterator to one past the last element of the second
- *               container.
- *  @param result Output iterator to the first element of the combined
- * container.
- *  @return Output iterator to the end of the combined container.
- */
 template <class ForwardIterator1, class ForwardIterator2, class OutputIterator>
 OutputIterator alternating_insertion(ForwardIterator1 first1,
                                      ForwardIterator1 last1,
