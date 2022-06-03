@@ -28,7 +28,8 @@ template <typename T_container>
 }
 
 template <typename T_container>
-[[nodiscard]] std::unordered_set<char> to_unordered_set(const T_container& container) {
+[[nodiscard]] std::unordered_set<char> to_unordered_set(
+    const T_container& container) {
     std::unordered_set<char> set_obj(container.begin(), container.end());
     return set_obj;
 }
