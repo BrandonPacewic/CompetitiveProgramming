@@ -1,6 +1,6 @@
 # Competitive Programming
 
-![Format Check](https://github.com/BrandonPacewic/CompetitiveProgramming/blob/mega/.github/workflows/clang-format-check.yml/badge.svg?event=push)
+![Format Check](https://github.com/BrandonPacewic/CompetitiveProgramming/mega/.github/workflows/clang-format-check.yml/badge.svg?event=push)
 
 Competitive programming is a passion of mine I and would love to share it with
 anyone and everyone. There are many competitive programmers that have their own
