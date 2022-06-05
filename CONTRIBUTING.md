@@ -5,7 +5,7 @@ more than to work with someone who enjoys programming as much as I do. Even
 if your not sure if your idea is good or not or how to implement it please
 at least raise an issue.
 
-Issues should be used to describe what needs to be done, weither it is a bug
+Issues should be used to describe what needs to be done, whether it is a bug
 or a feature. 
 
 I would love to work on any and all of your ideas and if you would also like to
