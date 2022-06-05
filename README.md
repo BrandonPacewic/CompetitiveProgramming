@@ -1,7 +1,9 @@
 # Competitive Programming
 
+<center>
 ![Clang Format Check](https://github.com/BrandonPacewic/CompetitiveProgramming/actions/workflows/clang-format-check.yml/badge.svg)
 ![Tests](https://github.com/BrandonPacewic/CompetitiveProgramming/actions/workflows/tests.yml/badge.svg)
+</center>
 
 Competitive programming is a passion of mine I and would love to share it with
 anyone and everyone. There are many competitive programmers that have their own
