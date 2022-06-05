@@ -22,7 +22,7 @@
 #include <cstdint>
 #include <vector>
 
-template <typename T, typename T_iterable>
+template<typename T, typename T_iterable>
 [[nodiscard]] std::vector<std::pair<T, uint16_t>> run_length_encoding(
     const T_iterable& items) {
     std::vector<std::pair<T, uint16_t>> encoding;
