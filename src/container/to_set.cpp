@@ -21,15 +21,16 @@
 #include <set>
 #include <unordered_set>
 
-template <typename T_container>
-[[nodiscard]] std::set<char> to_set(const T_container& container) {
-    std::set<char> set_obj(container.begin(), container.end());
-    return set_obj;
+template <typename ForwardIterator>
+[[nodiscard]] auto to_set(ForwardIterator first, ForwardIterator last)
+    -> std::set<decltype(*first)> {
+  std::set<decltype(*first)> set_obj(first, last);
+  return set_obj;
 }
 
-template <typename T_container>
-[[nodiscard]] std::unordered_set<char> to_unordered_set(
-    const T_container& container) {
-    std::unordered_set<char> set_obj(container.begin(), container.end());
-    return set_obj;
+template <typename ForwardIterator>
+[[nodiscard]] auto to_unordered_set(ForwardIterator first, ForwardIterator last)
+    -> std::unordered_set<decltype(*first)> {
+  std::unordered_set<decltype(*first)> set_obj(first, last);
+  return set_obj;
 }
