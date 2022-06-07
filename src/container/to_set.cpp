@@ -21,16 +21,20 @@
 #include <set>
 #include <unordered_set>
 
-template <typename ForwardIterator>
-[[nodiscard]] auto to_set(ForwardIterator first, ForwardIterator last)
-    -> std::set<decltype(*first)> {
-    std::set<decltype(*first)> set_obj(first, last);
+template <typename ForwardIterator,
+          typename BaseIteratorType =
+              typename std::iterator_traits<ForwardIterator>::value_type>
+[[nodiscard]] std::set<BaseIteratorType> to_set(ForwardIterator first,
+                                                ForwardIterator last) {
+    std::set<BaseIteratorType> set_obj(first, last);
     return set_obj;
 }
 
-template <typename ForwardIterator>
-[[nodiscard]] auto to_unordered_set(ForwardIterator first, ForwardIterator last)
-    -> std::unordered_set<decltype(*first)> {
-    std::unordered_set<decltype(*first)> set_obj(first, last);
+template <typename ForwardIterator,
+          typename BaseIteratorType =
+              typename std::iterator_traits<ForwardIterator>::value_type>
+[[nodiscard]] std::unordered_set<BaseIteratorType> to_unordered_set(
+    ForwardIterator first, ForwardIterator last) {
+    std::unordered_set<BaseIteratorType> set_obj(first, last);
     return set_obj;
 }
