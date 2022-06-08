@@ -18,29 +18,30 @@
  * SOFTWARE.
  */
 
-#include <algorithm>
 #include <cstdint>
 #include <vector>
 
-template <typename T, typename T_iterable>
-[[nodiscard]] std::vector<std::pair<T, uint16_t>> run_length_encoding(
-    const T_iterable& items) {
-    std::vector<std::pair<T, uint16_t>> encoding;
-    T previous_item;
+template <typename ForwardIterator,
+          typename BaseIteratorType =
+              typename std::iterator_traits<ForwardIterator>::value_type>
+[[nodiscard]] std::vector<std::pair<BaseIteratorType, uint16_t>>
+run_length_encoding(ForwardIterator first, ForwardIterator last) {
+    std::vector<std::pair<BaseIteratorType, uint16_t>> encoding;
+    BaseIteratorType previous_item;
     uint16_t current_count = 0;
 
-    std::for_each(items.begin(), items.end(), [&](const T& item) {
-        if (item == previous_item) {
+    for (; first != last; ++first) {
+        if (*first == previous_item) {
             ++current_count;
         } else {
             if (current_count) {
                 encoding.emplace_back(previous_item, current_count);
             }
 
-            previous_item = item;
+            previous_item = *first;
             current_count = 1;
         }
-    });
+    }
 
     if (current_count) {
         encoding.emplace_back(previous_item, current_count);
