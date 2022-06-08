@@ -18,7 +18,6 @@
  * SOFTWARE.
  */
 
-#include <algorithm>
 #include <cstdint>
 #include <vector>
 
