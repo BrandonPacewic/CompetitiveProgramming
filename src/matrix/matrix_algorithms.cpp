@@ -55,7 +55,7 @@ template <class ForwardIterator, class UnaryPredicate>
                                         ForwardIterator last,
                                         UnaryPredicate pred) {
     for (; first != last; ++first) {
-        if (std::none_of((*first).begin(), (*first).end(), pred)) {
+        if (!std::none_of((*first).begin(), (*first).end(), pred)) {
             return false;
         }
     }
@@ -76,7 +76,8 @@ template <class ForwardIterator, class ValueType>
                                                 ForwardIterator last,
                                                 const ValueType& value) {
     for (; first != last; ++first) {
-        auto it = std::find((*first).begin(), (*first).end(), value);
+        const auto it = std::find((*first).begin(), (*first).end(), value);
+
         if (it != (*first).end()) {
             return it;
         }
@@ -90,7 +91,8 @@ template <class ForwardIterator, class UnaryPredicate>
                                                    ForwardIterator last,
                                                    UnaryPredicate pred) {
     for (; first != last; ++first) {
-        auto it = std::find_if((*first).begin(), (*first).end(), pred);
+        const auto it = std::find_if((*first).begin(), (*first).end(), pred);
+
         if (it != (*first).end()) {
             return it;
         }
