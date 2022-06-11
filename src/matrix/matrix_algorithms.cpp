@@ -25,10 +25,24 @@
 #include <vector>
 
 template <class ForwardIterator, class UnaryPredicate>
-[[nodiscard]] const bool m_any_of(ForwardIterator first, ForwardIterator last,
-                                  UnaryPredicate pred) {
+[[nodiscard]] const bool matrix_any_of(ForwardIterator first,
+                                       ForwardIterator last,
+                                       UnaryPredicate pred) {
     for (; first != last; ++first) {
-        if (!std::any_of(*first.begin(), *first.end(), pred)) {
+        if (std::any_of((*first).begin(), (*first).end(), pred)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+template <class ForwardIterator, class UnaryPredicate>
+[[nodiscard]] const bool matrix_all_of(ForwardIterator first,
+                                       ForwardIterator last,
+                                       UnaryPredicate pred) {
+    for (; first != last; ++first) {
+        if (!std::all_of((*first).begin(), (*first).end(), pred)) {
             return false;
         }
     }
@@ -37,22 +51,11 @@ template <class ForwardIterator, class UnaryPredicate>
 }
 
 template <class ForwardIterator, class UnaryPredicate>
-[[nodiscard]] const bool m_all_of(ForwardIterator first, ForwardIterator last,
-                                  UnaryPredicate pred) {
+[[nodiscard]] const bool matrix_none_of(ForwardIterator first,
+                                        ForwardIterator last,
+                                        UnaryPredicate pred) {
     for (; first != last; ++first) {
-        if (!std::all_of(*first.begin(), *first.end(), pred)) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-template <class ForwardIterator, class UnaryPredicate>
-[[nodiscard]] const bool m_none_of(ForwardIterator first, ForwardIterator last,
-                                   UnaryPredicate pred) {
-    for (; first != last; ++first) {
-        if (std::none_of((*first).begin(), (*first).end(), pred)) {
+        if (!std::none_of((*first).begin(), (*first).end(), pred)) {
             return false;
         }
     }
@@ -61,19 +64,20 @@ template <class ForwardIterator, class UnaryPredicate>
 }
 
 template <class ForwardIterator, class ValueType>
-void m_fill(ForwardIterator first, ForwardIterator last,
-            const ValueType& value) {
+void matrix_fill(ForwardIterator first, ForwardIterator last,
+                 const ValueType& value) {
     for (; first != last; ++first) {
         std::fill((*first).begin(), (*first).end(), value);
     }
 }
 
 template <class ForwardIterator, class ValueType>
-[[nodiscard]] const ForwardIterator m_find(ForwardIterator first,
-                                           ForwardIterator last,
-                                           const ValueType& value) {
+[[nodiscard]] const ForwardIterator matrix_find(ForwardIterator first,
+                                                ForwardIterator last,
+                                                const ValueType& value) {
     for (; first != last; ++first) {
-        auto it = std::find((*first).begin(), (*first).end(), value);
+        const auto it = std::find((*first).begin(), (*first).end(), value);
+
         if (it != (*first).end()) {
             return it;
         }
@@ -83,11 +87,12 @@ template <class ForwardIterator, class ValueType>
 }
 
 template <class ForwardIterator, class UnaryPredicate>
-[[nodiscard]] const ForwardIterator m_find_if(ForwardIterator first,
-                                              ForwardIterator last,
-                                              UnaryPredicate pred) {
+[[nodiscard]] const ForwardIterator matrix_find_if(ForwardIterator first,
+                                                   ForwardIterator last,
+                                                   UnaryPredicate pred) {
     for (; first != last; ++first) {
-        auto it = std::find_if((*first).begin(), (*first).end(), pred);
+        const auto it = std::find_if((*first).begin(), (*first).end(), pred);
+
         if (it != (*first).end()) {
             return it;
         }
@@ -97,8 +102,8 @@ template <class ForwardIterator, class UnaryPredicate>
 }
 
 template <class ForwardIterator, class UnaryFunction>
-UnaryFunction m_for_each(ForwardIterator first, ForwardIterator last,
-                         UnaryFunction func) {
+UnaryFunction matrix_for_each(ForwardIterator first, ForwardIterator last,
+                              UnaryFunction func) {
     for (; first != last; ++first) {
         std::for_each((*first).begin(), (*first).end(), func);
     }
@@ -129,7 +134,7 @@ void fill_from_linear_container(ForwardIterator first, ForwardIterator last,
 }
 
 template <class ForwardIterator, class ValueType>
-void m_iota(ForwardIterator first, ForwardIterator last, ValueType value) {
+void matrix_iota(ForwardIterator first, ForwardIterator last, ValueType value) {
     for (; first != last; ++first) {
         for (auto itr = (*first).begin(); itr != (*first).end(); ++itr) {
             *itr = value;
@@ -156,9 +161,9 @@ template <class ForwardIterator, class ValueType,
 }
 
 template <class ForwardIterator, class BinaryPredicate>
-[[nodiscard]] const bool m_is_sorted(ForwardIterator first,
-                                     ForwardIterator last,
-                                     BinaryPredicate pred = std::less<>()) {
+[[nodiscard]] const bool matrix_is_sorted(
+    ForwardIterator first, ForwardIterator last,
+    BinaryPredicate pred = std::less<>()) {
     for (; first != last; ++first) {
         if (!std::is_sorted((*first).begin(), (*first).end(), pred)) {
             return false;
@@ -169,8 +174,8 @@ template <class ForwardIterator, class BinaryPredicate>
 }
 
 template <class ForwardIterator, class BinaryPredicate>
-void m_sort(ForwardIterator first, ForwardIterator last,
-            BinaryPredicate pred = std::less<>()) {
+void matrix_sort(ForwardIterator first, ForwardIterator last,
+                 BinaryPredicate pred = std::less<>()) {
     /// Requires `create_linear_sequence` and `fill_from_linear_container`
     auto linear_matrix = create_linear_sequence(first, last);
     std::sort(linear_matrix.begin(), linear_matrix.end(), pred);
