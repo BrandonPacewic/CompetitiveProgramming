@@ -1,57 +1,13 @@
-# Prerequisites
-*.d
+# Copyright (c) TigardHighGDC
+# SPDX-License-Identifier: MIT
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# Python 
 __pycache__/
+/build/
 
-# test
-test.cc
+# Standalone object files
+*.o
+*.out
+
+# Test files
 test.cpp
-
-# test files
-*test.py
-*examples
 testing.py
-
-# input/output/expected/
-*_input.txt
-*_expected.txt
-*_output.txt
-in.txt
-ou.txt
-ex.txt
-*.zip
-
-# Other Things
-googleKickStart/2018/
-*checks.json
