@@ -22,7 +22,6 @@
 
 #include <assert.h>
 
-#include <algorithm>
 #include <vector>
 
 int main() {
@@ -57,4 +56,12 @@ int main() {
             {1, 2}, {2, 1}, {3, 1}, {2, 1}, {1, 1}};
         assert(output == expected_output);
     }
+    {
+        vector<int> input = {1, 2, 2, 3, 3, 3, 4, 4, 4, 4};
+        vector<pair<int, uint16_t>> expected = {{1, 1}, {2, 2}, {3, 3}, {4, 4}};
+        const auto output = run_length_encoding(input.begin(), input.end());
+        assert(output == expected);
+    }
+
+    return 0;
 }
