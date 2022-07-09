@@ -1,3 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
 # Add the following tags to all pr's
 do-not-merge:
 - '**/*'

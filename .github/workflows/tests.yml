@@ -1,11 +1,12 @@
-name: Execute Tests
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
 
+name: Execute Tests
 on:
   push:
     branches: [ mega ]
   pull_request:
     branches: [ mega ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
