@@ -1,3 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
 name: clang-format Check
 on: [push, pull_request]
 jobs:
