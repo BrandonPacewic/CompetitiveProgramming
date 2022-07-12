@@ -14,12 +14,18 @@ solutions in this repository for examples of how to use the library.
 
 ## Library Languages
 
-If you where to pick any language to use for competitive programming it would
-definitely be C++. Just in terms of efficiency and the capabilities of the 
-Standard Library. For this reason all of the source code is written in C++. 
+### Why C++?
 
-My codewars problem solutions are written in many different languages but that is
-mostly for the sake of practice.
+If you where to pick any language to use for competitive programming it would
+definitely be C++. In terms of efficiency and the capabilities of the 
+Standard Library. As well as the ability to write templated code that this library and so many other rely on.
+For this reason all of the source code is written in C++. 
+
+### Why are there small bits of so many other languages?
+
+I keep all of my problem solutions in this repository, this includes codewars problems which I use to practice
+other languages such as Python, Go, Rust, JavaScript, etc. These solutions are not meant to be used by others
+they are just here for myself.
 
 ## Starting Competitive Programming
 
