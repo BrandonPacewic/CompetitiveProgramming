@@ -21,16 +21,40 @@
 #include "../../src/container/encoding.cpp"
 
 #include <assert.h>
- 
+
 #include <vector>
 
 int main() {
     using namespace std;
     {
-        vector<int> input{};
-        vector<pair<int, uint16_t>> expected{};
-        const auto output = run_length_encoding(input.begin(), input.end());
-        assert(output == expected);
+        vector<int> input = {};
+        const auto output = run_length_encoding<int>(input);
+        assert(output.empty());
+    }
+    {
+        vector<int> input = {1};
+        const auto output = run_length_encoding<int>(input);
+        vector<pair<int, uint16_t>> expected_output = {{1, 1}};
+        assert(output == expected_output);
+    }
+    {
+        vector<int> input = {1, 2};
+        const auto output = run_length_encoding<int>(input);
+        vector<pair<int, uint16_t>> expected_output = {{1, 1}, {2, 1}};
+        assert(output == expected_output);
+    }
+    {
+        vector<int> input = {1, 2, 1, 1};
+        const auto output = run_length_encoding<int>(input);
+        vector<pair<int, uint16_t>> expected_output = {{1, 1}, {2, 1}, {1, 2}};
+        assert(output == expected_output);
+    }
+    {
+        vector<int> input = {1, 1, 2, 3, 2, 1};
+        const auto output = run_length_encoding<int>(input);
+        vector<pair<int, uint16_t>> expected_output = {
+            {1, 2}, {2, 1}, {3, 1}, {2, 1}, {1, 1}};
+        assert(output == expected_output);
     }
     {
         vector<int> input = {1, 2, 2, 3, 3, 3, 4, 4, 4, 4};

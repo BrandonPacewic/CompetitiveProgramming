@@ -20,65 +20,71 @@
 
 #include "../../src/container/alternating_insertion.cpp"
 
+#include <assert.h>
+
 #include <algorithm>
-#include <array>
-#include <functional>
-#include <iostream>
 #include <vector>
 
-constexpr uint8_t total_tests = 5;
-
-using std::array;
-using std::pair;
-using std::vector;
-
-array<pair<pair<vector<int>, vector<int>>, vector<int>>, total_tests>
-    alternating_insertion_test_cases;
-
-void init_test_cases() {
-    alternating_insertion_test_cases[0].first.first = {};
-    alternating_insertion_test_cases[0].first.second = {};
-    alternating_insertion_test_cases[0].second = {};
-
-    alternating_insertion_test_cases[1].first.first = {1};
-    alternating_insertion_test_cases[1].first.second = {};
-    alternating_insertion_test_cases[1].second = {1};
-
-    alternating_insertion_test_cases[2].first.first = {1, 2};
-    alternating_insertion_test_cases[2].first.second = {};
-    alternating_insertion_test_cases[2].second = {1, 2};
-
-    alternating_insertion_test_cases[3].first.first = {1, 2};
-    alternating_insertion_test_cases[3].first.second = {3};
-    alternating_insertion_test_cases[3].second = {1, 3, 2};
-
-    alternating_insertion_test_cases[4].first.first = {1};
-    alternating_insertion_test_cases[4].first.second = {2, 3, 4, 5};
-    alternating_insertion_test_cases[4].second = {1, 2, 3, 4, 5};
-}
-
 int main() {
-    init_test_cases();
-    bool all_passed = true;
+    using namespace std;
+    {
+        vector<int> first_input = {};
+        vector<int> second_input = {};
+        vector<int> output(first_input.size() + second_input.size());
+        alternating_insertion(first_input.begin(), first_input.end(),
+                              second_input.begin(), second_input.end(),
+                              output.begin());
+        assert(output.empty());
+    }
+    {
+        vector<int> first_input = {1};
+        vector<int> second_input = {};
+        vector<int> output(first_input.size() + second_input.size());
+        alternating_insertion(first_input.begin(), first_input.end(),
+                              second_input.begin(), second_input.end(),
+                              output.begin());
+        assert(output == vector<int>{1});
+    }
+    {
+        vector<int> first_input = {1, 2};
+        vector<int> second_input = {};
+        vector<int> output(first_input.size() + second_input.size());
+        alternating_insertion(first_input.begin(), first_input.end(),
+                              second_input.begin(), second_input.end(),
+                              output.begin());
+        vector<int> expected_output = {1, 2};
+        assert(output == expected_output);
+    }
+    {
+        vector<int> first_input = {1, 2};
+        vector<int> second_input = {3};
+        vector<int> output(first_input.size() + second_input.size());
+        alternating_insertion(first_input.begin(), first_input.end(),
+                              second_input.begin(), second_input.end(),
+                              output.begin());
+        vector<int> expected_output = {1, 3, 2};
+        assert(output == expected_output);
+    }
+    {
+        vector<int> first_input = {1};
+        vector<int> second_input = {2, 3, 4, 5};
+        vector<int> output(first_input.size() + second_input.size());
+        alternating_insertion(first_input.begin(), first_input.end(),
+                              second_input.begin(), second_input.end(),
+                              output.begin());
+        vector<int> expected_output = {1, 2, 3, 4, 5};
+        assert(output == expected_output);
+    }
+    {
+        vector<int> first_input = {1, 2, 3, 4, 5};
+        vector<int> second_input = {6, 7, 8, 9, 10};
+        vector<int> output(first_input.size() + second_input.size());
+        alternating_insertion(first_input.begin(), first_input.end(),
+                              second_input.begin(), second_input.end(),
+                              output.begin());
+        vector<int> expected_output = {1, 6, 2, 7, 3, 8, 4, 9, 5, 10};
+        assert(output == expected_output);
+    }
 
-    std::cout << "Running alternating_insertion tests..." << std::endl;
-
-    std::for_each(alternating_insertion_test_cases.begin(),
-                  alternating_insertion_test_cases.end(), [&](auto& test_case) {
-                      vector<int> result(test_case.second.size());
-                      alternating_insertion(test_case.first.first.begin(),
-                                            test_case.first.first.end(),
-                                            test_case.first.second.begin(),
-                                            test_case.first.second.end(),
-                                            result.begin());
-
-                      if (result != test_case.second) {
-                          all_passed = false;
-                          std::cout << "Test case failed." << std::endl;
-                      }
-                  });
-
-    std::cout << "Finished running alternating_insertion tests." << std::endl;
-
-    return !all_passed;
+    return 0;
 }
