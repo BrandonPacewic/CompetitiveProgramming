@@ -25,4 +25,11 @@
 #define CPL_BEGIN namespace cpl {
 #define CPL_END }
 
+// Used to allow for code segments to compile outside of the library.
+// All macro library checks must first satisfy the `defined(IS_CPL_LIBRARY_COMPILATION)` check.
+#define IS_CPL_LIBRARY_COMPILATION 1
+
+#undef CPL_STRINGIZE_
+#undef CPL_STRINGIZE
+
 #endif  // CORE_H_
