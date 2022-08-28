@@ -15,7 +15,7 @@ if(INCLUDE_PSL)
     add_subdirectory(psl)
 endif()
 
-if(BUILD_TESTING)
+if(NOT BUILD_TESTING)
     enable_testing()
     add_subdirectory(tests)
 endif()

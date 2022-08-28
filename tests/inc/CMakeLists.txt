@@ -2,9 +2,9 @@
 # SPDX-License-Identifier: MIT
 
 set(TESTS
-
+    {CMAKE_CURRENT_SOURCE_DIR}/output_container/test.cpp
 )
 
-foreach(test ${TESTS})
+add_executable(output_container ${CMAKE_CURRENT_SOURCE_DIR}/output_container/test.cpp)
 
-endforeach()
+include_directories(BEFORE ${CMAKE_SOURCE_DIR}/cpl/inc)
