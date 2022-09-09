@@ -14,6 +14,8 @@ If you where to pick any language to use for competitive programming it would
 definitely be C++. Mainly in terms of efficiency and the capabilities of the
 Standard Library. For these reasons all of the source code is written in C++.
 
+Python is included for testing, CMake is included for compiling the library.
+
 ## Starting Competitive Programming
 
 If your not sure where to start I recommend HackerRank, Codewars, LeetCode, and

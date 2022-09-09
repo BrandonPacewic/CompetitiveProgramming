@@ -23,7 +23,7 @@ without modifying the original ranges.
 
 ### Parameters
 
-*`first1`*\ 
+*`first1`*\
 A forward iterator to the first element of the first range.
 
 *`last1`*\
