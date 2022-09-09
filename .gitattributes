@@ -1,2 +1,8 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Disable CRLF-mapping for all files
+* -text
+
 # Ensure that all C++ headers are counted as C++ and not C
 *.h linguist-language=C++
