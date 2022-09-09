@@ -12,7 +12,7 @@ for anyone to use it as they wish.
 
 If you where to pick any language to use for competitive programming it would
 definitely be C++. Mainly in terms of efficiency and the capabilities of the
-Standard Library. For this reason all of the source code is written in C++.
+Standard Library. For these reasons all of the source code is written in C++.
 
 ## Starting Competitive Programming
 
