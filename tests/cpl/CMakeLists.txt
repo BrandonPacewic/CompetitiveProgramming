@@ -1,12 +1,12 @@
 # Copyright (c) Brandon Pacewic
 # SPDX-License-Identifier: MIT
 
-set(TESTS
-    {CMAKE_CURRENT_SOURCE_DIR}/output_container/test.compile.run.cpp
-    {CMAKE_CURRENT_SOURCE_DIR}/container_encoding/test.compile.run.cpp
-    {CMAKE_CURRENT_SOURCE_DIR}/container_to_set_conversions/test.compile.run.cpp
-    {CMAKE_CURRENT_SOURCE_DIR}/container_alternating_insertion/test.compile.run.cpp
-)
+# set(TESTS
+#     {CMAKE_CURRENT_SOURCE_DIR}/output_container/test.compile.run.cpp
+#     {CMAKE_CURRENT_SOURCE_DIR}/container_encoding/test.compile.run.cpp
+#     {CMAKE_CURRENT_SOURCE_DIR}/container_to_set_conversions/test.compile.run.cpp
+#     {CMAKE_CURRENT_SOURCE_DIR}/container_alternating_insertion/test.compile.run.cpp
+# )
 
 set(CPL_CORE_DIR ${CMAKE_SOURCE_DIR}/build/cpl/libcpl.a)
 add_library(cpl_core STATIC IMPORTED)

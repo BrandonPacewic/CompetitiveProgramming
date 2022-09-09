@@ -3,15 +3,4 @@
 
 __pycache__/
 /build/
-
-# Standalone object files
-*.o
-*.out
-
-# Test files
-test.cpp
-testing.py
-
-# Input / Output files for testing
-*_input.txt
-*_expected.txt
+.vscode/

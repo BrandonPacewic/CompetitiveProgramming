@@ -15,7 +15,6 @@ if(INCLUDE_PSL)
     add_subdirectory(psl)
 endif()
 
-# To execute tests, run:
 # ctest --test-dir build -V
 if(BUILD_TESTING)
     enable_testing()
