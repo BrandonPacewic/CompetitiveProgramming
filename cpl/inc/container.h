@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <iostream>
 #include <set>
 #include <unordered_set>
 #include <vector>
@@ -46,7 +47,7 @@ template <typename ForwardIterator,
     for (; first != last; ++first) {
         if (*first == previous_item) {
             ++current_count;
-        } else { // Save current count and start again.
+        } else {  // Save current count and start again.
             if (current_count) {
                 encoding.emplace_back(previous_item, current_count);
             }
@@ -56,7 +57,7 @@ template <typename ForwardIterator,
         }
     }
 
-    if (current_count) { // Leftover
+    if (current_count) {  // Leftover
         encoding.emplace_back(previous_item, current_count);
     }
 
@@ -76,6 +77,61 @@ template <typename ForwardIterator,
 [[nodiscard]] std::unordered_set<BaseIteratorType> to_unordered_set(ForwardIterator first, ForwardIterator last) {
     std::unordered_set<BaseIteratorType> set_obj(first, last);
     return set_obj;
+}
+
+template <typename T_container>
+const void output_container(const T_container& container, const bool& space = true, const bool& new_line = true) {
+    for (std::size_t i = 0; i < container.size(); ++i) {
+        std::cout << container[i];
+
+        if (space && i < container.size() - 1) {
+            std::cout << ' ';
+        }
+    }
+
+    std::cout << (new_line ? '\n' : ' ');
+}
+
+template <typename T_container>
+const void output_reverse_container(const T_container& container, const bool& space = true,
+                                    const bool& new_line = true) {
+    for (std::size_t i = container.size(); i > 0; --i) {
+        std::cout << container[i - 1];
+
+        if (space && i > 1) {
+            std::cout << ' ';
+        }
+    }
+
+    std::cout << (new_line ? '\n' : ' ');
+}
+
+template <typename ForwardIterator>
+void output_container(ForwardIterator first, ForwardIterator last, const bool& space = true,
+                      const bool& new_line = true) {
+    for (; first != last; ++first) {
+        std::cout << *first;
+
+        if (space && first != last - 1) {
+            std::cout << ' ';
+        }
+    }
+
+    std::cout << (new_line ? '\n' : ' ');
+}
+
+template <typename ForwardIterator>
+void output_reverse_container(ForwardIterator first, ForwardIterator last, const bool& space = true,
+                              const bool& new_line = true) {
+    for (; first != last; ++first) {
+        std::cout << *first;
+
+        if (space && first != last - 1) {
+            std::cout << ' ';
+        }
+    }
+
+    std::cout << (new_line ? '\n' : ' ');
 }
 
 CPL_END

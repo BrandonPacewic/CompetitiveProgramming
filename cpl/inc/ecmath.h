@@ -16,5 +16,4 @@ class int24 {
     void operator=(uint32_t value);
 };
 
-
-#endif // ECMATH_H_
+#endif  // ECMATH_H_

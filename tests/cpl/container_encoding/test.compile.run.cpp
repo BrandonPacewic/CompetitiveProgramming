@@ -7,6 +7,7 @@
 
 int main() {
     using namespace std;
+    using namespace cpl;
     {
         vector<int> input{};
         vector<pair<int, uint16_t>> expected{};

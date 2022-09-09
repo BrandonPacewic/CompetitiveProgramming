@@ -7,6 +7,7 @@
 
 int main() {
     using namespace std;
+    using namespace cpl;
     {
         vector<int> input = {};
         auto output = to_set(input.begin(), input.end());

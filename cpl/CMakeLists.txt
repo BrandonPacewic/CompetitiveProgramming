@@ -2,9 +2,10 @@
 # SPDX-License-Identifier: MIT
 
 set(HEADERS
+    ${CMAKE_CURRENT_SOURCE_DIR}/inc/container.h
     ${CMAKE_CURRENT_SOURCE_DIR}/inc/core.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inc/output_container.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inc/output_matrix.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/inc/ecmath.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/inc/matrix.h
 )
 
 set(SOURCES

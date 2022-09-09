@@ -3,7 +3,7 @@
 
 // implement output_empty_matrix
 
-#include <output_matrix.h>
+#include <matrix.h>
 
 #include <functional>
 #include <iostream>
