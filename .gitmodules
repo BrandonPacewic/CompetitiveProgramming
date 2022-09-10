@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+[submodule "PSL"]
+	path = PSL
+	url = https://github.com/BrandonPacewic/PSL.git
