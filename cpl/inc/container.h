@@ -12,10 +12,26 @@
 #include <cstdint>
 #include <iostream>
 #include <set>
+#include <type_traits>
 #include <unordered_set>
 #include <vector>
 
 CPL_BEGIN
+
+// Container Validation
+template <typename T, typename = void>
+struct is_container : std::false_type {};
+
+template <typename... Ts>
+struct is_container_helper {};
+
+template <typename T>
+struct is_container<
+    T, std::conditional_t<false,
+                          is_container_helper<typename T::value_type, typename T::size_type, typename T::allocator_type,
+                                              typename T::iterator, typename T::const_iterator,
+                                              decltype(std::declval<T>().begin()), decltype(std::declval<T>().end())>,
+                          void>> : std::true_type {};
 
 // Combines two ranges of elements into one range, taking alternating elements from each range.
 // (first1, last1] (first2, last2)

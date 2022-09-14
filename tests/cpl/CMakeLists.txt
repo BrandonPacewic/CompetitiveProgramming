@@ -19,6 +19,9 @@ set_target_properties(cpl_core PROPERTIES IMPORTED_LOCATION ${CPL_CORE_DIR})
 add_executable(container_to_set_conversions.compile.run.a ${CMAKE_CURRENT_SOURCE_DIR}/container_to_set_conversions/test.compile.run.cpp)
 target_link_libraries(container_to_set_conversions.compile.run.a cpl_core)
 
+add_executable(container_is_container_validation.compile.pass.a ${CMAKE_CURRENT_SOURCE_DIR}/container_is_container_validation/test.compile.pass.cpp)
+target_link_libraries(container_is_container_validation.compile.pass.a cpl_core)
+
 add_executable(container_encoding.compile.run.a ${CMAKE_CURRENT_SOURCE_DIR}/container_encoding/test.compile.run.cpp)
 target_link_libraries(container_encoding.compile.run.a cpl_core)
 
