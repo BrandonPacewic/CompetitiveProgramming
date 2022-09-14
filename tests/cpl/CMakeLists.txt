@@ -6,6 +6,10 @@
 #     {CMAKE_CURRENT_SOURCE_DIR}/container_encoding/test.compile.run.cpp
 #     {CMAKE_CURRENT_SOURCE_DIR}/container_to_set_conversions/test.compile.run.cpp
 #     {CMAKE_CURRENT_SOURCE_DIR}/container_alternating_insertion/test.compile.run.cpp
+#     {CMAKE_CURRENT_SOURCE_DIR}/sort_container_merge_sort/test.compile.run.cpp
+#     {CMAKE_CURRENT_SOURCE_DIR}/sort_range_merge_sort/test.compile.run.cpp
+#     {CMAKE_CURRENT_SOURCE_DIR}/sort_range_rev_sort/test.compile.run.cpp
+#     {CMAKE_CURRENT_SOURCE_DIR}/sort_container_rev_sort/test.compile.run.cpp
 # )
 
 set(CPL_CORE_DIR ${CMAKE_SOURCE_DIR}/build/cpl/libcpl.a)
@@ -20,5 +24,17 @@ target_link_libraries(container_encoding.compile.run.a cpl_core)
 
 add_executable(container_alternating_insertion.compile.run.a ${CMAKE_CURRENT_SOURCE_DIR}/container_alternating_insertion/test.compile.run.cpp)
 target_link_libraries(container_alternating_insertion.compile.run.a cpl_core)
+
+add_executable(sort_container_merge_sort.compile.run.a ${CMAKE_CURRENT_SOURCE_DIR}/sort_container_merge_sort/test.compile.run.cpp)
+target_link_libraries(sort_container_merge_sort.compile.run.a cpl_core)
+
+add_executable(sort_container_rev_sort.compile.run.a ${CMAKE_CURRENT_SOURCE_DIR}/sort_container_rev_sort/test.compile.run.cpp)
+target_link_libraries(sort_container_rev_sort.compile.run.a cpl_core)
+
+add_executable(sort_range_merge_sort.compile.run.a ${CMAKE_CURRENT_SOURCE_DIR}/sort_range_merge_sort/test.compile.run.cpp)
+target_link_libraries(sort_range_merge_sort.compile.run.a cpl_core)
+
+add_executable(sort_range_rev_sort.compile.run.a ${CMAKE_CURRENT_SOURCE_DIR}/sort_range_rev_sort/test.compile.run.cpp)
+target_link_libraries(sort_range_rev_sort.compile.run.a cpl_core)
 
 include_directories(BEFORE ${CMAKE_SOURCE_DIR}/cpl/inc)

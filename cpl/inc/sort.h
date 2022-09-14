@@ -13,60 +13,37 @@
 
 CPL_BEGIN
 
-template <typename T_container>
-[[nodiscard]] T_container internal_merge(T_container& container, std::size_t leftIndex, std::size_t middleIndex,
-                                         std::size_t rightIndex) {
-    T_container left_array(container.begin() + leftIndex, container.begin() + middleIndex + 1);
-    T_container right_array(container.begin() + middleIndex + 1, container.begin() + rightIndex + 1);
-
-    std::size_t left_index = 0, right_index = 0, merged_index = leftIndex;
-
-    while (left_index < left_array.size() && right_index < right_array.size()) {
-        if (left_array[left_index] <= right_array[right_index]) {
-            container[merged_index] = left_array[left_index];
-            ++left_index;
-        } else {
-            container[merged_index] = right_array[right_index];
-            ++right_index;
-        }
-        ++merged_index;
+template <typename ForwardIterator>
+ForwardIterator merge_sort(ForwardIterator first, ForwardIterator last) {
+    if (std::distance(first, last) > 1) {
+        ForwardIterator middle = first + std::distance(first, last) / 2;
+        merge_sort(first, middle);
+        merge_sort(middle, last);
+        std::inplace_merge(first, middle, last);
     }
 
-    while (left_index < left_array.size()) {
-        container[merged_index] = left_array[left_index];
-        ++left_index;
-        ++merged_index;
-    }
-
-    while (right_index < right_array.size()) {
-        container[merged_index] = right_array[right_index];
-        ++right_index;
-        ++merged_index;
-    }
-
-    return container;
+    return first;
 }
 
 template <typename T_container>
-[[nodiscard]] T_container merge_sort(T_container& container, std::size_t left_index, std::size_t right_index) {
-    if (left_index < right_index) {
-        std::size_t middle_index = left_index + (right_index - left_index) / 2;
-
-        merge_sort(container, left_index, middle_index);
-        merge_sort(container, middle_index + 1, right_index);
-        internal_merge(container, left_index, middle_index, right_index);
-    }
-
+T_container merge_sort(T_container& container) {
+    merge_sort(container.begin(), container.end());
     return container;
 }
 
-template <typename T_container>
-[[nodiscard]] T_container reverse_sort(T_container& container) {
-    std::for_each(container.begin(), container.end(), [&](auto& element, const auto& i) {
-        auto index = std::min_element(container.begin() + i, container.end());
-        std::reverse(container.begin() + i, container.begin() + index + 1);
-    });
+template <typename ForwardIterator>
+ForwardIterator reverse_sort(ForwardIterator first, ForwardIterator last) {
+    for (; first != last; ++first) {
+        ForwardIterator min = std::min_element(first, last);
+        std::reverse(first, min + 1);
+    }
 
+    return first;
+}
+
+template <typename T_container>
+T_container reverse_sort(T_container& container) {
+    reverse_sort(container.begin(), container.end());
     return container;
 }
 
