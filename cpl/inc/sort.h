@@ -28,7 +28,7 @@ ForwardIterator merge_sort(ForwardIterator first, ForwardIterator last) {
 
 template <typename T_container>
 T_container merge_sort(T_container& container) {
-#if defined(IS_CPL_LIBRARY_COMPILATION)
+#if defined(CPL_IS_CONTAINER)
     CPL_IS_CONTAINER(T_container);
 #endif  // IS_CPL_LIBRARY_COMPILATION
 
@@ -48,7 +48,7 @@ ForwardIterator reverse_sort(ForwardIterator first, ForwardIterator last) {
 
 template <typename T_container>
 T_container reverse_sort(T_container& container) {
-#if defined(IS_CPL_LIBRARY_COMPILATION)
+#if defined(CPL_IS_CONTAINER)
     CPL_IS_CONTAINER(T_container);
 #endif  // IS_CPL_LIBRARY_COMPILATION
 

@@ -57,6 +57,18 @@ OutputIterator alternating_insertion(ForwardIterator1 first1, ForwardIterator1 l
     return result;
 }
 
+template <class InputContainer1, class InputContainer2, class OutputContainer>
+OutputContainer alternating_insertion(const InputContainer1& input1, const InputContainer2& input2,
+                                      OutputContainer output) {
+#if defined(CPL_IS_CONTAINER)
+    CPL_IS_CONTAINER(InputContainer1);
+    CPL_IS_CONTAINER(InputContainer2);
+    CPL_IS_CONTAINER(OutputContainer);
+#endif
+
+    return alternating_insertion(input1.begin(), input1.end(), input2.begin(), input2.end(), output.begin());
+}
+
 template <typename ForwardIterator,
           typename BaseIteratorType = typename std::iterator_traits<ForwardIterator>::value_type>
 [[nodiscard]] std::vector<std::pair<BaseIteratorType, uint16_t>> run_length_encoding(ForwardIterator first,
@@ -85,12 +97,30 @@ template <typename ForwardIterator,
     return encoding;
 }
 
-// Explicit ranges to set/unordered_set conversion.
+template <typename T_container, typename ContainerValueType = typename T_container::value_type>
+[[nodiscard]] std::vector<std::pair<ContainerValueType, uint16_t>> run_length_encoding(const T_container& container) {
+#if defined(CPL_IS_CONTAINER)
+    CPL_IS_CONTAINER(T_container);
+#endif
+
+    return run_length_encoding(container.begin(), container.end());
+}
+
+// set / unordered_set conversions.
 template <typename ForwardIterator,
           typename BaseIteratorType = typename std::iterator_traits<ForwardIterator>::value_type>
 [[nodiscard]] std::set<BaseIteratorType> to_set(ForwardIterator first, ForwardIterator last) {
     std::set<BaseIteratorType> set_obj(first, last);
     return set_obj;
+}
+
+template <typename T_container, typename ContainerValueType = typename T_container::value_type>
+[[nodiscard]] std::set<ContainerValueType> to_set(const T_container& container) {
+#if defined(CPL_IS_CONTAINER)
+    CPL_IS_CONTAINER(T_container);
+#endif
+
+    return to_set(container.begin(), container.end());
 }
 
 template <typename ForwardIterator,
@@ -100,41 +130,16 @@ template <typename ForwardIterator,
     return set_obj;
 }
 
-template <typename T_container>
-const void output_container(const T_container& container, const bool& space = true, const bool& new_line = true) {
-#if defined(IS_CPL_LIBRARY_COMPILATION)
+template <typename T_container, typename ContainerValueType = typename T_container::value_type>
+[[nodiscard]] std::unordered_set<ContainerValueType> to_unordered_set(const T_container& container) {
+#if defined(CPL_IS_CONTAINER)
     CPL_IS_CONTAINER(T_container);
-#endif  // IS_CPL_LIBRARY_COMPILATION
+#endif
 
-    for (std::size_t i = 0; i < container.size(); ++i) {
-        std::cout << container[i];
-
-        if (space && i < container.size() - 1) {
-            std::cout << ' ';
-        }
-    }
-
-    std::cout << (new_line ? '\n' : ' ');
+    return to_unordered_set(container.begin(), container.end());
 }
 
-template <typename T_container>
-const void output_reverse_container(const T_container& container, const bool& space = true,
-                                    const bool& new_line = true) {
-#if defined(IS_CPL_LIBRARY_COMPILATION)
-    CPL_IS_CONTAINER(T_container);
-#endif  // IS_CPL_LIBRARY_COMPILATION
-
-    for (std::size_t i = container.size(); i > 0; --i) {
-        std::cout << container[i - 1];
-
-        if (space && i > 1) {
-            std::cout << ' ';
-        }
-    }
-
-    std::cout << (new_line ? '\n' : ' ');
-}
-
+// container output templates
 template <typename ForwardIterator>
 void output_container(ForwardIterator first, ForwardIterator last, const bool& space = true,
                       const bool& new_line = true) {
@@ -149,6 +154,15 @@ void output_container(ForwardIterator first, ForwardIterator last, const bool& s
     std::cout << (new_line ? '\n' : ' ');
 }
 
+template <typename T_container>
+const void output_container(const T_container& container, const bool& space = true, const bool& new_line = true) {
+#if defined(CPL_IS_CONTAINER)
+    CPL_IS_CONTAINER(T_container);
+#endif  // IS_CPL_LIBRARY_COMPILATION
+
+    output_container(container.begin(), container.end(), space, new_line);
+}
+
 template <typename ForwardIterator>
 void output_reverse_container(ForwardIterator first, ForwardIterator last, const bool& space = true,
                               const bool& new_line = true) {
@@ -161,6 +175,16 @@ void output_reverse_container(ForwardIterator first, ForwardIterator last, const
     }
 
     std::cout << (new_line ? '\n' : ' ');
+}
+
+template <typename T_container>
+const void output_reverse_container(const T_container& container, const bool& space = true,
+                                    const bool& new_line = true) {
+#if defined(CPL_IS_CONTAINER)
+    CPL_IS_CONTAINER(T_container);
+#endif  // IS_CPL_LIBRARY_COMPILATION
+
+    output_reverse_container(container.rbegin(), container.rend(), space, new_line);
 }
 
 CPL_END
