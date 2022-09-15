@@ -36,6 +36,8 @@ struct is_container_internal<
 template <typename T>
 constexpr bool is_container = is_container_internal<T>::value;
 
+#define CPL_IS_CONTAINER(T) static_assert(is_container<T>, "Templated parameter is not a valid container.")
+
 // Combines two ranges of elements into one range, taking alternating elements from each range.
 // (first1, last1] (first2, last2)
 template <class ForwardIterator1, class ForwardIterator2, class OutputIterator>
@@ -100,6 +102,10 @@ template <typename ForwardIterator,
 
 template <typename T_container>
 const void output_container(const T_container& container, const bool& space = true, const bool& new_line = true) {
+#if defined(IS_CPL_LIBRARY_COMPILATION)
+    CPL_IS_CONTAINER(T_container);
+#endif  // IS_CPL_LIBRARY_COMPILATION
+
     for (std::size_t i = 0; i < container.size(); ++i) {
         std::cout << container[i];
 
@@ -114,6 +120,10 @@ const void output_container(const T_container& container, const bool& space = tr
 template <typename T_container>
 const void output_reverse_container(const T_container& container, const bool& space = true,
                                     const bool& new_line = true) {
+#if defined(IS_CPL_LIBRARY_COMPILATION)
+    CPL_IS_CONTAINER(T_container);
+#endif  // IS_CPL_LIBRARY_COMPILATION
+
     for (std::size_t i = container.size(); i > 0; --i) {
         std::cout << container[i - 1];
 
