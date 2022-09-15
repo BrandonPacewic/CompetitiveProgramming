@@ -28,9 +28,8 @@ struct is_container_internal : std::false_type {};
 template <typename T>
 struct is_container_internal<
     T, std::conditional_t<false,
-                          is_container_helper<typename T::value_type, typename T::size_type, typename T::allocator_type,
-                                              typename T::iterator, typename T::const_iterator,
-                                              decltype(std::declval<T>().begin()), decltype(std::declval<T>().end())>,
+                          is_container_helper<typename T::value_type, decltype(std::declval<T>().begin()),
+                                              decltype(std::declval<T>().end())>,
                           void>> : std::true_type {};
 
 template <typename T>
