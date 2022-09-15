@@ -12,10 +12,31 @@
 #include <cstdint>
 #include <iostream>
 #include <set>
+#include <type_traits>
 #include <unordered_set>
 #include <vector>
 
 CPL_BEGIN
+
+// Container Validation
+template <typename... Ts>
+struct is_container_helper {};
+
+template <typename T, typename = void>
+struct is_container_internal : std::false_type {};
+
+template <typename T>
+struct is_container_internal<
+    T, std::conditional_t<false,
+                          is_container_helper<typename T::value_type, typename T::size_type, typename T::allocator_type,
+                                              typename T::iterator, typename T::const_iterator,
+                                              decltype(std::declval<T>().begin()), decltype(std::declval<T>().end())>,
+                          void>> : std::true_type {};
+
+template <typename T>
+constexpr bool is_container = is_container_internal<T>::value;
+
+#define CPL_IS_CONTAINER(T) static_assert(is_container<T>, "Templated parameter is not a valid container.")
 
 // Combines two ranges of elements into one range, taking alternating elements from each range.
 // (first1, last1] (first2, last2)
@@ -81,6 +102,10 @@ template <typename ForwardIterator,
 
 template <typename T_container>
 const void output_container(const T_container& container, const bool& space = true, const bool& new_line = true) {
+#if defined(IS_CPL_LIBRARY_COMPILATION)
+    CPL_IS_CONTAINER(T_container);
+#endif  // IS_CPL_LIBRARY_COMPILATION
+
     for (std::size_t i = 0; i < container.size(); ++i) {
         std::cout << container[i];
 
@@ -95,6 +120,10 @@ const void output_container(const T_container& container, const bool& space = tr
 template <typename T_container>
 const void output_reverse_container(const T_container& container, const bool& space = true,
                                     const bool& new_line = true) {
+#if defined(IS_CPL_LIBRARY_COMPILATION)
+    CPL_IS_CONTAINER(T_container);
+#endif  // IS_CPL_LIBRARY_COMPILATION
+
     for (std::size_t i = container.size(); i > 0; --i) {
         std::cout << container[i - 1];
 
