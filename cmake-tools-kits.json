@@ -1,0 +1,12 @@
+{
+    "name": "GCC 7.2.0",
+    "compilers": {
+      "CXX": "C:\\mingw-w64\\mingw64\\bin\\g++.exe"
+    },
+    "preferredGenerator": {
+      "name": "MinGW Makefiles"
+    },
+    "environmentVariables": {
+      "CMT_MINGW_PATH": "C:\\mingw-w64\\mingw64\\bin"
+    }
+}
