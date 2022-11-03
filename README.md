@@ -1,4 +1,4 @@
-# C++ CPL (Competitive Programming Library)
+# C++ Competitive Programming Library
 
 ![Clang Format Check](https://github.com/BrandonPacewic/CompetitiveProgramming/actions/workflows/clang-format-check.yml/badge.svg?event=push)
 
@@ -24,8 +24,7 @@ Facebook Hacker Cup are also fantastic but they have a slightly higher
 barrier of entry.
 
 If you are looking for a book to read checkout the
-[Competitive Programmer’s Handbook](https://cses.fi/book/book.pdf) by Antti
-Laaksonen.
+[Competitive Programmer’s Handbook](https://cses.fi/book/book.pdf) by Antti Laaksonen.
 
 If you are looking for people to watch I recommend the following people:
 
