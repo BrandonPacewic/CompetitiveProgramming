@@ -2,5 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 __pycache__/
-/build/
+.vs/
 .vscode/
+/build/
+/out/
