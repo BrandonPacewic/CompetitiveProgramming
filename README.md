@@ -2,7 +2,7 @@
 
 ![Clang Format Check](https://github.com/BrandonPacewic/CompetitiveProgramming/actions/workflows/clang-format-check.yml/badge.svg?event=push)
 
-Competitive programming is a passion of mine I and would love to share it with anyone and everyone. It is my intention 
+Competitive programming is a passion of mine I and would love to share it with anyone and everyone. It is my intention
 to maintain this library and to make it as easy as possible for anyone to use it as they wish.
 
 ## Goals
@@ -17,7 +17,7 @@ removed from the project and be used in a standalone environment.
 
 ## Non-Goals
 
-As I briefly mentioned above, I am only one person and as such cannot do everything. To that end I have things that I 
+As I briefly mentioned above, I am only one person and as such cannot do everything. To that end I have things that I
 will not be doing in respect to this project.
 
 - Compatibility with other platforms.
