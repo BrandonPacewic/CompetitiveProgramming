@@ -16,11 +16,16 @@
 #error Error in C++ CPL usage; Unsupported compiler.
 #endif  // __cplusplus
 
+// TRANSITION GH-101
+// Currently not able to detect MSVC /std:c++20
+
 // CPL requires C++20 or later.
-#if !(__cplusplus >= 201703L)
-#pragma message(__FILE__ "(" CPL_STRINGIZE(__LINE__) "): CPL: Unexpected compiler, expected C++20 compiler")
-#error Error in C++ CPL usage; Unsupported compiler.
-#endif  // !(__cplusplus >= 201703L)
+// #if !(__cplusplus >= 202002L)
+// #pragma message(__FILE__ "(" CPL_STRINGIZE(__LINE__) "): CPL: Unexpected compiler, expected C++20 compiler")
+// #error Error in C++ CPL usage; Unsupported compiler.
+// #endif  // !(__cplusplus >= 202002L)
+
+// TRANSITION GH-101
 
 #define CPL_BEGIN namespace cpl {
 #define CPL_END }
