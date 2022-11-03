@@ -77,7 +77,7 @@ CMake and Ninja working.
     - Otherwise, insure that Python 3.9 or later is available to CMake.
 2. Open Visual Studio and choose the "Clone or checkout code" option. Enter the URL of this repository,
 `https://github.com/BrandonPacewic/CompetitiveProgramming`.
-3. Open a terminal in the IDE (``Ctrl + ` `` by default) or press "View" and then "Terminal" in the menu bar.
+3. Open a terminal in the IDE (`` Ctrl + ` `` by default) or press "View" and then "Terminal" in the menu bar.
 4. Invoke `git submodule update --init --progress` in the terminal.
 5. Thats it! Everything you need to build the project is available to you inside of `CMakeSettings.json`.
 
