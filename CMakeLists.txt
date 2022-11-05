@@ -22,7 +22,7 @@ if(INCLUDE_PSL)
 endif()
 
 # ctest --test-dir build -V
-if(BUILD_TESTING)
+if(NOT BUILD_TESTING)
     enable_testing()
     add_subdirectory(tests)
 endif()
