@@ -81,6 +81,29 @@ CMake and Ninja working.
 4. Invoke `git submodule update --init --progress` in the terminal.
 5. Thats it! Everything you need to build the project is available to you inside of `CMakeSettings.json`.
 
+### How to Run `clang-format` with the Visual Studio IDE
+
+I use `clang-format` to auto format all of my C++ code. I also have a GitHub action that enforces the formatting rules;
+preventing a Pull Request from being merged if the code is not formatted correctly. To run `clang-format` in the IDE:
+
+1. Open the terminal in the IDE (`` Ctrl + ` `` by default) or press "View" and then "Terminal" in the menu bar.
+2. Copy and paste the following lines into the terminal:
+
+```Console
+cd .\tools\
+python3 .\clang_format_all.py
+```
+
+### How to Run `clang-format` with a Native Tools Command Prompt
+
+1. Open a Command Prompt of your choice.
+2. Change the directory to the `tools/` folder of the repository.
+3. Copy and paste the following line into the terminal:
+
+```Console
+python3 .\clang_format_all.py
+```
+
 ## Checkout my profiles
 
 - [Code Forces](https://codeforces.com/profile/BrandonPacewic)
