@@ -6,7 +6,7 @@ import sys
 import time
 from sys import platform
 
-FILES_DIRS = ["cpl/inc", "cpl/scr", "tests/cpl"]
+FILES_DIRS = ["cpl/inc", "cpl/src", "tests/cpl"]
 FILE_TARGETS = [".cpp", ".h", ".hpp"]
 FORMAT_COMMAND = "clang-format -i -style=file"
 
