@@ -7,10 +7,11 @@
 #ifndef DEBUG_H_
 #define DEBUG_H_
 #include <core.h>
+#include <ostream_overloads.h>
 
 #include <iostream>
 
-#if defined(DBG_MODE) || defined(IS_CPL_LIBRARY_COMPILATION)
+#if DBG_MODE || CPL
 void dbg_out() {
     std::cerr << std::endl;
 }
@@ -22,9 +23,8 @@ void dbg_out(Head A, Tail... B) {
 }
 
 #define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
-#else  // ^^^ defined(DBG_MODE) || defined(IS_CPL_LIBRARY_COMPILATION) ^^^ / vvv !defined(DBG_MODE) &&
-       // !defined(IS_CPL_LIBRARY_COMPILATION) vvv
+#else  // ^^^ DBG_MODE || CPL ^^^ / vvv !DBG_MODE && !CPL
 #define test(...)
-#endif  // !defined(DBG_MODE) && !defined(IS_CPL_LIBRARY_COMPILATION)
+#endif  // DBG_MODE || CPL
 
 #endif  // DEBUG_H_
