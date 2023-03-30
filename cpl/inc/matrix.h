@@ -258,7 +258,8 @@ void matrix_sort(ForwardIterator first, ForwardIterator last, BinaryPredicate pr
 }
 
 template <class ForwardIterator, class Type = uint32_t>
-[[nodiscard]] const Type matrix_trace(ForwardIterator first, ForwardIterator last, const bool& reverse = false, const Type& value = 0) {
+[[nodiscard]] const Type matrix_trace(ForwardIterator first, ForwardIterator last, const bool& reverse = false,
+                                      const Type& value = 0) {
     Type trace = value;
 
     if (reverse) {

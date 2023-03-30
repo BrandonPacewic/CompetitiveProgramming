@@ -62,7 +62,7 @@ OutputContainer alternating_insertion(const InputContainer1& input1, const Input
     CPL_IS_CONTAINER(InputContainer1);
     CPL_IS_CONTAINER(InputContainer2);
     CPL_IS_CONTAINER(OutputContainer);
-#endif // CPL
+#endif  // CPL
 
     return alternating_insertion(input1.begin(), input1.end(), input2.begin(), input2.end(), output.begin());
 }
@@ -104,7 +104,7 @@ template <typename T_container, typename ContainerValueType = typename T_contain
 [[nodiscard]] std::vector<std::pair<ContainerValueType, uint16_t>> run_length_encoding(const T_container& container) {
 #if CPL
     CPL_IS_CONTAINER(T_container);
-#endif // CPL
+#endif  // CPL
 
     return run_length_encoding(container.begin(), container.end());
 }
@@ -121,7 +121,7 @@ template <typename T_container, typename ContainerValueType = typename T_contain
 [[nodiscard]] std::set<ContainerValueType> to_set(const T_container& container) {
 #if CPL
     CPL_IS_CONTAINER(T_container);
-#endif // CPL
+#endif  // CPL
 
     return to_set(container.begin(), container.end());
 }
@@ -137,7 +137,7 @@ template <typename T_container, typename ContainerValueType = typename T_contain
 [[nodiscard]] std::unordered_set<ContainerValueType> to_unordered_set(const T_container& container) {
 #if CPL
     CPL_IS_CONTAINER(T_container);
-#endif // CPL
+#endif  // CPL
 
     return to_unordered_set(container.begin(), container.end());
 }
