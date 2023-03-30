@@ -72,7 +72,12 @@ template <typename ForwardIterator,
 [[nodiscard]] std::vector<std::pair<BaseIteratorType, uint16_t>> run_length_encoding(ForwardIterator first,
                                                                                      ForwardIterator last) {
     std::vector<std::pair<BaseIteratorType, uint16_t>> encoding;
-    BaseIteratorType previous_item;
+
+    if (first == last) {
+        return encoding;
+    }
+
+    BaseIteratorType previous_item = *first;
     uint16_t current_count = 0;
 
     for (; first != last; ++first) {
