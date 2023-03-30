@@ -41,16 +41,17 @@ def main():
         print("Used to generate the CMakeLists.txt file for the static tests.")
         sys.exit(1)
 
+    if not sys.platform.startswith("win32"):
+        print("This script is only supported on Windows")
+        sys.exit(1)
+
     os.chdir(sys.argv[1])
     cpl_tests = []
     for root, _, files in os.walk("."):
         if "test.compile.run.cpp" in files:
             print(f"Found test: {root}")
-            if sys.platform.startswith("linux"):
-                cpl_tests.append((root.split("/")[-1], root))
-            elif sys.platform.startswith("win32"):
-                root = root.replace("\\", "/")
-                cpl_tests.append((root.split("/")[-1], root))
+            root = root.replace("\\", "/")
+            cpl_tests.append((root.split("/")[-1], root))
 
     cmake_file_str = generate_cmake_file(cpl_tests)
     with open("CMakeLists.txt", "w") as file:
