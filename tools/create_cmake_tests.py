@@ -53,7 +53,6 @@ def main():
                 cpl_tests.append((root.split("/")[-1], root))
 
     cmake_file_str = generate_cmake_file(cpl_tests)
-    print(cmake_file_str)
     with open("CMakeLists.txt", "w") as file:
         file.write(cmake_file_str)
 
