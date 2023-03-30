@@ -37,8 +37,7 @@ constexpr bool is_container = is_container_internal<T>::value;
 
 #define CPL_IS_CONTAINER(T) static_assert(is_container<T>, "Templated parameter is not a valid container.")
 
-// Combines two ranges of elements into one range, taking alternating elements from each range.
-// (first1, last1] (first2, last2)
+// Combines two ranges of elements into one range, alternating elements.
 template <class ForwardIterator1, class ForwardIterator2, class OutputIterator>
 OutputIterator alternating_insertion(ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2,
                                      ForwardIterator2 last2, OutputIterator result) {
@@ -59,11 +58,11 @@ OutputIterator alternating_insertion(ForwardIterator1 first1, ForwardIterator1 l
 template <class InputContainer1, class InputContainer2, class OutputContainer>
 OutputContainer alternating_insertion(const InputContainer1& input1, const InputContainer2& input2,
                                       OutputContainer output) {
-#if defined(CPL_IS_CONTAINER)
+#if CPL
     CPL_IS_CONTAINER(InputContainer1);
     CPL_IS_CONTAINER(InputContainer2);
     CPL_IS_CONTAINER(OutputContainer);
-#endif
+#endif // CPL
 
     return alternating_insertion(input1.begin(), input1.end(), input2.begin(), input2.end(), output.begin());
 }
@@ -73,7 +72,12 @@ template <typename ForwardIterator,
 [[nodiscard]] std::vector<std::pair<BaseIteratorType, uint16_t>> run_length_encoding(ForwardIterator first,
                                                                                      ForwardIterator last) {
     std::vector<std::pair<BaseIteratorType, uint16_t>> encoding;
-    BaseIteratorType previous_item;
+
+    if (first == last) {
+        return encoding;
+    }
+
+    BaseIteratorType previous_item = *first;
     uint16_t current_count = 0;
 
     for (; first != last; ++first) {
@@ -98,9 +102,9 @@ template <typename ForwardIterator,
 
 template <typename T_container, typename ContainerValueType = typename T_container::value_type>
 [[nodiscard]] std::vector<std::pair<ContainerValueType, uint16_t>> run_length_encoding(const T_container& container) {
-#if defined(CPL_IS_CONTAINER)
+#if CPL
     CPL_IS_CONTAINER(T_container);
-#endif
+#endif // CPL
 
     return run_length_encoding(container.begin(), container.end());
 }
@@ -115,9 +119,9 @@ template <typename ForwardIterator,
 
 template <typename T_container, typename ContainerValueType = typename T_container::value_type>
 [[nodiscard]] std::set<ContainerValueType> to_set(const T_container& container) {
-#if defined(CPL_IS_CONTAINER)
+#if CPL
     CPL_IS_CONTAINER(T_container);
-#endif
+#endif // CPL
 
     return to_set(container.begin(), container.end());
 }
@@ -131,9 +135,9 @@ template <typename ForwardIterator,
 
 template <typename T_container, typename ContainerValueType = typename T_container::value_type>
 [[nodiscard]] std::unordered_set<ContainerValueType> to_unordered_set(const T_container& container) {
-#if defined(CPL_IS_CONTAINER)
+#if CPL
     CPL_IS_CONTAINER(T_container);
-#endif
+#endif // CPL
 
     return to_unordered_set(container.begin(), container.end());
 }
@@ -155,9 +159,9 @@ void output_container(ForwardIterator first, ForwardIterator last, const bool& s
 
 template <typename T_container>
 const void output_container(const T_container& container, const bool& space = true, const bool& new_line = true) {
-#if defined(CPL_IS_CONTAINER)
+#if CPL
     CPL_IS_CONTAINER(T_container);
-#endif  // IS_CPL_LIBRARY_COMPILATION
+#endif  // CPL
 
     output_container(container.begin(), container.end(), space, new_line);
 }
@@ -179,9 +183,9 @@ void output_reverse_container(ForwardIterator first, ForwardIterator last, const
 template <typename T_container>
 const void output_reverse_container(const T_container& container, const bool& space = true,
                                     const bool& new_line = true) {
-#if defined(CPL_IS_CONTAINER)
+#if CPL
     CPL_IS_CONTAINER(T_container);
-#endif  // IS_CPL_LIBRARY_COMPILATION
+#endif  // CPL
 
     output_reverse_container(container.rbegin(), container.rend(), space, new_line);
 }
