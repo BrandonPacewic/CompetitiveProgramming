@@ -258,20 +258,12 @@ void matrix_sort(ForwardIterator first, ForwardIterator last, BinaryPredicate pr
 }
 
 template <class ForwardIterator, class Type = uint32_t>
-[[nodiscard]] const Type matrix_trace(ForwardIterator first, ForwardIterator last, const bool& reverse = false,
-                                      const Type& value = 0) {
+[[nodiscard]] const Type matrix_trace(ForwardIterator first, ForwardIterator last, const Type& value = 0) {
     Type trace = value;
+    const std::size_t n = std::distance(first, last);
 
-    if (reverse) {
-        // Bottom left to top right.
-        for (auto itr = first; itr != last; ++itr) {
-            trace += (*itr)[std::distance(first, itr)];
-        }
-    } else {
-        // Top left to bottom right.
-        for (auto itr = first; itr != last; ++itr) {
-            trace += (*itr)[std::distance(first, itr)];
-        }
+    for (std::size_t i = 0; i < n; ++i, ++first) {
+        trace += (*first)[i];
     }
 
     return trace;
