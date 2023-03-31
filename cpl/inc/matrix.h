@@ -257,6 +257,18 @@ void matrix_sort(ForwardIterator first, ForwardIterator last, BinaryPredicate pr
     fill_from_linear_container(first, last, linear_matrix);
 }
 
+template <class ForwardIterator, class Type = uint32_t>
+[[nodiscard]] const Type matrix_trace(ForwardIterator first, ForwardIterator last, const Type& value = 0) {
+    Type trace = value;
+    const std::size_t n = std::distance(first, last);
+
+    for (std::size_t i = 0; i < n; ++i, ++first) {
+        trace += (*first)[i];
+    }
+
+    return trace;
+}
+
 CPL_END
 
 #endif  // MATRIX_H_
