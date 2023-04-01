@@ -14,23 +14,23 @@ target_link_libraries(container_alternating_insertion cpl_core)
 add_executable(container_encoding ./container_encoding/test.compile.run.cpp)
 target_link_libraries(container_encoding cpl_core)
 
+add_executable(container_merge_sort ./container_merge_sort/test.compile.run.cpp)
+target_link_libraries(container_merge_sort cpl_core)
+
+add_executable(container_range_merge_sort ./container_range_merge_sort/test.compile.run.cpp)
+target_link_libraries(container_range_merge_sort cpl_core)
+
+add_executable(container_range_rev_sort ./container_range_rev_sort/test.compile.run.cpp)
+target_link_libraries(container_range_rev_sort cpl_core)
+
+add_executable(container_rev_sort ./container_rev_sort/test.compile.run.cpp)
+target_link_libraries(container_rev_sort cpl_core)
+
 add_executable(container_to_set_conversions ./container_to_set_conversions/test.compile.run.cpp)
 target_link_libraries(container_to_set_conversions cpl_core)
 
 add_executable(matrix_trace ./matrix_trace/test.compile.run.cpp)
 target_link_libraries(matrix_trace cpl_core)
-
-add_executable(sort_container_merge_sort ./sort_container_merge_sort/test.compile.run.cpp)
-target_link_libraries(sort_container_merge_sort cpl_core)
-
-add_executable(sort_container_rev_sort ./sort_container_rev_sort/test.compile.run.cpp)
-target_link_libraries(sort_container_rev_sort cpl_core)
-
-add_executable(sort_range_merge_sort ./sort_range_merge_sort/test.compile.run.cpp)
-target_link_libraries(sort_range_merge_sort cpl_core)
-
-add_executable(sort_range_rev_sort ./sort_range_rev_sort/test.compile.run.cpp)
-target_link_libraries(sort_range_rev_sort cpl_core)
 
 include_directories(BEFORE ${CMAKE_SOURCE_DIR}/cpl/inc)
 

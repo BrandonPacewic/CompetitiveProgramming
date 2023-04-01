@@ -7,7 +7,6 @@ set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/inc/debug.h
     ${CMAKE_CURRENT_SOURCE_DIR}/inc/matrix.h
     ${CMAKE_CURRENT_SOURCE_DIR}/inc/ostream_overloads.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inc/sort.h
 )
 
 set(SOURCES

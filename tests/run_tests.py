@@ -29,7 +29,7 @@ def main() -> None:
             test_path = f'{TEST_OUTPUT_DIR}\\{test}'
             if not os.path.isfile(test_path):
                 continue
-        
+
             if test.split('.')[-1] != 'exe':
                 continue
 

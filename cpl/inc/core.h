@@ -14,7 +14,7 @@
 #ifndef __cplusplus
 #pragma message(__FILE__ "(" CPL_STRINGIZE(__LINE__) "): CPL: Unexpected compiler, expected C++ compiler.")
 #error Error in C++ CPL usage; Unsupported compiler.
-#endif  // __cplusplus
+#endif // __cplusplus
 
 // TRANSITION GH-101
 // Currently not able to detect MSVC /std:c++20
@@ -37,4 +37,4 @@
 #undef CPL_STRINGIZE_
 #undef CPL_STRINGIZE
 
-#endif  // CORE_H_
+#endif // CORE_H_

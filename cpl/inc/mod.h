@@ -24,12 +24,15 @@ struct mod_type {
     explicit operator int() const {
         return value;
     }
+
     explicit operator int64_t() const {
         return value;
     }
+
     explicit operator double() const {
         return value;
     }
+
     explicit operator long double() const {
         return value;
     }
@@ -116,15 +119,19 @@ struct static_mod_type {
     explicit operator int() const {
         return value;
     }
+
     explicit operator int64_t() const {
         return value;
     }
+
     explicit operator float() const {
         return value;
     }
+
     explicit operator double() const {
         return value;
     }
+
     explicit operator long double() const {
         return value;
     }
@@ -224,4 +231,4 @@ struct static_mod_type {
 
 CPL_END
 
-#endif  // MOD_H_
+#endif // MOD_H_

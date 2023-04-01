@@ -2,9 +2,37 @@
 # SPDX-License-Identifier: MIT
 
 Language: Cpp
-BasedOnStyle: Google
+BasedOnStyle: LLVM
 AccessModifierOffset: -4
+AlignAfterOpenBracket: DontAlign
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveDeclarations: Consecutive
+AlignEscapedNewlines: Left
+AlignOperands: AlignAfterOperator
 AlignTrailingComments: false
 AllowShortFunctionsOnASingleLine: Empty
+AlwaysBreakTemplateDeclarations: Yes
+BreakBeforeBinaryOperators: NonAssignment
 ColumnLimit: 120
+DeriveLineEnding: false
+IncludeBlocks: Regroup
+IncludeCategories:
+  - Regex: '^<.*\.h>'
+    Priority: 1
+  - Regex: '.*'
+    Priority: 2
+IndentCaseBlocks: true
 IndentWidth: 4
+IndentWrappedFunctionNames: true
+InsertBraces: true
+MaxEmptyLinesToKeep: 1
+NamespaceIndentation: All
+PointerAlignment: Left
+SpaceAfterCStyleCast: true
+SpaceBeforeParens: Custom
+SpaceBeforeParensOptions:
+  AfterRequiresInClause: true
+StatementMacros:
+  - CPL_BEGIN
+  - CPL_END
+UseCRLF: true

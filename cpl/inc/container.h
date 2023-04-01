@@ -18,7 +18,6 @@
 
 CPL_BEGIN
 
-// Container Validation
 template <typename... Ts>
 struct is_container_helper {};
 
@@ -37,8 +36,7 @@ constexpr bool is_container = is_container_internal<T>::value;
 
 #define CPL_IS_CONTAINER(T) static_assert(is_container<T>, "Templated parameter is not a valid container.")
 
-// Combines two ranges of elements into one range, alternating elements.
-template <class ForwardIterator1, class ForwardIterator2, class OutputIterator>
+template <typename ForwardIterator1, typename ForwardIterator2, typename OutputIterator>
 OutputIterator alternating_insertion(ForwardIterator1 first1, ForwardIterator1 last1, ForwardIterator2 first2,
                                      ForwardIterator2 last2, OutputIterator result) {
     while (first1 != last1 && first2 != last2) {
@@ -55,7 +53,7 @@ OutputIterator alternating_insertion(ForwardIterator1 first1, ForwardIterator1 l
     return result;
 }
 
-template <class InputContainer1, class InputContainer2, class OutputContainer>
+template <typename InputContainer1, typename InputContainer2, typename OutputContainer>
 OutputContainer alternating_insertion(const InputContainer1& input1, const InputContainer2& input2,
                                       OutputContainer output) {
 #if CPL
@@ -63,7 +61,6 @@ OutputContainer alternating_insertion(const InputContainer1& input1, const Input
     CPL_IS_CONTAINER(InputContainer2);
     CPL_IS_CONTAINER(OutputContainer);
 #endif  // CPL
-
     return alternating_insertion(input1.begin(), input1.end(), input2.begin(), input2.end(), output.begin());
 }
 
@@ -83,7 +80,7 @@ template <typename ForwardIterator,
     for (; first != last; ++first) {
         if (*first == previous_item) {
             ++current_count;
-        } else {  // Save current count and start again.
+        } else {
             if (current_count) {
                 encoding.emplace_back(previous_item, current_count);
             }
@@ -93,7 +90,7 @@ template <typename ForwardIterator,
         }
     }
 
-    if (current_count) {  // Leftover
+    if (current_count) {
         encoding.emplace_back(previous_item, current_count);
     }
 
@@ -105,11 +102,9 @@ template <typename T_container, typename ContainerValueType = typename T_contain
 #if CPL
     CPL_IS_CONTAINER(T_container);
 #endif  // CPL
-
     return run_length_encoding(container.begin(), container.end());
 }
 
-// set / unordered_set conversions.
 template <typename ForwardIterator,
           typename BaseIteratorType = typename std::iterator_traits<ForwardIterator>::value_type>
 [[nodiscard]] std::set<BaseIteratorType> to_set(ForwardIterator first, ForwardIterator last) {
@@ -122,7 +117,6 @@ template <typename T_container, typename ContainerValueType = typename T_contain
 #if CPL
     CPL_IS_CONTAINER(T_container);
 #endif  // CPL
-
     return to_set(container.begin(), container.end());
 }
 
@@ -138,13 +132,53 @@ template <typename T_container, typename ContainerValueType = typename T_contain
 #if CPL
     CPL_IS_CONTAINER(T_container);
 #endif  // CPL
-
     return to_unordered_set(container.begin(), container.end());
 }
 
-// container output templates
 template <typename ForwardIterator>
-void output_container(ForwardIterator first, ForwardIterator last, const bool& space = true,
+ForwardIterator merge_sort(ForwardIterator first, ForwardIterator last) {
+    if (std::distance(first, last) > 1) {
+        ForwardIterator middle = first + std::distance(first, last) / 2;
+        merge_sort(first, middle);
+        merge_sort(middle, last);
+        std::inplace_merge(first, middle, last);
+    }
+
+    return first;
+}
+
+template <typename T_container>
+T_container merge_sort(T_container& container) {
+#if CPL
+    CPL_IS_CONTAINER(T_container);
+#endif  // CPL
+
+    merge_sort(container.begin(), container.end());
+    return container;
+}
+
+template <typename ForwardIterator>
+ForwardIterator reverse_sort(ForwardIterator first, ForwardIterator last) {
+    for (; first != last; ++first) {
+        ForwardIterator min = std::min_element(first, last);
+        std::reverse(first, min + 1);
+    }
+
+    return first;
+}
+
+template <typename T_container>
+T_container reverse_sort(T_container& container) {
+#if CPL
+    CPL_IS_CONTAINER(T_container);
+#endif  // CPL
+
+    reverse_sort(container.begin(), container.end());
+    return container;
+}
+
+template <typename ForwardIterator>
+const void output_container(ForwardIterator first, ForwardIterator last, const bool& space = true,
                       const bool& new_line = true) {
     for (; first != last; ++first) {
         std::cout << *first;
@@ -162,12 +196,11 @@ const void output_container(const T_container& container, const bool& space = tr
 #if CPL
     CPL_IS_CONTAINER(T_container);
 #endif  // CPL
-
     output_container(container.begin(), container.end(), space, new_line);
 }
 
 template <typename ForwardIterator>
-void output_reverse_container(ForwardIterator first, ForwardIterator last, const bool& space = true,
+const void output_reverse_container(ForwardIterator first, ForwardIterator last, const bool& space = true,
                               const bool& new_line = true) {
     for (; first != last; ++first) {
         std::cout << *first;
@@ -186,7 +219,6 @@ const void output_reverse_container(const T_container& container, const bool& sp
 #if CPL
     CPL_IS_CONTAINER(T_container);
 #endif  // CPL
-
     output_reverse_container(container.rbegin(), container.rend(), space, new_line);
 }
 
