@@ -23,8 +23,8 @@ void dbg_out(Head A, Tail... B) {
 }
 
 #define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
-#else  // ^^^ DBG_MODE || CPL ^^^ / vvv !DBG_MODE && !CPL
+#else // ^^^ DBG_MODE || CPL ^^^ / vvv !DBG_MODE && !CPL
 #define test(...)
-#endif  // DBG_MODE || CPL
+#endif // DBG_MODE || CPL
 
-#endif  // DEBUG_H_
+#endif // DEBUG_H_

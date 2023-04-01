@@ -178,7 +178,7 @@ T_container reverse_sort(T_container& container) {
 }
 
 template <typename ForwardIterator>
-void output_container(ForwardIterator first, ForwardIterator last, const bool& space = true,
+const void output_container(ForwardIterator first, ForwardIterator last, const bool& space = true,
                       const bool& new_line = true) {
     for (; first != last; ++first) {
         std::cout << *first;
@@ -200,7 +200,7 @@ const void output_container(const T_container& container, const bool& space = tr
 }
 
 template <typename ForwardIterator>
-void output_reverse_container(ForwardIterator first, ForwardIterator last, const bool& space = true,
+const void output_reverse_container(ForwardIterator first, ForwardIterator last, const bool& space = true,
                               const bool& new_line = true) {
     for (; first != last; ++first) {
         std::cout << *first;

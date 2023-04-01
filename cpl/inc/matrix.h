@@ -20,13 +20,13 @@ CPL_BEGIN
 template <typename Ty, std::size_t N>
 class basic_uniform_matrix {
 public:
-    using value_type = Ty;
-    using row_type = std::array<Ty, N>;
-    using pointer = row_type*;
-    using const_pointer = const row_type*;
-    using reference = row_type&;
+    using value_type      = Ty;
+    using row_type        = std::array<Ty, N>;
+    using pointer         = row_type*;
+    using const_pointer   = const row_type*;
+    using reference       = row_type&;
     using const_reference = const row_type&;
-    using size_type = std::size_t;
+    using size_type       = std::size_t;
 
     basic_uniform_matrix() = default;
 
@@ -118,7 +118,7 @@ const void output_reverse_matrix(const T_matrix& matrix, const bool& space = tru
 }
 
 const void output_empty_matrix(const uint16_t& rows, const uint16_t& cols, const char& primary, const char& secondary,
-                               std::function<bool(uint16_t&, uint16_t&)> evaluation, const bool& space = false);
+    std::function<bool(uint16_t&, uint16_t&)> evaluation, const bool& space = false);
 
 template <typename ForwardIterator, typename UnaryPredicate>
 [[nodiscard]] const bool matrix_any_of(ForwardIterator first, ForwardIterator last, UnaryPredicate pred) {
@@ -228,8 +228,8 @@ template <typename ForwardIterator, typename ValueType, typename ReturnContainer
 }
 
 template <typename ForwardIterator, typename BinaryPredicate>
-[[nodiscard]] const bool matrix_is_sorted(ForwardIterator first, ForwardIterator last,
-                                          BinaryPredicate pred = std::less<>()) {
+[[nodiscard]] const bool matrix_is_sorted(
+    ForwardIterator first, ForwardIterator last, BinaryPredicate pred = std::less<>()) {
     for (; first != last; ++first) {
         if (!std::is_sorted((*first).begin(), (*first).end(), pred)) {
             return false;
@@ -250,8 +250,8 @@ void matrix_sort(ForwardIterator first, ForwardIterator last, BinaryPredicate pr
 
 template <typename ForwardIterator, typename Type = uint32_t>
 [[nodiscard]] const Type matrix_trace(ForwardIterator first, ForwardIterator last, const Type& value = 0) {
-    Type trace = value;
-    const std::size_t n = std::distance(first, last);
+    Type              trace = value;
+    const std::size_t n     = std::distance(first, last);
 
     for (std::size_t i = 0; i < n; ++i, ++first) {
         trace += (*first)[i];
@@ -262,4 +262,4 @@ template <typename ForwardIterator, typename Type = uint32_t>
 
 CPL_END
 
-#endif  // MATRIX_H_
+#endif // MATRIX_H_
