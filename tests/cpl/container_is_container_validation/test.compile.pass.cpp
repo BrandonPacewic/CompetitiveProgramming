@@ -29,6 +29,6 @@ static_assert(is_container<C>);
 static_assert(is_container<D>);
 static_assert(is_container<E>);
 
-int main() {  // compile only
+int main() { // compile only
     return 0;
 }

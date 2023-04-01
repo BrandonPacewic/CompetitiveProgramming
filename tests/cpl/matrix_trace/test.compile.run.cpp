@@ -23,7 +23,7 @@ int main() {
     }
     {
         vector<vector<int>> v{};
-        uint8_t trace = matrix_trace(v.begin(), v.end());
+        uint8_t             trace = matrix_trace(v.begin(), v.end());
         assert(trace == 0);
     }
 
