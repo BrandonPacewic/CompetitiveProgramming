@@ -17,10 +17,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(cpl)
 
-if(INCLUDE_PSL)
-    add_subdirectory(psl)
-endif()
-
 if(BUILD_TESTING)
     enable_testing()
     add_subdirectory(tests)
