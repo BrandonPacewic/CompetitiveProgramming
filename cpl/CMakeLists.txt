@@ -1,18 +1,9 @@
 # Copyright (c) Brandon Pacewic
 # SPDX-License-Identifier: MIT
 
-set(HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/inc/container.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inc/core.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inc/debug.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inc/matrix.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/inc/ostream_overloads.h
-)
-
-set(SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/output_empty_matrix.cpp
-)
+file(GLOB SOURCES ${CMAKE_CURRENT_LIST_DIR}/src/*.cpp)
 
 add_library(cpl ${SOURCES})
+target_include_directories(cpl PUBLIC ${CMAKE_CURRENT_LIST_DIR}/inc)
 
-include_directories(BEFORE "${CMAKE_CURRENT_SOURCE_DIR}/inc")
+include_directories(BEFORE ${CMAKE_CURRENT_LIST_DIR}/inc)
