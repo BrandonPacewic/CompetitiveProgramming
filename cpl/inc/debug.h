@@ -6,8 +6,8 @@
 #pragma once
 #ifndef DEBUG_H_
 #define DEBUG_H_
-#include <core.h>
-#include <ostream_overloads.h>
+#include "core.h"
+#include "ostream_overloads.h"
 
 #include <iostream>
 

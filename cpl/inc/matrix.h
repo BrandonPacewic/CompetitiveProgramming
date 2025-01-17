@@ -6,7 +6,7 @@
 #pragma once
 #ifndef MATRIX_H_
 #define MATRIX_H_
-#include <core.h>
+#include "core.h"
 
 #include <algorithm>
 #include <array>

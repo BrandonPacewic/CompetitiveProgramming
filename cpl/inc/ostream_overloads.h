@@ -6,7 +6,7 @@
 #pragma once
 #ifndef OSTREAM_OVERLOADS_H_
 #define OSTREAM_OVERLOADS_H_
-#include <core.h>
+#include "core.h"
 
 #include <algorithm>
 #include <ostream>
