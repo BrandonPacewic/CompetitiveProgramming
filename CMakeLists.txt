@@ -10,8 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(cpl)
 
-# TODO: Redo build testing with pure cmake
-# if(BUILD_TESTING)
-#     enable_testing()
-#     add_subdirectory(tests)
-# endif()
+if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
+    enable_testing()
+    add_subdirectory(tests)
+endif()
