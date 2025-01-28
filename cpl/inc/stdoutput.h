@@ -6,7 +6,7 @@
 #pragma once
 #ifndef STD_OUTPUT_H_
 #define STD_OUTPUT_H_
-#include "core.h"
+#include "xcore.h"
 
 CPL_BEGIN
 

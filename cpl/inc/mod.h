@@ -6,7 +6,7 @@
 #pragma once
 #ifndef MOD_H_
 #define MOD_H_
-#include "core.h"
+#include "xcore.h"
 
 #include <cstdint>
 #include <iostream>

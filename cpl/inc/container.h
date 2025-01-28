@@ -6,7 +6,7 @@
 #pragma once
 #ifndef CONTAINER_H_
 #define CONTAINER_H_
-#include "core.h"
+#include "xcore.h"
 
 #include <algorithm>
 #include <cstdint>

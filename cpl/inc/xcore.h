@@ -1,11 +1,11 @@
-// core internal header
+// xcore internal header
 
 // Copyright (c) Brandon Pacewic
 // SPDX-License-Identifier: MIT
 
 #pragma once
-#ifndef CORE_H_
-#define CORE_H_
+#ifndef XCORE_H_
+#define XCORE_H_
 
 #define CPL_STRINGIZE_(S) #S
 #define CPL_STRINGIZE(S) CPL_STRINGIZE_(S)
@@ -27,4 +27,4 @@
 #undef CPL_STRINGIZE_
 #undef CPL_STRINGIZE
 
-#endif  // CORE_H_
+#endif  // XCORE_H_
