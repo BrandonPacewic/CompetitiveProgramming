@@ -199,58 +199,6 @@ T_container reverse_sort(T_container& container) {
    return container;
 }
 
-template <typename ForwardIterator>
-const void output_container(ForwardIterator first, ForwardIterator last,
-                            const bool& space = true,
-                            const bool& new_line = true) {
-   for (; first != last; ++first) {
-      std::cout << *first;
-
-      if (space && first != last - 1) {
-         std::cout << ' ';
-      }
-   }
-
-   std::cout << (new_line ? '\n' : ' ');
-}
-
-template <typename T_container>
-const void output_container(const T_container& container,
-                            const bool& space = true,
-                            const bool& new_line = true) {
-#if CPL
-   CPL_IS_CONTAINER(T_container);
-#endif  // CPL
-   output_container(container.begin(), container.end(), space, new_line);
-}
-
-template <typename ForwardIterator>
-const void output_reverse_container(ForwardIterator first,
-                                    ForwardIterator last,
-                                    const bool& space = true,
-                                    const bool& new_line = true) {
-   for (; first != last; ++first) {
-      std::cout << *first;
-
-      if (space && first != last - 1) {
-         std::cout << ' ';
-      }
-   }
-
-   std::cout << (new_line ? '\n' : ' ');
-}
-
-template <typename T_container>
-const void output_reverse_container(const T_container& container,
-                                    const bool& space = true,
-                                    const bool& new_line = true) {
-#if CPL
-   CPL_IS_CONTAINER(T_container);
-#endif  // CPL
-   output_reverse_container(container.rbegin(), container.rend(), space,
-                            new_line);
-}
-
 CPL_END
 
 #endif  // CONTAINER_H_
