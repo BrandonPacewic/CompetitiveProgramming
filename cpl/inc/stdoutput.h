@@ -8,6 +8,9 @@
 #define STD_OUTPUT_H_
 #include "xcore.h"
 
+#include "container.h"
+#include <iostream>
+
 CPL_BEGIN
 
 template <class FwdIter>
