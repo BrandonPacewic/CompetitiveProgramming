@@ -3,9 +3,10 @@
 
 // implement output_empty_matrix
 
-#include "matrix.h"
 #include <functional>
 #include <iostream>
+
+#include "matrix.h"
 
 const void output_empty_matrix(const uint16_t& rows, const uint16_t& cols, const char& primary, const char& secondary,
     std::function<bool(uint16_t&, uint16_t&)> evaluation, const bool& space = false) {

@@ -1,10 +1,11 @@
 // Copyright (c) Brandon Pacewic
 // SPDX-License-Identifier: MIT
 
-#include "container.h"
 #include <array>
 #include <cassert>
 #include <vector>
+
+#include "container.h"
 
 using namespace std;
 using namespace cpl;

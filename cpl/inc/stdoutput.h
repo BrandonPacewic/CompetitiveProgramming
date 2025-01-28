@@ -8,8 +8,9 @@
 #define STD_OUTPUT_H_
 #include "xcore.h"
 
-#include "container.h"
 #include <iostream>
+
+#include "container.h"
 
 CPL_BEGIN
 

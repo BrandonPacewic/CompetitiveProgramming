@@ -1,9 +1,8 @@
 // Copyright (c) Brandon Pacewic
 // SPDX-License-Identifier: MIT
 
-#include <matrix.h>
-
 #include <cassert>
+#include <matrix.h>
 #include <vector>
 
 int main() {

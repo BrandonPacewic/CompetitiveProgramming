@@ -1,10 +1,11 @@
 // Copyright (c) Brandon Pacewic
 // SPDX-License-Identifier: MIT
 
-#include "container.h"
 #include <algorithm>
 #include <cassert>
 #include <vector>
+
+#include "container.h"
 
 int main() {
     using namespace std;

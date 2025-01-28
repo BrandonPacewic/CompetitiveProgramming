@@ -19,9 +19,9 @@ IncludeBlocks: Regroup
 IncludeCategories:
   - Regex: '^"xcore\.h"$'
     Priority: 0
-  - Regex: '^<.*\.h>'
+  - Regex: '^<.*>'
     Priority: 1
-  - Regex: '.*'
+  - Regex: '^".*"'
     Priority: 2
 IndentCaseBlocks: true
 IndentWidth: 4
