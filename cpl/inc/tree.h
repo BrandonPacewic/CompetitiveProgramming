@@ -33,7 +33,7 @@ public:
         while (root != parent[x]) {
             auto next = parent[x];
             parent[x] = root;
-            x = next;
+            x         = next;
         }
 
         return root;
