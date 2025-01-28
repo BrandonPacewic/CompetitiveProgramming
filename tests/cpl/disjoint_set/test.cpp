@@ -7,6 +7,7 @@
 #include "tree.h"
 
 int main() {
+    using namespace std;
     using namespace cpl;
     {
         DisjointSet<int> ds(10);
@@ -43,6 +44,22 @@ int main() {
         for (int i = 0; i < 6; ++i) {
             assert(ds.find(i) == 0);
         }
+    }
+    {
+        DisjointSet<int> ds(5);
+        ds.union_rank(0, 1);
+        ds.union_rank(1, 2);
+        ds.union_rank(3, 4);
+        vector<pair<int, size_t>> expected = {{0, 1}, {0, 0}, {0, 0}, {3, 1}, {3, 0}};
+        size_t                    index    = 0;
+
+        for (const auto& [parent, rank] : ds) {
+            assert(parent == expected[index].first);
+            assert(rank == expected[index].second);
+            ++index;
+        }
+
+        assert(index == ds.size());
     }
 
     return 0;
