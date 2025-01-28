@@ -46,8 +46,7 @@ const void output_reverse_container(
 }
 
 template <typename Cont>
-const void output_reverse_container(
-    const Cont& container, const bool& space = true, const bool& new_line = true) {
+const void output_reverse_container(const Cont& container, const bool& space = true, const bool& new_line = true) {
 #if CPL
     CPL_IS_CONTAINER(Cont);
 #endif // CPL
@@ -57,49 +56,46 @@ const void output_reverse_container(
 // Special overloads for runtime test output.
 namespace debug {
 
-template <class Cont,
-          class Valty = class std::enable_if<
-              !std::is_same<Cont, std::string>::value,
-              typename Cont::value_type>::type>
-std::ostream& operator<<(std::ostream& os, const Cont& container) {
-    os << '{';
-    auto it = container.begin();
-    auto end = container.end();
+    template <class Cont,
+        class Valty = class std::enable_if<!std::is_same<Cont, std::string>::value, typename Cont::value_type>::type>
+    std::ostream& operator<<(std::ostream& os, const Cont& container) {
+        os << '{';
+        auto it  = container.begin();
+        auto end = container.end();
 
-    if (it != end) {
-        os << *it;
-        ++it;
+        if (it != end) {
+            os << *it;
+            ++it;
+        }
+
+        for (; it != end; ++it) {
+            os << ", " << *it;
+        }
+
+        return os << '}';
     }
 
-    for (; it != end; ++it) {
-        os << ", " << *it;
+    template <class First, class Second>
+    std::ostream& operator<<(std::ostream& os, const std::pair<First, Second>& pair) {
+        return os << '(' << pair.first << ", " << pair.second << ')';
     }
-
-    return os << '}';
-}
-
-template <class First, class Second>
-std::ostream& operator<<(std::ostream& os, const std::pair<First, Second>& pair) {
-    return os << '(' << pair.first << ", " << pair.second << ')';
-}
 
 #if DBG_MODE || CPL
-template <class... Args>
-void dbg_out() {
-    std::cerr << std::endl;
-}
+    template <class... Args>
+    void dbg_out() {
+        std::cerr << std::endl;
+    }
 
-template <class Head, class... Tail>
-void dbg_out(Head&& head, Tail&&... tail) {
-    std::cerr << ' ' << head;
-    dbg_out(std::forward<Tail>(tail)...);
-}
+    template <class Head, class... Tail>
+    void dbg_out(Head&& head, Tail&&... tail) {
+        std::cerr << ' ' << head;
+        dbg_out(std::forward<Tail>(tail)...);
+    }
 
-#define test(...) \
-    std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
-#else  // ^^^ DBG_MODE || CPL ^^^ / vvv !DBG_MODE && !CPL
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
+#else // ^^^ DBG_MODE || CPL ^^^ / vvv !DBG_MODE && !CPL
 #define test(...)
-#endif  // DBG_MODE || CPL
+#endif // DBG_MODE || CPL
 
 } // namespace debug
 

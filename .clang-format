@@ -17,6 +17,8 @@ ColumnLimit: 120
 DeriveLineEnding: false
 IncludeBlocks: Regroup
 IncludeCategories:
+  - Regex: '^"xcore\.h"$'
+    Priority: 0
   - Regex: '^<.*\.h>'
     Priority: 1
   - Regex: '.*'

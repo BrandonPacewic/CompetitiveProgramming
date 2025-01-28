@@ -12,10 +12,9 @@
 
 // CPL compiler checks
 #ifndef __cplusplus
-#pragma message(__FILE__ "(" CPL_STRINGIZE( \
-    __LINE__) "): CPL: Unexpected compiler, expected C++ compiler.")
+#pragma message(__FILE__ "(" CPL_STRINGIZE(__LINE__) "): CPL: Unexpected compiler, expected C++ compiler.")
 #error Error in C++ CPL usage; Unsupported compiler.
-#endif  // __cplusplus
+#endif // __cplusplus
 
 #define CPL_BEGIN namespace cpl {
 #define CPL_END }
@@ -27,4 +26,4 @@
 #undef CPL_STRINGIZE_
 #undef CPL_STRINGIZE
 
-#endif  // XCORE_H_
+#endif // XCORE_H_
