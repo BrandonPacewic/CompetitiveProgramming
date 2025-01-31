@@ -1,4 +1,4 @@
-// tree library header
+// tree / graph library header
 
 // Copyright (c) Brandon Pacewic
 // SPDX-License-Identifier: MIT
@@ -201,6 +201,146 @@ private:
     std::vector<value_type> parent;
     std::vector<rank_type>  rank;
 };
+
+template <class Valty = std::size_t>
+struct Edge {
+    Valty from;
+    Valty to;
+    Valty weight;
+};
+
+struct EdgeLess {
+    template <class Ed1, class Ed2>
+        requires requires(Ed1&& left, Ed2&& right) {
+            { std::forward<Ed1>(left).weight < std::forward<Ed2>(right).weight } -> std::convertible_to<bool>;
+        }
+    [[nodiscard]] constexpr bool operator()(Ed1&& left, Ed2&& right) const
+        noexcept(noexcept(std::forward<Ed1>(left).weight < std::forward<Ed2>(right).weight)) {
+        return std::forward<Ed1>(left).weight < std::forward<Ed2>(right).weight;
+    }
+
+    using is_transparent = int;
+};
+
+struct EdgeGreater {
+    template <class Ed1, class Ed2>
+        requires requires(Ed1&& left, Ed2&& right) {
+            { std::forward<Ed1>(left).weight > std::forward<Ed2>(right).weight } -> std::convertible_to<bool>;
+        }
+    [[nodiscard]] constexpr bool operator()(Ed1&& left, Ed2&& right) const
+        noexcept(noexcept(std::forward<Ed1>(left).weight > std::forward<Ed2>(right).weight)) {
+        return std::forward<Ed1>(left).weight > std::forward<Ed2>(right).weight;
+    }
+
+    using is_transparent = int;
+};
+
+template <class InIt, class OutIt, class Pred>
+OutIt kruskal(const std::size_t num_nodes, InIt first, InIt last, OutIt dest, Pred pred) {
+    DisjointSet<std::size_t> ds(num_nodes);
+    std::sort(first, last, pred);
+    std::size_t edge_count = 0;
+    for (auto it = first; it != last; ++it) {
+        if (ds.find(it->from) != ds.find(it->to)) {
+            *dest++ = *it;
+            ds.union_rank(it->from, it->to);
+
+            if (++edge_count == num_nodes - 1) {
+                break;
+            }
+        }
+    }
+
+    return dest;
+}
+
+template <class InIt, class OutIt>
+OutIt kruskal(const std::size_t num_nodes, InIt first, InIt last, OutIt dest) {
+    return kruskal(num_nodes, first, last, dest, EdgeLess{});
+}
+
+std::vector<Edge> dijkstra(const std::size_t num_nodes, const std::vector<Edge>& edges, const std::size_t start) {
+    std::vector<Edge>        shortest_paths;
+    std::vector<bool>        visited(num_nodes, false);
+    std::vector<std::size_t> distances(num_nodes, std::numeric_limits<std::size_t>::max());
+
+    distances[start] = 0;
+
+    for (std::size_t i = 0; i < num_nodes; ++i) {
+        std::size_t min_distance = std::numeric_limits<std::size_t>::max();
+        std::size_t min_index    = 0;
+
+        for (std::size_t j = 0; j < num_nodes; ++j) {
+            if (!visited[j] && distances[j] <= min_distance) {
+                min_distance = distances[j];
+                min_index    = j;
+            }
+        }
+
+        visited[min_index] = true;
+
+        for (const auto& edge : edges) {
+            if (edge.from == min_index && !visited[edge.to]
+                && distances[min_index] != std::numeric_limits<std::size_t>::max()
+                && distances[min_index] + edge.weight < distances[edge.to]) {
+                distances[edge.to] = distances[min_index] + edge.weight;
+            }
+        }
+    }
+
+    for (std::size_t i = 0; i < num_nodes; ++i) {
+        shortest_paths.push_back({start, i, distances[i]});
+    }
+
+    return shortest_paths;
+}
+
+template <class Pr1, class Pr2>
+std::vector<Edge> boruvka(
+    const std::size_t num_nodes, const std::vector<Edge>& edges, Pr1 is_preferred_over, Pr2 tie_break) {
+    std::vector<Edge>        mst;
+    DisjointSet<std::size_t> ds(num_nodes);
+
+    std::vector<std::size_t> cheapest(num_nodes, std::numeric_limits<std::size_t>::max());
+    std::vector<std::size_t> cheapest_edge(num_nodes, std::numeric_limits<std::size_t>::max());
+
+    while (mst.size() < num_nodes - 1) {
+        for (std::size_t i = 0; i < num_nodes; ++i) {
+            cheapest[i]      = std::numeric_limits<std::size_t>::max();
+            cheapest_edge[i] = std::numeric_limits<std::size_t>::max();
+        }
+
+        for (const auto& edge : edges) {
+            auto set1 = ds.find(edge.from);
+            auto set2 = ds.find(edge.to);
+
+            if (set1 == set2) {
+                continue;
+            }
+
+            if (is_preferred_over(edge.weight, cheapest[set1])
+                || (edge.weight == cheapest[set1] && tie_break(edge.weight, cheapest_edge[set1]))) {
+                cheapest[set1]      = edge.weight;
+                cheapest_edge[set1] = edge.to;
+            }
+
+            if (is_preferred_over(edge.weight, cheapest[set2])
+                || (edge.weight == cheapest[set2] && tie_break(edge.weight, cheapest_edge[set2]))) {
+                cheapest[set2]      = edge.weight;
+                cheapest_edge[set2] = edge.from;
+            }
+        }
+
+        for (std::size_t i = 0; i < num_nodes; ++i) {
+            if (cheapest[i] != std::numeric_limits<std::size_t>::max()) {
+                mst.push_back({cheapest_edge[i], i, cheapest[i]});
+                ds.union_rank(cheapest_edge[i], i);
+            }
+        }
+    }
+
+    return mst;
+}
 
 CPL_END
 
