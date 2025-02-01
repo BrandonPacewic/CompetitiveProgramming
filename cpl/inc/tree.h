@@ -242,7 +242,8 @@ OutIt kruskal(const std::size_t num_nodes, InIt first, InIt last, OutIt dest, Pr
     std::size_t edge_count = 0;
     for (auto it = first; it != last; ++it) {
         if (ds.find(it->from) != ds.find(it->to)) {
-            *dest++ = *it;
+            *dest = *it;
+            ++dest;
             ds.union_rank(it->from, it->to);
 
             if (++edge_count == num_nodes - 1) {
@@ -295,9 +296,8 @@ std::vector<Edge> dijkstra(const std::size_t num_nodes, const std::vector<Edge>&
     return shortest_paths;
 }
 
-template <class Pr1, class Pr2>
-std::vector<Edge> boruvka(
-    const std::size_t num_nodes, const std::vector<Edge>& edges, Pr1 is_preferred_over, Pr2 tie_break) {
+template <class InIt, class OutIt, class Pr1, class Pr2>
+OutIt boruvka(const std::size_t num_nodes, InIt first, InIt last, OutIt dest, Pr1 is_preferred_over, Pr2 tie_break) {
     std::vector<Edge>        mst;
     DisjointSet<std::size_t> ds(num_nodes);
 
@@ -310,36 +310,44 @@ std::vector<Edge> boruvka(
             cheapest_edge[i] = std::numeric_limits<std::size_t>::max();
         }
 
-        for (const auto& edge : edges) {
-            auto set1 = ds.find(edge.from);
-            auto set2 = ds.find(edge.to);
+        for (auto it = first; it != last; ++it) {
+            auto set1 = ds.find(it->from);
+            auto set2 = ds.find(it->to);
 
             if (set1 == set2) {
                 continue;
             }
 
-            if (is_preferred_over(edge.weight, cheapest[set1])
-                || (edge.weight == cheapest[set1] && tie_break(edge.weight, cheapest_edge[set1]))) {
-                cheapest[set1]      = edge.weight;
-                cheapest_edge[set1] = edge.to;
+            if (is_preferred_over(it->weight, cheapest[set1])
+                || (it->weight == cheapest[set1] && tie_break(it->weight, cheapest_edge[set1]))) {
+                cheapest[set1]      = it->weight;
+                cheapest_edge[set1] = it->to;
             }
 
-            if (is_preferred_over(edge.weight, cheapest[set2])
-                || (edge.weight == cheapest[set2] && tie_break(edge.weight, cheapest_edge[set2]))) {
-                cheapest[set2]      = edge.weight;
-                cheapest_edge[set2] = edge.from;
+            if (is_preferred_over(it->weight, cheapest[set2])
+                || (it->weight == cheapest[set2] && tie_break(it->weight, cheapest_edge[set2]))) {
+                cheapest[set2]      = it->weight;
+                cheapest_edge[set2] = it->from;
             }
         }
 
         for (std::size_t i = 0; i < num_nodes; ++i) {
             if (cheapest[i] != std::numeric_limits<std::size_t>::max()) {
-                mst.push_back({cheapest_edge[i], i, cheapest[i]});
+                *dest = Edge{cheapest_edge[i], i, cheapest[i]};
+                ++dest;
                 ds.union_rank(cheapest_edge[i], i);
             }
         }
     }
 
-    return mst;
+    return dest;
+}
+
+template <class InIt, class OutIt>
+OutIt boruvka(const std::size_t num_nodes, InIt first, InIt last, OutIt dest) {
+    return boruvka(
+        num_nodes, first, last, dest, [](const auto& a, const auto& b) { return a < b; },
+        [](const auto& a, const auto& b) { return a < b; });
 }
 
 CPL_END
