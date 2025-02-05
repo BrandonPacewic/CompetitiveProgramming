@@ -23,7 +23,6 @@ foreach(TEST_FILE ${TEST_FILES})
     set_target_properties(${FINAL_TARGET_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${TEST_BINARY_DIR})
 
     add_test(NAME ${FINAL_TARGET_NAME} COMMAND ${TEST_BINARY_PATH})
-    message(STATUS "Registered test: ${FINAL_TARGET_NAME} with path ${TEST_BINARY_PATH}")
 endforeach()
 
 include_directories(BEFORE ${CMAKE_SOURCE_DIR}/cpl/inc)
