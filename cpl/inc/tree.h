@@ -202,42 +202,64 @@ private:
     std::vector<rank_type>  rank;
 };
 
-template <class Valty = std::size_t>
+template <class Ty = std::size_t>
 struct Edge {
-    Valty from;
-    Valty to;
-    Valty weight;
+    Ty from;
+    Ty to;
+    Ty weight;
 };
 
-struct EdgeLess {
-    template <class Ed1, class Ed2>
-        requires requires(Ed1&& left, Ed2&& right) {
-            { std::forward<Ed1>(left).weight < std::forward<Ed2>(right).weight } -> std::convertible_to<bool>;
+template <typename T>
+concept HasWeight = requires(T t) {
+    { t.weight } -> std::convertible_to<std::size_t>;
+};
+
+class EdgeComparatorBase {
+protected:
+    template <class Ty>
+        requires HasWeight<std::remove_cvref_t<Ty>>
+    [[nodiscard]] static constexpr auto get_weight(Ty&& edge) noexcept -> decltype(std::forward<Ty>(edge).weight) {
+        return std::forward<Ty>(edge).weight;
+    }
+
+    template <class Ty>
+        requires (!HasWeight<std::remove_cvref_t<Ty>>)
+    [[nodiscard]] static constexpr Ty&& get_weight(Ty&& edge) noexcept {
+        return std::forward<Ty>(edge);
+    }
+};
+
+class EdgeLess : private EdgeComparatorBase {
+public:
+    template <class Lhs, class Rhs>
+        requires requires(Lhs&& left, Rhs&& right) {
+            { get_weight(std::forward<Lhs>(left)) < get_weight(std::forward<Rhs>(right)) } -> std::convertible_to<bool>;
         }
-    [[nodiscard]] constexpr bool operator()(Ed1&& left, Ed2&& right) const
-        noexcept(noexcept(std::forward<Ed1>(left).weight < std::forward<Ed2>(right).weight)) {
-        return std::forward<Ed1>(left).weight < std::forward<Ed2>(right).weight;
+    [[nodiscard]] constexpr bool operator()(Lhs&& left, Rhs&& right) const
+        noexcept(noexcept(get_weight(std::forward<Lhs>(left)) < get_weight(std::forward<Rhs>(right)))) {
+        return get_weight(std::forward<Lhs>(left)) < get_weight(std::forward<Rhs>(right));
     }
 
     using is_transparent = int;
 };
 
-struct EdgeGreater {
-    template <class Ed1, class Ed2>
-        requires requires(Ed1&& left, Ed2&& right) {
-            { std::forward<Ed1>(left).weight > std::forward<Ed2>(right).weight } -> std::convertible_to<bool>;
+class EdgeGreater : private EdgeComparatorBase {
+public:
+    template <class Lhs, class Rhs>
+        requires requires(Lhs&& left, Rhs&& right) {
+            { get_weight(std::forward<Lhs>(left)) > get_weight(std::forward<Rhs>(right)) } -> std::convertible_to<bool>;
         }
-    [[nodiscard]] constexpr bool operator()(Ed1&& left, Ed2&& right) const
-        noexcept(noexcept(std::forward<Ed1>(left).weight > std::forward<Ed2>(right).weight)) {
-        return std::forward<Ed1>(left).weight > std::forward<Ed2>(right).weight;
+    [[nodiscard]] constexpr bool operator()(Lhs&& left, Rhs&& right) const
+        noexcept(noexcept(get_weight(std::forward<Lhs>(left)) > get_weight(std::forward<Rhs>(right)))) {
+        return get_weight(std::forward<Lhs>(left)) > get_weight(std::forward<Rhs>(right));
     }
 
     using is_transparent = int;
 };
 
 template <class InIt, class OutIt, class Pred>
-OutIt kruskal(const std::size_t num_nodes, InIt first, InIt last, OutIt dest, Pred pred) {
-    DisjointSet<std::size_t> ds(num_nodes);
+OutIt kruskal(const std::size_t n, InIt first, InIt last, OutIt dest, Pred pred) {
+    DisjointSet<std::size_t> ds(n);
     std::sort(first, last, pred);
     std::size_t edge_count = 0;
     for (auto it = first; it != last; ++it) {
@@ -246,7 +268,8 @@ OutIt kruskal(const std::size_t num_nodes, InIt first, InIt last, OutIt dest, Pr
             ++dest;
             ds.union_rank(it->from, it->to);
 
-            if (++edge_count == num_nodes - 1) {
+            ++edge_count;
+            if (edge_count == n - 1) {
                 break;
             }
         }
@@ -256,56 +279,56 @@ OutIt kruskal(const std::size_t num_nodes, InIt first, InIt last, OutIt dest, Pr
 }
 
 template <class InIt, class OutIt>
-OutIt kruskal(const std::size_t num_nodes, InIt first, InIt last, OutIt dest) {
-    return kruskal(num_nodes, first, last, dest, EdgeLess{});
+OutIt kruskal(const std::size_t n, InIt first, InIt last, OutIt dest) {
+    return kruskal(n, first, last, dest, EdgeLess{});
 }
 
-std::vector<Edge> dijkstra(const std::size_t num_nodes, const std::vector<Edge>& edges, const std::size_t start) {
-    std::vector<Edge>        shortest_paths;
-    std::vector<bool>        visited(num_nodes, false);
-    std::vector<std::size_t> distances(num_nodes, std::numeric_limits<std::size_t>::max());
-
+template <class InIt, class OutIt>
+OutIt dijkstra(const std::size_t n, InIt first, InIt last, OutIt dest, const std::size_t start) {
+    std::vector<bool>        visited(n, false);
+    std::vector<std::size_t> distances(n, std::numeric_limits<std::size_t>::max());
     distances[start] = 0;
-
-    for (std::size_t i = 0; i < num_nodes; ++i) {
-        std::size_t min_distance = std::numeric_limits<std::size_t>::max();
-        std::size_t min_index    = 0;
-
-        for (std::size_t j = 0; j < num_nodes; ++j) {
+    for (std::size_t i = 0; i < n; ++i) {
+        auto        min_distance = std::numeric_limits<std::size_t>::max();
+        std::size_t min_i        = 0;
+        for (std::size_t j = 0; j < n; ++j) {
             if (!visited[j] && distances[j] <= min_distance) {
                 min_distance = distances[j];
-                min_index    = j;
+                min_i        = j;
             }
         }
 
-        visited[min_index] = true;
-
-        for (const auto& edge : edges) {
-            if (edge.from == min_index && !visited[edge.to]
-                && distances[min_index] != std::numeric_limits<std::size_t>::max()
-                && distances[min_index] + edge.weight < distances[edge.to]) {
-                distances[edge.to] = distances[min_index] + edge.weight;
+        visited[min_i] = true;
+        for (auto it = first; it != last; ++it) {
+            if (it->from == min_i && !visited[it->to] && distances[min_i] != std::numeric_limits<std::size_t>::max()
+                && distances[min_i] + (*it).weight < distances[it->to]) {
+                distances[it->to] = distances[min_i] + (*it).weight;
             }
         }
     }
 
-    for (std::size_t i = 0; i < num_nodes; ++i) {
-        shortest_paths.push_back({start, i, distances[i]});
+    for (std::size_t i = 0; i < n; ++i) {
+        *dest = Edge{start, i, distances[i]};
+        ++dest;
     }
 
-    return shortest_paths;
+    return dest;
+}
+
+template <class InIt, class OutIt>
+OutIt dijkstra(const std::size_t n, InIt first, InIt last, OutIt dest) {
+    return dijkstra(n, first, last, dest, 0);
 }
 
 template <class InIt, class OutIt, class Pr1, class Pr2>
-OutIt boruvka(const std::size_t num_nodes, InIt first, InIt last, OutIt dest, Pr1 is_preferred_over, Pr2 tie_break) {
-    std::vector<Edge>        mst;
-    DisjointSet<std::size_t> ds(num_nodes);
+OutIt boruvka(const std::size_t n, InIt first, InIt last, OutIt dest, Pr1 preferred, Pr2 tie_break) {
+    std::size_t              mst_size = 0;
+    DisjointSet<std::size_t> ds(n);
+    std::vector<std::size_t> cheapest(n, std::numeric_limits<std::size_t>::max());
+    std::vector<std::size_t> cheapest_edge(n, std::numeric_limits<std::size_t>::max());
 
-    std::vector<std::size_t> cheapest(num_nodes, std::numeric_limits<std::size_t>::max());
-    std::vector<std::size_t> cheapest_edge(num_nodes, std::numeric_limits<std::size_t>::max());
-
-    while (mst.size() < num_nodes - 1) {
-        for (std::size_t i = 0; i < num_nodes; ++i) {
+    while (mst_size < n - 1) {
+        for (std::size_t i = 0; i < n; ++i) {
             cheapest[i]      = std::numeric_limits<std::size_t>::max();
             cheapest_edge[i] = std::numeric_limits<std::size_t>::max();
         }
@@ -318,20 +341,13 @@ OutIt boruvka(const std::size_t num_nodes, InIt first, InIt last, OutIt dest, Pr
                 continue;
             }
 
-            if (is_preferred_over(it->weight, cheapest[set1])
-                || (it->weight == cheapest[set1] && tie_break(it->weight, cheapest_edge[set1]))) {
+            if (preferred(*it, cheapest[set1]) || (tie_break(*it, cheapest[set1]) && it->weight == cheapest[set1])) {
                 cheapest[set1]      = it->weight;
                 cheapest_edge[set1] = it->to;
             }
-
-            if (is_preferred_over(it->weight, cheapest[set2])
-                || (it->weight == cheapest[set2] && tie_break(it->weight, cheapest_edge[set2]))) {
-                cheapest[set2]      = it->weight;
-                cheapest_edge[set2] = it->from;
-            }
         }
 
-        for (std::size_t i = 0; i < num_nodes; ++i) {
+        for (std::size_t i = 0; i < n; ++i) {
             if (cheapest[i] != std::numeric_limits<std::size_t>::max()) {
                 *dest = Edge{cheapest_edge[i], i, cheapest[i]};
                 ++dest;
@@ -344,10 +360,8 @@ OutIt boruvka(const std::size_t num_nodes, InIt first, InIt last, OutIt dest, Pr
 }
 
 template <class InIt, class OutIt>
-OutIt boruvka(const std::size_t num_nodes, InIt first, InIt last, OutIt dest) {
-    return boruvka(
-        num_nodes, first, last, dest, [](const auto& a, const auto& b) { return a < b; },
-        [](const auto& a, const auto& b) { return a < b; });
+OutIt boruvka(const std::size_t n, InIt first, InIt last, OutIt dest) {
+    return boruvka(n, first, last, dest, EdgeLess{}, EdgeLess{});
 }
 
 CPL_END
