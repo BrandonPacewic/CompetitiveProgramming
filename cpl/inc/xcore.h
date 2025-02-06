@@ -23,6 +23,8 @@
 // All macro library checks must first satisfy the `CPL` check.
 #define CPL 1
 
+#define USE_DISJOINT_SET_ITERATORS 1
+
 #undef CPL_STRINGIZE_
 #undef CPL_STRINGIZE
 

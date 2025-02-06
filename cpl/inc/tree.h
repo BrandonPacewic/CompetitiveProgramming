@@ -13,6 +13,7 @@
 #include <vector>
 
 CPL_BEGIN
+#ifdef USE_DISJOINT_SET_ITERATORS
 template <class MyDisj>
 class _Disjoint_set_const_iterator {
 public:
@@ -117,6 +118,7 @@ protected:
 public:
     using _Mybase::_Mybase;
 };
+#endif // USE_DISJOINT_SET_ITERATORS
 
 template <class Ty, class Ranty = std::size_t>
 class DisjointSet { // fixed size union find structure
@@ -178,6 +180,7 @@ public:
         rank.resize(size, 0);
     }
 
+#ifdef USE_DISJOINT_SET_ITERATORS
     using iterator       = _Disjoint_set_iterator<DisjointSet<value_type>>;
     using const_iterator = _Disjoint_set_const_iterator<DisjointSet<value_type>>;
 
@@ -196,6 +199,7 @@ public:
     [[nodiscard]] const_iterator end() const noexcept {
         return const_iterator(parent.end(), rank.end());
     }
+#endif // USE_DISJOINT_SET_ITERATORS
 
 private:
     std::vector<value_type> parent;
