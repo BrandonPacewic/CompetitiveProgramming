@@ -26,3 +26,4 @@ foreach(TEST_FILE ${TEST_FILES})
 endforeach()
 
 include_directories(BEFORE ${CMAKE_SOURCE_DIR}/cpl/inc)
+include_directories(BEFORE ${CMAKE_SOURCE_DIR}/tests/include)
