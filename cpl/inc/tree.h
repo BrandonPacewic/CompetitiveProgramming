@@ -293,20 +293,21 @@ OutIt dijkstra(const std::size_t n, InIt first, InIt last, OutIt dest, const std
     std::vector<std::size_t> distances(n, std::numeric_limits<std::size_t>::max());
     distances[start] = 0;
     for (std::size_t i = 0; i < n; ++i) {
-        auto        min_distance = std::numeric_limits<std::size_t>::max();
-        std::size_t min_i        = 0;
+        auto min_distance = std::numeric_limits<std::size_t>::max();
+        auto min_index    = static_cast<std::size_t>(0);
         for (std::size_t j = 0; j < n; ++j) {
             if (!visited[j] && distances[j] <= min_distance) {
                 min_distance = distances[j];
-                min_i        = j;
+                min_index    = j;
             }
         }
 
-        visited[min_i] = true;
+        visited[min_index] = true;
         for (auto it = first; it != last; ++it) {
-            if (it->from == min_i && !visited[it->to] && distances[min_i] != std::numeric_limits<std::size_t>::max()
-                && distances[min_i] + (*it).weight < distances[it->to]) {
-                distances[it->to] = distances[min_i] + (*it).weight;
+            if (it->from == min_index && !visited[it->to]
+                && distances[min_index] != std::numeric_limits<std::size_t>::max()
+                && distances[min_index] + (*it).weight < distances[it->to]) {
+                distances[it->to] = distances[min_index] + (*it).weight;
             }
         }
     }
