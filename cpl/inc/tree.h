@@ -327,11 +327,11 @@ OutIt dijkstra(const std::size_t n, InIt first, InIt last, OutIt dest) {
 
 template <class InIt, class OutIt, class Pr1, class Pr2>
 OutIt boruvka(const std::size_t n, InIt first, InIt last, OutIt dest, Pr1 preferred, Pr2 tie_break) {
-    std::size_t              mst_size = 0;
     DisjointSet<std::size_t> ds(n);
     std::vector<std::size_t> cheapest(n, std::numeric_limits<std::size_t>::max());
     std::vector<std::size_t> cheapest_edge(n, std::numeric_limits<std::size_t>::max());
 
+    std::size_t mst_size = 0;
     while (mst_size < n - 1) {
         for (std::size_t i = 0; i < n; ++i) {
             cheapest[i]      = std::numeric_limits<std::size_t>::max();
@@ -354,9 +354,9 @@ OutIt boruvka(const std::size_t n, InIt first, InIt last, OutIt dest, Pr1 prefer
 
         for (std::size_t i = 0; i < n; ++i) {
             if (cheapest[i] != std::numeric_limits<std::size_t>::max()) {
+                ds.union_rank(cheapest_edge[i], i);
                 *dest = Edge{cheapest_edge[i], i, cheapest[i]};
                 ++dest;
-                ds.union_rank(cheapest_edge[i], i);
             }
         }
     }
