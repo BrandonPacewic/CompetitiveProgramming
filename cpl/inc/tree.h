@@ -356,6 +356,7 @@ OutIt boruvka(const std::size_t n, InIt first, InIt last, OutIt dest, Pr1 prefer
             if (cheapest[i] != std::numeric_limits<std::size_t>::max()) {
                 ds.union_rank(cheapest_edge[i], i);
                 *dest = Edge{cheapest_edge[i], i, cheapest[i]};
+                ++mst_size;
                 ++dest;
             }
         }
