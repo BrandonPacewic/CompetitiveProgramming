@@ -1,11 +1,11 @@
 // Copyright (c) Brandon Pacewic
 // SPDX-License-Identifier: MIT
 
-#include <benchmark/benchmark.h>
 #include <algorithm>
-#include <vector>
+#include <benchmark/benchmark.h>
 #include <cstdint>
 #include <random>
+#include <vector>
 
 #include "container.h"
 
@@ -31,10 +31,10 @@ void bench(benchmark::State& state) {
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wignored-attributes"
-BENCHMARK(bench<int8_t>)->Range(8, 8<<10);
-BENCHMARK(bench<int16_t>)->Range(8, 8<<10);
-BENCHMARK(bench<int32_t>)->Range(8, 8<<10);
-BENCHMARK(bench<int64_t>)->Range(8, 8<<10);
+BENCHMARK(bench<int8_t>)->Range(8, 8 << 10);
+BENCHMARK(bench<int16_t>)->Range(8, 8 << 10);
+BENCHMARK(bench<int32_t>)->Range(8, 8 << 10);
+BENCHMARK(bench<int64_t>)->Range(8, 8 << 10);
 #pragma GCC diagnostic pop
 
 BENCHMARK_MAIN();
