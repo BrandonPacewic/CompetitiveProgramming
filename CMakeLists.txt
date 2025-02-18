@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_subdirectory(tools EXCLUDE_FROM_ALL)
+add_subdirectory(benchmarks EXCLUDE_FROM_ALL)
 add_subdirectory(cpl)
 
 if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)

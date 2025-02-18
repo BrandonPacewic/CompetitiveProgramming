@@ -1,0 +1,23 @@
+--------------------------------------------------------------
+Benchmark                    Time             CPU   Iterations
+--------------------------------------------------------------
+bench<int8_t>/8           1117 ns         1111 ns       612665
+bench<int8_t>/64          4199 ns         4171 ns       169055
+bench<int8_t>/512        23302 ns        23197 ns        30175
+bench<int8_t>/4096      169703 ns       169260 ns         4132
+bench<int8_t>/8192      336488 ns       335538 ns         2087
+bench<int16_t>/8          1088 ns         1087 ns       649477
+bench<int16_t>/64         4147 ns         4138 ns       169073
+bench<int16_t>/512       23362 ns        23321 ns        30017
+bench<int16_t>/4096     170944 ns       170644 ns         4099
+bench<int16_t>/8192     338460 ns       337847 ns         2071
+bench<int32_t>/8          1086 ns         1084 ns       646729
+bench<int32_t>/64         4215 ns         4207 ns       166165
+bench<int32_t>/512       23318 ns        23283 ns        30022
+bench<int32_t>/4096     169980 ns       169572 ns         4123
+bench<int32_t>/8192     340502 ns       339859 ns         2075
+bench<int64_t>/8          1100 ns         1096 ns       646013
+bench<int64_t>/64         4192 ns         4187 ns       167193
+bench<int64_t>/512       23296 ns        23267 ns        30083
+bench<int64_t>/4096     170424 ns       170128 ns         4120
+bench<int64_t>/8192     336757 ns       336106 ns         2065
