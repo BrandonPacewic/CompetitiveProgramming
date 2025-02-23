@@ -261,8 +261,8 @@ public:
     using is_transparent = int;
 };
 
-template <class InIt, class OutIt, class Pred>
-OutIt kruskal(const std::size_t n, InIt first, InIt last, OutIt dest, Pred pred) {
+template <class InIt, class OutIt, class Pred = EdgeLess>
+OutIt kruskal(const std::size_t n, InIt first, InIt last, OutIt dest, Pred pred = Pred{}) {
     DisjointSet<std::size_t> ds(n);
     std::sort(first, last, pred);
     std::size_t edge_count = 0;
@@ -283,12 +283,7 @@ OutIt kruskal(const std::size_t n, InIt first, InIt last, OutIt dest, Pred pred)
 }
 
 template <class InIt, class OutIt>
-OutIt kruskal(const std::size_t n, InIt first, InIt last, OutIt dest) {
-    return kruskal(n, first, last, dest, EdgeLess{});
-}
-
-template <class InIt, class OutIt>
-OutIt dijkstra(const std::size_t n, InIt first, InIt last, OutIt dest, const std::size_t start) {
+OutIt dijkstra(const std::size_t n, InIt first, InIt last, OutIt dest, const std::size_t start = 0) {
     std::vector<bool>        visited(n, false);
     std::vector<std::size_t> distances(n, std::numeric_limits<std::size_t>::max());
     distances[start] = 0;
@@ -320,13 +315,8 @@ OutIt dijkstra(const std::size_t n, InIt first, InIt last, OutIt dest, const std
     return dest;
 }
 
-template <class InIt, class OutIt>
-OutIt dijkstra(const std::size_t n, InIt first, InIt last, OutIt dest) {
-    return dijkstra(n, first, last, dest, 0);
-}
-
-template <class InIt, class OutIt, class Pr1, class Pr2>
-OutIt boruvka(const std::size_t n, InIt first, InIt last, OutIt dest, Pr1 preferred, Pr2 tie_break) {
+template <class InIt, class OutIt, class Pr1 = EdgeLess, class Pr2 = EdgeLess>
+OutIt boruvka(const std::size_t n, InIt first, InIt last, OutIt dest, Pr1 preferred = Pr1{}, Pr2 tie_break = Pr2{}) {
     DisjointSet<std::size_t> ds(n);
     std::vector<std::size_t> cheapest(n, std::numeric_limits<std::size_t>::max());
     std::vector<std::size_t> cheapest_edge(n, std::numeric_limits<std::size_t>::max());
@@ -363,11 +353,6 @@ OutIt boruvka(const std::size_t n, InIt first, InIt last, OutIt dest, Pr1 prefer
     }
 
     return dest;
-}
-
-template <class InIt, class OutIt>
-OutIt boruvka(const std::size_t n, InIt first, InIt last, OutIt dest) {
-    return boruvka(n, first, last, dest, EdgeLess{}, EdgeLess{});
 }
 
 CPL_END
