@@ -33,11 +33,29 @@ constexpr bool is_container = _Is_container<T>::value;
 
 #define CPL_IS_CONTAINER(T) static_assert(is_container<T>, "Templated parameter is not a valid container.")
 
-template <class FwdIt1, class FwdIt2, class OutIt>
-OutIt alternating_insertion(FwdIt1 first1, FwdIt1 last1, FwdIt2 first2, FwdIt2 last2, OutIt result) {
+template <class... Args>
+auto alternating_insertion(Args&&... args) {
+    // 3-arg -> Treat arguments as containers, e.g. (input1, input2, output)
+    // 5-arg -> Treat arguments as iterators, e.g. (first1, last1, first2, last2, result)
+    auto [first1, last1, first2, last2, result] = [](Args&&... args) {
+        if constexpr (sizeof...(args) == 3) {
+            const auto&& [in1, in2, out] = std::forward_as_tuple(args...);
+            return std::forward_as_tuple(in1.begin(), in1.end(), in2.begin(), in2.end(), out.begin());
+        } else if constexpr (sizeof...(args) == 5) {
+            return std::forward_as_tuple(args...);
+        } else {
+            static_assert(false, "Invalid number of arguments");
+        }
+    }(std::forward<Args>(args)...);
+
     while (first1 != last1 && first2 != last2) {
-        *result++ = *first1++;
-        *result++ = *first2++;
+        *result = *first1;
+        ++result;
+        ++first1;
+
+        *result = *first2;
+        ++result;
+        ++first2;
     }
 
     if (first1 != last1) {
@@ -47,17 +65,6 @@ OutIt alternating_insertion(FwdIt1 first1, FwdIt1 last1, FwdIt2 first2, FwdIt2 l
     }
 
     return result;
-}
-
-template <class InCont1, class InCont2, class OutCont>
-[[nodiscard]] OutCont alternating_insertion(const InCont1& input1, const InCont2& input2, OutCont output) {
-#if CPL
-    CPL_IS_CONTAINER(InCont1);
-    CPL_IS_CONTAINER(InCont2);
-    CPL_IS_CONTAINER(OutCont);
-#endif // CPL
-    return alternating_insertion(
-        input1.begin(), input1.end(), input2.begin(), input2.end(), std::back_inserter(output));
 }
 
 template <class FwdIt, class Ty = typename std::iterator_traits<FwdIt>::value_type>
