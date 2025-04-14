@@ -50,7 +50,7 @@ of goals I have for this project before I consider it to be complete, in no part
 
 A more detailed description of each goal can be found below:
 
-#### Refactor Old Code to Match Current Standards
+### Refactor Old Code to Match Current Standards
 
 This is my longest standing project in terms of the initial creation date. As such, the earlier code does
 not reflect my current standards. One of the current goals is to revise such code to improve quality.
@@ -60,12 +60,12 @@ not reflect my current standards. One of the current goals is to revise such cod
 > of the algorithms 10+ times as this library tends to evolve as I become a better programmer.
 > If something doesn't look quite right, it probably isn't.
 
-#### Full Test Coverage
+### Full Test Coverage
 
 While this library is meant for competitive programming (where tests don’t carry over), it should still have
 full test coverage — including tests derived from problems where I used components of this library to solve them.
 
-#### Performance with Supporting Benchmarks
+### Performance with Supporting Benchmarks
 
 In the spirit of competitive programming, while solving the problem is the main goal, performance is also
 a key component. Benchmarks should back up various design decisions when it comes to how I have chosen to
@@ -75,7 +75,7 @@ structure and implement various key algorithms and data structures.
 > While I do want 100% test coverage, I'm less concerned about benchmarks. Benchmarks will be added
 > as I find them necessary to support design decisions.
 
-#### Codebase Atomizer
+### Codebase Atomizer
 
 The *Atomizer* is a tool used to break down the codebase into smaller, more manageable pieces, that can be
 retrieved quickly. For example, if you want to use a specific function, say `output_container` to keep things
@@ -87,7 +87,7 @@ use Kruskal's algorithm, you can use the *Atomizer* to retrieve the `kruskal.cpp
 supporting `DisjointSet` class used within the algorithm. Again saving you from finding the specific lines of code
 within the header file that you need.
 
-#### Full Implementation of the CPH (Competitive Programming Handbook)
+### Full Implementation of the CPH (Competitive Programming Handbook)
 
 The [*Competitive Programming Handbook*](https://cses.fi/book/book.pdf) by Antti Laaksonen is an awesome, all in one,
 resource for everything competitive programming. It contains everything from compiling and reading input to sweep line
