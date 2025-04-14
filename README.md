@@ -5,7 +5,7 @@
     <p align="center">
         <a href="#about">About</a> •
         <a href="#getting-started">Getting Started</a> •
-        <a href="#Milestones">Milestones</a>
+        <a href="#milestones">Milestones</a>
     </p>
 </p>
 
@@ -13,13 +13,13 @@
 
 This is my personal C++ library designed specifically for competitive programming. It contains a variety
 of data structures, algorithms, and other utilities commonly used in competitive programming. Each component
-of this library is designed to be drop-in-usable—no setup or external dependencies required. The entire
+of this library is designed to be drop-in usable—no setup or external dependencies required. The entire
 library is designed to have sections that are copy-pasteable into a single file for contest submission.
 
 ## Getting Started
 
-Since the core idea of this library is to copy paste sections from it into your own code I recommend
-having a local copy of the library in an easy to access location:
+Since the core idea of this library is to copy-paste sections from it into your own code I recommend
+keeping a local copy of the library in an easy to access location:
 
 ```bash
 git clone https://github.com/BrandonPacewic/CompetitiveProgramming
@@ -33,12 +33,12 @@ From there you can:
 
 > [!NOTE]
 > Additional instructions and support for importing the library and using the test cases is
-> planed to be added in the future.
+> planned to be added in the future.
 
 ## Milestones
 
-As will every single one of my projects, this is still very much a work in progress. The following is a list
-of goals I have for this project before I'm truly happy with it, in no particular order:
+As with every single one of my projects, this is still very much a work in progress. The following is a list
+of goals I have for this project before I consider it to be complete, in no particular order:
 
 |  #  | Goal                                                      | Status |
 | :-: | --------------------------------------------------------- | :----: |
@@ -55,15 +55,15 @@ A more detailed description of each goal can be found below:
 This is my longest standing project in terms of the initial creation date. As such, the earlier code does
 not reflect my current standards. One of the current goals is to revise such code to improve quality.
 
-> [!WARNINg]
+> [!NOTE]
 > I find the structure of the code in this repository to be quite volatile. I have probably re-written some
-> of the algorithms 10+ times. If something doesn't look quite right, it probably isn't.
+> of the algorithms 10+ times as this library tends to evolve as I become a better programmer.
+> If something doesn't look quite right, it probably isn't.
 
 #### Full Test Coverage
 
-While this library is designed to be used in competitive programming, where tests written in this repository
-obviously won't be carried over. There still should be total test coverage this includes copies of various
-programming problems that I have used sections of this library to solve.
+While this library is meant for competitive programming (where tests don’t carry over), it should still have
+full test coverage — including tests derived from problems where I used components of this library to solve them.
 
 #### Performance with Supporting Benchmarks
 
@@ -80,23 +80,23 @@ structure and implement various key algorithms and data structures.
 The *Atomizer* is a tool used to break down the codebase into smaller, more manageable pieces, that can be
 retrieved quickly. For example, if you want to use a specific function, say `output_container` to keep things
 simple. You can use the *Atomizer* output to retrieve that specific function via a file lookup, `output_container.cpp`.
-You can also use any supporting tool you want to pase that file buffer directly inline into your code. Rather than
+You can also use any supporting tool you want to paste that file buffer directly inline into your code. Rather than
 opening the container header file and copying the specific lines from the file that you need. This will also work
 with more complex algorithms that may require an additional data structure to function. For example, if you want to
 use Kruskal's algorithm, you can use the *Atomizer* to retrieve the `kruskal.cpp` file which will include the
-supporting `DisjointSet` class used within the algorithm. Again resolving you of finding the specific lines of code
+supporting `DisjointSet` class used within the algorithm. Again saving you from finding the specific lines of code
 within the header file that you need.
 
 #### Full Implementation of the CPH (Competitive Programming Handbook)
 
-The [*Competitive Programming Handbook*]() by Antti Laaksonen is a awesome, all in one, resource for
-everything competitive programming. It contains everything from compiling and reading input to sweep line
+The [*Competitive Programming Handbook*](https://cses.fi/book/book.pdf) by Antti Laaksonen is an awesome, all in one,
+resource for everything competitive programming. It contains everything from compiling and reading input to sweep line
 algorithms including convex hulls. Its an eventual goal of mine to fully implement all the algorithms outlined
 in the book. This has the added benefit of an *complete* documentation source of all the algorithms in this
 library. This is a long term goal and will likely take a while to complete.
 
 > [!NOTE]
-> This is my end game goal for this project. When its completed I will consider this project *done* as so far
+> This is my endgame for this project. When its completed I will consider this project *done* as so far
 > as it will no longer be a major work in progress for me personally. I will still add things here and there
 > and work on it when I'm compelled to do so but the core goals of this project will be officially complete.
 
