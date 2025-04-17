@@ -33,6 +33,9 @@ bench: BUILD_BENCH := ON
 bench: build
 	@cmake --build "$(BUILD_DIR)" -j$(JOBS)
 
+run-benchmarks: bench
+	@cmake --build "$(BUILD_DIR)" --target run_all_benchmarks -- -j$(JOBS)
+
 tools: BUILD_TOOLS := ON
 tools: build
 
@@ -50,6 +53,7 @@ help:
 	@echo "  build              - configure and build"
 	@echo "  test               - run ctest (RUN_TESTS=ON)"
 	@echo "  bench              - build & run benchmarks (BUILD_BENCH=ON)"
+	@echo "  run-benchmarks     - run all benchmarks"
 	@echo "  tools              - build project-defined tools (BUILD_TOOLS=ON)"
 	@echo "  format             - run clang-format on all source files"
 	@echo "  clean              - clean build artefacts"
