@@ -39,6 +39,39 @@ foreach(BENCHMARK_FILE ${BENCHMARK_FILES})
     add_executable(${FINAL_TARGET_NAME} ${BENCHMARK_FILE})
     set_target_properties(${FINAL_TARGET_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${BENCHMARK_BINARY_DIR})
     target_link_libraries(${FINAL_TARGET_NAME} PRIVATE cpl benchmark::benchmark)
+
+    list(APPEND BENCHMARK_TARGETS ${FINAL_TARGET_NAME})
 endforeach()
+
+execute_process(
+  COMMAND git rev-parse --short HEAD
+  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+  OUTPUT_VARIABLE GIT_HASH
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+string(TIMESTAMP TODAY "%Y-%m-%d_%H-%M-%S")
+set(RESULT_DIR "${CMAKE_BINARY_DIR}/benchmarks/results")
+file(MAKE_DIRECTORY "${RESULT_DIR}")
+set(BENCH_JSONS "")
+
+foreach(TGT IN LISTS BENCHMARK_TARGETS)
+  set(JSON_OUT "${RESULT_DIR}/${TODAY}_${GIT_HASH}_${TGT}.json")
+
+    add_custom_command(
+    OUTPUT  "${JSON_OUT}"
+    COMMAND ${CMAKE_COMMAND} -E echo "→ running ${TGT}"
+    COMMAND $<TARGET_FILE:${TGT}>
+            --benchmark_out=${JSON_OUT}
+            --benchmark_out_format=json
+    DEPENDS ${TGT}
+    COMMENT "Running benchmark '${TGT}' and writing ${JSON_OUT}"
+    VERBATIM
+    )
+
+  list(APPEND BENCH_JSONS "${JSON_OUT}")
+endforeach()
+
+add_custom_target(run_all_benchmarks ALL DEPENDS ${BENCH_JSONS})
 
 include_directories(BEFORE ${CMAKE_SOURCE_DIR}/cpl/inc)
