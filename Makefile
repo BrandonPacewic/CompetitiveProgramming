@@ -36,6 +36,12 @@ bench: build
 run-benchmarks: bench
 	@cmake --build "$(BUILD_DIR)" --target run_all_benchmarks -- -j$(JOBS)
 
+bench-diff:
+	@python tools/scripts/compare_benchmarks.py
+
+bench-out:
+	@python tools/scripts/output_benchmarks.py
+
 tools: BUILD_TOOLS := ON
 tools: build
 
@@ -54,6 +60,8 @@ help:
 	@echo "  test               - run ctest (RUN_TESTS=ON)"
 	@echo "  bench              - build & run benchmarks (BUILD_BENCH=ON)"
 	@echo "  run-benchmarks     - run all benchmarks"
+	@echo "  bench-diff         - compare the two most recent benchmark runs"
+	@echo "  bench-out          - output the most recent benchmark run"
 	@echo "  tools              - build project-defined tools (BUILD_TOOLS=ON)"
 	@echo "  format             - run clang-format on all source files"
 	@echo "  clean              - clean build artefacts"
