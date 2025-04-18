@@ -64,7 +64,7 @@ help:
 	@echo "  bench-out          - output the most recent benchmark run"
 	@echo "  tools              - build project-defined tools (BUILD_TOOLS=ON)"
 	@echo "  format             - run clang-format on all source files"
-	@echo "  clean              - clean build artefacts"
+	@echo "  clean              - clean build artifacts"
 	@echo "  distclean          - clean entire build dir"
 	@echo ""
 	@echo "Knobs (override with VAR=value):"
