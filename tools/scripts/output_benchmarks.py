@@ -34,13 +34,11 @@ def print_benchmark_data(file_path: Path) -> None:
 
 def main() -> None:
     print("Showing most recent benchmark outputs per algorithm...")
-
     if not RESULTS_DIR.is_dir():
         print(f"Results directory '{RESULTS_DIR}' not found.")
         return
 
     algo_to_files = defaultdict(list)
-
     for file in sorted(RESULTS_DIR.glob("*.json"), key=os.path.getmtime, reverse=True):
         algo_name = extract_algo_name(file.name)
         algo_to_files[algo_name].append(file)

@@ -20,7 +20,6 @@ def extract_algo_name(filename: str) -> str:
 
 def main() -> None:
     print("Comparing most recent benchmarks per algorithm...")
-
     if not RESULTS_DIR.is_dir():
         print(f"Results directory '{RESULTS_DIR}' not found.")
         return
