@@ -11,10 +11,56 @@
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
+#include <ostream>
+#include <string>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 CPL_BEGIN
+
+// ostream overloads for debugging output
+template <class First, class Second>
+std::ostream& operator<<(std::ostream& os, const std::pair<First, Second>& p) {
+    return os << '(' << p.first << ", " << p.second << ')';
+}
+
+template <typename Cont,
+    class Valty = typename std::enable_if<!std::is_same<Cont, std::string>::value, typename Cont::value_type>::type>
+std::ostream& operator<<(std::ostream& os, const Cont& container) {
+    os << '{';
+    auto it  = container.begin();
+    auto end = container.end();
+
+    if (it != end) {
+        os << *it;
+        ++it;
+    }
+
+    for (; it != end; ++it) {
+        os << ", " << *it;
+    }
+
+    return os << '}';
+}
+
+// macros for debugging output
+#if DBG_MODE || CPL
+template <class... Args>
+void dbg_out() {
+    std::cerr << std::endl;
+}
+
+template <class Head, class... Tail>
+void dbg_out(Head&& head, Tail&&... tail) {
+    std::cerr << ' ' << head;
+    dbg_out(std::forward<Tail>(tail)...);
+}
+
+#define test(...) std::cerr << "[" << #__VA_ARGS__ << "]:", dbg_out(__VA_ARGS__)
+#else // ^^^ DBG_MODE || CPL ^^^ / vvv !DBG_MODE && !CPL
+#define test(...)
+#endif // DBG_MODE || CPL
 
 template <typename... Ts>
 struct _Is_container_helper {};
@@ -32,6 +78,49 @@ template <typename T>
 constexpr bool is_container = _Is_container<T>::value;
 
 #define CPL_IS_CONTAINER(T) static_assert(is_container<T>, "Templated parameter is not a valid container.")
+
+template <class FwdIter>
+const void output_container(FwdIter first, FwdIter last, const bool& space = true, const bool& new_line = true) {
+    for (; first != last; ++first) {
+        std::cout << *first;
+
+        if (space && first != last - 1) {
+            std::cout << ' ';
+        }
+    }
+
+    std::cout << (new_line ? '\n' : ' ');
+}
+
+template <typename Cont>
+const void output_container(const Cont& container, const bool& space = true, const bool& new_line = true) {
+#if CPL
+    CPL_IS_CONTAINER(Cont);
+#endif // CPL
+    output_container(container.begin(), container.end(), space, new_line);
+}
+
+template <class FwdIter>
+const void output_reverse_container(
+    FwdIter first, FwdIter last, const bool& space = true, const bool& new_line = true) {
+    for (; first != last; ++first) {
+        std::cout << *first;
+
+        if (space && first != last - 1) {
+            std::cout << ' ';
+        }
+    }
+
+    std::cout << (new_line ? '\n' : ' ');
+}
+
+template <typename Cont>
+const void output_reverse_container(const Cont& container, const bool& space = true, const bool& new_line = true) {
+#if CPL
+    CPL_IS_CONTAINER(Cont);
+#endif // CPL
+    output_reverse_container(container.rbegin(), container.rend(), space, new_line);
+}
 
 template <class... Args>
 auto alternating_insertion(Args&&... args) {
