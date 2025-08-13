@@ -7,6 +7,7 @@ BUILD_TESTS      ?= ON        # pass BUILD_TESTS=OFF to skip
 BUILD_BENCH      ?= OFF
 BUILD_TOOLS      ?= OFF
 BUILD_TYPE       ?= Debug     # Release | RelWithDebInfo ...
+COMPILE_COMMANDS ?= ON
 JOBS             ?= $(shell nproc 2>/dev/null || sysctl -n hw.ncpu)
 
 CMAKE_FLAGS = \
@@ -15,6 +16,7 @@ CMAKE_FLAGS = \
   -DBUILD_TESTING=$(BUILD_TESTS) \
   -DBUILD_BENCHMARKS=$(BUILD_BENCH) \
   -DBUILD_TOOLS=$(BUILD_TOOLS) \
+  -DCMAKE_EXPORT_COMPILE_COMMANDS=$(COMPILE_COMMANDS)
 
 .PHONY: build test bench tools \
         format clean distclean help
@@ -22,6 +24,9 @@ CMAKE_FLAGS = \
 configure:
 	@mkdir -p "$(BUILD_DIR)"
 	@cmake -S . -B "$(BUILD_DIR)" $(CMAKE_FLAGS)
+ifeq ($(COMPILE_COMMANDS),ON)
+	@ln -sf "$(BUILD_DIR)/compile_commands.json" compile_commands.json
+endif
 
 build: configure
 	@cmake --build "$(BUILD_DIR)" -- -j$(JOBS)
@@ -53,6 +58,9 @@ clean:
 
 distclean:
 	@rm -rf "$(BUILD_DIR)"
+ifeq ($(COMPILE_COMMANDS),ON)
+	@rm -f compile_commands.json
+endif
 
 help:
 	@echo "Targets:"
