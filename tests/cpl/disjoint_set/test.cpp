@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: MIT
 
 #include <cassert>
-#include <iostream>
 
 #include "tree.h"
 
@@ -44,6 +43,20 @@ int main() {
         for (int i = 0; i < 6; ++i) {
             assert(ds.find(i) == 0);
         }
+    }
+    {
+        using CIt = DisjointSet<int>::const_iterator;
+
+        static_assert(std::random_access_iterator<CIt>);
+        static_assert(std::same_as<std::iter_value_t<CIt>, std::pair<int, std::size_t>>);
+        static_assert(std::same_as<std::iter_difference_t<CIt>, std::ptrdiff_t>);
+    }
+    {
+        using CIt = DisjointSet<int>::iterator;
+
+        static_assert(std::random_access_iterator<CIt>);
+        static_assert(std::same_as<std::iter_value_t<CIt>, std::pair<int, std::size_t>>);
+        static_assert(std::same_as<std::iter_difference_t<CIt>, std::ptrdiff_t>);
     }
     {
         DisjointSet<int> ds(5);

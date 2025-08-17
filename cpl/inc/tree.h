@@ -9,100 +9,137 @@
 
 #include "xcore.h"
 
+#include <iterator>
 #include <numeric>
 #include <vector>
 
 CPL_BEGIN
-#ifdef USE_DISJOINT_SET_ITERATORS
 template <class MyDisj>
-class _Disjoint_set_const_iterator {
+class disjoint_set_const_iterator {
 public:
     using iterator_category = std::random_access_iterator_tag;
+    using iterator_concept  = std::random_access_iterator_tag;
+    using difference_type   = std::ptrdiff_t;
+
+private:
+    using parent_value_type = typename MyDisj::value_type;
+    using parent_rank_type  = typename MyDisj::rank_type;
+
+    using parent_iterator = typename std::vector<parent_value_type>::const_iterator;
+    using rank_iterator   = typename std::vector<parent_rank_type>::const_iterator;
 
 protected:
-    using parent_iterator = typename std::vector<typename MyDisj::value_type>::iterator;
-    using rank_iterator   = typename std::vector<typename MyDisj::rank_type>::iterator;
+    using pair_cref = std::pair<const parent_value_type&, const parent_rank_type&>;
+
+    struct arrow_proxy {
+        pair_cref ref;
+
+        const pair_cref* operator->() const noexcept {
+            return &ref;
+        }
+    };
 
 public:
-    using value_type      = std::pair<typename MyDisj::value_type, typename MyDisj::rank_type>;
-    using difference_type = std::ptrdiff_t;
-    using pointer         = value_type*;
-    using const_pointer   = value_type*;
-    using reference       = value_type&;
-    using const_reference = const value_type&;
+    using value_type      = std::pair<parent_value_type, parent_rank_type>;
+    using reference       = value_type;
+    using const_reference = value_type;
+    using pointer         = const value_type*;
+    using const_pointer   = const value_type*;
 
-    _Disjoint_set_const_iterator(parent_iterator parent, rank_iterator rank) noexcept : parent(parent), rank(rank) {}
+    disjoint_set_const_iterator() = default;
 
-    [[nodiscard]] value_type operator*() const noexcept {
-        return {(*parent), (*rank)};
+    disjoint_set_const_iterator(parent_iterator parent, rank_iterator rank) noexcept : parent(parent), rank(rank) {}
+
+    [[nodiscard]] reference operator*() const noexcept {
+        return reference{*parent, *rank};
     }
 
-    [[nodiscard]] pointer operator->() const noexcept {
-        return &operator*();
+    [[nodiscard]] arrow_proxy operator->() const noexcept {
+        return arrow_proxy{reference{*parent, *rank}};
     }
 
-    _Disjoint_set_const_iterator& operator++() noexcept {
+    disjoint_set_const_iterator& operator++() noexcept {
         ++parent;
         ++rank;
         return *this;
     }
 
-    _Disjoint_set_const_iterator& operator++(int) noexcept {
+    disjoint_set_const_iterator operator++(int) noexcept {
         auto tmp = *this;
         ++(*this);
         return tmp;
     }
 
-    _Disjoint_set_const_iterator& operator--() noexcept {
+    disjoint_set_const_iterator& operator--() noexcept {
         --parent;
         --rank;
         return *this;
     }
 
-    _Disjoint_set_const_iterator& operator--(int) noexcept {
+    disjoint_set_const_iterator operator--(int) noexcept {
         auto tmp = *this;
         --(*this);
         return tmp;
     }
 
-    [[nodiscard]] _Disjoint_set_const_iterator& operator+=(const difference_type off) noexcept {
+    [[nodiscard]] disjoint_set_const_iterator& operator+=(const difference_type off) noexcept {
         parent += off;
         rank += off;
         return *this;
     }
 
-    [[nodiscard]] _Disjoint_set_const_iterator operator+(const difference_type off) const noexcept {
+    [[nodiscard]] disjoint_set_const_iterator operator+(const difference_type off) const noexcept {
         auto tmp = *this;
         tmp += off;
         return tmp;
     }
 
-    [[nodiscard]] friend _Disjoint_set_const_iterator operator+(
-        const difference_type off, _Disjoint_set_const_iterator next) noexcept {
+    [[nodiscard]] friend disjoint_set_const_iterator operator+(
+        const difference_type off, disjoint_set_const_iterator next) noexcept {
         next += off;
         return next;
     }
 
-    [[nodiscard]] _Disjoint_set_const_iterator& operator-=(const difference_type off) noexcept {
+    [[nodiscard]] disjoint_set_const_iterator& operator-=(const difference_type off) noexcept {
         return *this += -off;
     }
 
-    [[nodiscard]] _Disjoint_set_const_iterator operator-(const difference_type off) const noexcept {
+    [[nodiscard]] disjoint_set_const_iterator operator-(const difference_type off) const noexcept {
         auto tmp = *this;
         tmp -= off;
         return tmp;
     }
 
-    [[nodiscard]] difference_type operator-(const _Disjoint_set_const_iterator& right) const noexcept {
+    [[nodiscard]] difference_type operator-(const disjoint_set_const_iterator& right) const noexcept {
         return static_cast<difference_type>(parent - right.parent);
     }
 
-    [[nodiscard]] bool operator==(const _Disjoint_set_const_iterator& right) const noexcept {
+    [[nodiscard]] reference operator[](const difference_type off) const noexcept {
+        return *(*this + off);
+    }
+
+    [[nodiscard]] bool operator==(const disjoint_set_const_iterator& right) const noexcept {
         return parent == right.parent;
     }
 
-    [[nodiscard]] bool operator!=(const _Disjoint_set_const_iterator& right) const noexcept {
+    [[nodiscard]] bool operator!=(const disjoint_set_const_iterator& right) const noexcept {
         return !(*this == right);
+    }
+
+    [[nodiscard]] bool operator<(const disjoint_set_const_iterator& right) const noexcept {
+        return parent < right.parent;
+    }
+
+    [[nodiscard]] bool operator>(const disjoint_set_const_iterator& right) const noexcept {
+        return right < *this;
+    }
+
+    [[nodiscard]] bool operator<=(const disjoint_set_const_iterator& right) const noexcept {
+        return !(right < *this);
+    }
+
+    [[nodiscard]] bool operator>=(const disjoint_set_const_iterator& right) const noexcept {
+        return !(*this < right);
     }
 
 protected:
@@ -111,14 +148,87 @@ protected:
 };
 
 template <class Mydisj>
-class _Disjoint_set_iterator : public _Disjoint_set_const_iterator<Mydisj> {
+class disjoint_set_iterator : public disjoint_set_const_iterator<Mydisj> {
 protected:
-    using _Mybase = _Disjoint_set_const_iterator<Mydisj>;
+    using Mybase = disjoint_set_const_iterator<Mydisj>;
 
 public:
-    using _Mybase::_Mybase;
+    using iterator_category = std::random_access_iterator_tag;
+    using iterator_concept  = std::random_access_iterator_tag;
+    using difference_type   = typename Mybase::difference_type;
+
+    using value_type = typename Mybase::value_type;
+    using reference  = typename Mybase::reference;
+    using pointer    = typename Mybase::pointer;
+
+    using Mybase::Mybase;
+
+    [[nodiscard]] reference operator*() const noexcept {
+        return Mybase::operator*();
+    }
+
+    [[nodiscard]] Mybase::arrow_proxy operator->() const noexcept {
+        return Mybase::operator->();
+    }
+
+    disjoint_set_iterator& operator++() noexcept {
+        Mybase::operator++();
+        return *this;
+    }
+
+    disjoint_set_iterator operator++(int) noexcept {
+        auto tmp = *this;
+        Mybase::operator++();
+        return tmp;
+    }
+
+    disjoint_set_iterator& operator--() noexcept {
+        Mybase::operator--();
+        return *this;
+    }
+
+    disjoint_set_iterator operator--(int) noexcept {
+        auto tmp = *this;
+        Mybase::operator--();
+        return tmp;
+    }
+
+    [[nodiscard]] disjoint_set_iterator& operator+=(const difference_type off) noexcept {
+        Mybase::operator+=(off);
+        return *this;
+    }
+
+    [[nodiscard]] disjoint_set_iterator operator+(const difference_type off) const noexcept {
+        auto tmp = *this;
+        tmp += off;
+        return tmp;
+    }
+
+    [[nodiscard]] friend disjoint_set_iterator operator+(
+        const difference_type off, disjoint_set_iterator next) noexcept {
+        next += off;
+        return next;
+    }
+
+    [[nodiscard]] disjoint_set_iterator& operator-=(const difference_type off) noexcept {
+        Mybase::operator-=(off);
+        return *this;
+    }
+
+    [[nodiscard]] disjoint_set_iterator operator-(const difference_type off) const noexcept {
+        auto tmp = *this;
+        tmp -= off;
+        return tmp;
+    }
+
+    [[nodiscard]] difference_type operator-(const disjoint_set_iterator& right) const noexcept {
+        return static_cast<difference_type>(this->parent - right.parent);
+    }
+
+    [[nodiscard]] reference operator[](const difference_type off) const noexcept {
+        return const_cast<reference>(Mybase::operator[](off));
+    }
 };
-#endif // USE_DISJOINT_SET_ITERATORS
 
 template <class Ty, class Ranty = std::size_t>
 class DisjointSet { // fixed size union find structure
@@ -180,9 +290,9 @@ public:
         rank.resize(size, 0);
     }
 
-#ifdef USE_DISJOINT_SET_ITERATORS
-    using iterator       = _Disjoint_set_iterator<DisjointSet<value_type>>;
-    using const_iterator = _Disjoint_set_const_iterator<DisjointSet<value_type>>;
+#ifdef CPL
+    using iterator       = disjoint_set_iterator<DisjointSet<value_type>>;
+    using const_iterator = disjoint_set_const_iterator<DisjointSet<value_type>>;
 
     [[nodiscard]] iterator begin() noexcept {
         return iterator(parent.begin(), rank.begin());
@@ -199,7 +309,7 @@ public:
     [[nodiscard]] const_iterator end() const noexcept {
         return const_iterator(parent.end(), rank.end());
     }
-#endif // USE_DISJOINT_SET_ITERATORS
+#endif // CPL
 
 private:
     std::vector<value_type> parent;
