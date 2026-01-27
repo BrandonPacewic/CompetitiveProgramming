@@ -426,39 +426,40 @@ OutIt dijkstra(const std::size_t n, InIt first, InIt last, OutIt dest, const std
     return dest;
 }
 
-template <class InIt, class OutIt, class Pr1 = EdgeLess, class Pr2 = EdgeLess>
-OutIt boruvka(const std::size_t n, InIt first, InIt last, OutIt dest, Pr1 preferred = Pr1{}, Pr2 tie_break = Pr2{}) {
-    DisjointSet<std::size_t> ds(n);
-    std::vector<std::size_t> cheapest(n, std::numeric_limits<std::size_t>::max());
-    std::vector<std::size_t> cheapest_edge(n, std::numeric_limits<std::size_t>::max());
+template <class InIt, class OutIt, class Pred = EdgeLess>
+OutIt boruvka(const std::size_t n, InIt first, InIt last, OutIt dest, Pred pred = Pred{}) {
+    using edge_ptr = decltype(&*first);
 
-    std::size_t mst_size = 0;
-    while (mst_size < n - 1) {
-        for (std::size_t i = 0; i < n; ++i) {
-            cheapest[i]      = std::numeric_limits<std::size_t>::max();
-            cheapest_edge[i] = std::numeric_limits<std::size_t>::max();
-        }
+    DisjointSet<std::size_t> ds(n);
+    std::vector<edge_ptr>    cheapest(n);
+
+    for (std::size_t components = n; components > 1;) {
+        std::fill(cheapest.begin(), cheapest.end(), nullptr);
 
         for (auto it = first; it != last; ++it) {
             auto set1 = ds.find(it->from);
             auto set2 = ds.find(it->to);
+            if (set1 != set2) {
+                if (!cheapest[set1] || pred(*it, *cheapest[set1])) {
+                    cheapest[set1] = &*it;
+                }
 
-            if (set1 == set2) {
-                continue;
-            }
-
-            if (preferred(*it, cheapest[set1]) || (tie_break(*it, cheapest[set1]) && it->weight == cheapest[set1])) {
-                cheapest[set1]      = it->weight;
-                cheapest_edge[set1] = it->to;
+                if (!cheapest[set2] || pred(*it, *cheapest[set2])) {
+                    cheapest[set2] = &*it;
+                }
             }
         }
 
         for (std::size_t i = 0; i < n; ++i) {
-            if (cheapest[i] != std::numeric_limits<std::size_t>::max()) {
-                ds.union_rank(cheapest_edge[i], i);
-                *dest = Edge{cheapest_edge[i], i, cheapest[i]};
-                ++mst_size;
-                ++dest;
+            if (!cheapest[i]) {
+                continue;
+            }
+
+            auto set1 = ds.find(cheapest[i]->from), set2 = ds.find(cheapest[i]->to);
+            if (set1 != set2) {
+                ds.union_rank(set1, set2);
+                *dest++ = *cheapest[i];
+                --components;
             }
         }
     }
