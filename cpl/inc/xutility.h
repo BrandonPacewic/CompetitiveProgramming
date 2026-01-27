@@ -8,6 +8,9 @@
 #define XUTILITY_H_
 #include "xcore.h"
 
+#include <functional>
+#include <type_traits>
+
 CPL_BEGIN
 
 // The following effectively implements recursive lambdas.
