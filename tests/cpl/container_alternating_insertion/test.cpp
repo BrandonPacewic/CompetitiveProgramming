@@ -9,7 +9,6 @@ int main() {
     using namespace std;
     using namespace cpl;
 
-    // Args by iterator
     {
         vector<int> first_input{};
         vector<int> second_input{};

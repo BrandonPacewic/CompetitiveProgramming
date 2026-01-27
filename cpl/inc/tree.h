@@ -9,6 +9,7 @@
 
 #include "xcore.h"
 
+#include <algorithm>
 #include <iterator>
 #include <numeric>
 #include <vector>
