@@ -128,10 +128,10 @@ auto alternating_insertion(Args&&... args) {
     // 5-arg -> Treat arguments as iterators, e.g. (first1, last1, first2, last2, result)
     auto [first1, last1, first2, last2, result] = [](Args&&... args) {
         if constexpr (sizeof...(args) == 3) {
-            const auto&& [in1, in2, out] = std::forward_as_tuple(args...);
-            return std::forward_as_tuple(in1.begin(), in1.end(), in2.begin(), in2.end(), out.begin());
+            auto&& [in1, in2, out] = std::forward_as_tuple(args...);
+            return std::tuple(in1.begin(), in1.end(), in2.begin(), in2.end(), out.begin());
         } else if constexpr (sizeof...(args) == 5) {
-            return std::forward_as_tuple(args...);
+            return std::tuple(std::forward<Args>(args)...);
         } else {
             static_assert(false, "Invalid number of arguments");
         }
