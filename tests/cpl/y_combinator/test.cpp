@@ -9,9 +9,7 @@
 int main() {
     using namespace cpl;
     {
-        auto factorial = y_combinator([](auto self, int n) -> int {
-            return n <= 1 ? 1 : n * self(n - 1);
-        });
+        auto factorial = y_combinator([](auto self, int n) -> int { return n <= 1 ? 1 : n * self(n - 1); });
 
         assert(factorial(0) == 1);
         assert(factorial(1) == 1);
@@ -19,9 +17,7 @@ int main() {
         assert(factorial(10) == 3628800);
     }
     {
-        auto gcd = y_combinator([](auto self, int a, int b) -> int {
-            return b == 0 ? a : self(b, a % b);
-        });
+        auto gcd = y_combinator([](auto self, int a, int b) -> int { return b == 0 ? a : self(b, a % b); });
 
         assert(gcd(20, 30) == 10);
         assert(gcd(48, 18) == 6);
@@ -29,9 +25,7 @@ int main() {
         assert(gcd(17, 13) == 1);
     }
     {
-        auto fib = y_combinator([](auto self, int n) -> int {
-            return n <= 1 ? n : self(n - 1) + self(n - 2);
-        });
+        auto fib = y_combinator([](auto self, int n) -> int { return n <= 1 ? n : self(n - 1) + self(n - 2); });
 
         assert(fib(0) == 0);
         assert(fib(1) == 1);
@@ -40,7 +34,7 @@ int main() {
     }
     {
         std::vector<std::vector<int>> adj = {{1, 2}, {3, 4}, {}, {}, {}};
-        std::vector<int> visited;
+        std::vector<int>              visited;
 
         auto dfs = y_combinator([&](auto self, int node) -> void {
             visited.push_back(node);
@@ -58,8 +52,8 @@ int main() {
         assert(visited[4] == 2);
     }
     {
-        int call_count = 0;
-        auto counter = y_combinator([&](auto self, int n) -> int {
+        int  call_count = 0;
+        auto counter    = y_combinator([&](auto self, int n) -> int {
             ++call_count;
             return n <= 0 ? 0 : self(n - 1);
         });
