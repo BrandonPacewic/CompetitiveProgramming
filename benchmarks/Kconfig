@@ -1,0 +1,34 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# CPL Benchmark Suite Configuration
+
+menuconfig CPL_BENCHMARKS
+	bool "CPL Benchmark Suite"
+	default y
+	help
+	  Enable building and running benchmarks for the CPL library.
+	  Benchmarks measure performance characteristics of library components
+	  using Google Benchmark framework.
+
+if CPL_BENCHMARKS
+
+comment "Container Benchmarks"
+
+config BENCH_CONTAINER_MERGE_SORT
+	bool "Container merge sort benchmark"
+	default y
+	depends on CPL_CONTAINER
+	help
+	  Benchmark merge sort implementation on containers with various
+	  input sizes and data types.
+
+config BENCH_CONTAINER_RUN_LENGTH_ENCODING
+	bool "Container run-length encoding benchmark"
+	default y
+	depends on CPL_CONTAINER
+	help
+	  Benchmark run-length encoding performance on containers with
+	  various input patterns and sizes.
+
+endif # CPL_BENCHMARKS
