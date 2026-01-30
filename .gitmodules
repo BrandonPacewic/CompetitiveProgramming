@@ -1,3 +1,9 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
 [submodule "benchmarks/benchmark"]
 	path = benchmarks/benchmark
 	url = git@github.com:google/benchmark.git
+[submodule "scripts/kconfig-frontends"]
+	path = scripts/kconfig-frontends
+	url = https://github.com/jameswalmsley/kconfig-frontends.git

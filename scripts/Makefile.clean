@@ -1,0 +1,98 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) Brandon Pacewic
+#
+# scripts/Makefile.clean
+# This file is included by the top-level Makefile to handle recursive
+# directory cleaning. It processes Kbuild files in each directory.
+
+src := $(obj)
+
+PHONY := __clean
+__clean:
+
+# Set srctree default if not provided
+srctree ?= .
+
+# Read the Kbuild include macros
+include scripts/Kbuild.include
+
+# The filename Kbuild has precedence over Makefile
+kbuild-dir := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
+kbuild-file := $(if $(wildcard $(kbuild-dir)/Kbuild),$(kbuild-dir)/Kbuild,$(kbuild-dir)/Makefile)
+
+# Only include if the file exists, otherwise we just clean the directory
+ifneq ($(wildcard $(kbuild-file)),)
+include $(kbuild-file)
+endif
+
+include scripts/Makefile.lib
+
+# Figure out what we need to build from the various variables
+# ==========================================================================
+
+# obj-y lists all object files to build - convert to files to clean
+# These are already relative to $(obj), so we need to prefix them
+__clean-files	:= $(obj-y) $(test-y) $(bench-y) $(tool-y)
+__clean-files	:= $(filter-out $(subdir-y), $(__clean-files))
+
+# subdir-y lists subdirectories to descend into
+__clean-dirs	:= $(subdir-y)
+
+# Add any additional clean files from clean-files variable
+__clean-files	+= $(clean-files)
+
+# obj-y paths are already relative paths like "src/foo.o"
+# We need to convert them to full paths like "cpl/src/foo.o"
+# Only add prefix if the path is not already absolute
+__clean-files	:= $(foreach f,$(__clean-files),$(if $(filter /%,$(f)),$(f),$(obj)/$(f)))
+__clean-dirs	:= $(foreach f,$(__clean-dirs),$(if $(filter /%,$(f)),$(f),$(obj)/$(f)))
+
+# Add built-in.a if present
+ifneq ($(strip $(obj-y)),)
+__clean-files	+= $(obj)/built-in.a
+endif
+
+# Add executables for tests
+ifneq ($(strip $(test-y)),)
+__clean-files	+= $(addprefix $(obj)/,$(patsubst %.o,%,$(filter %.o,$(test-y))))
+endif
+
+# Add executables for benchmarks
+ifneq ($(strip $(bench-y)),)
+__clean-files	+= $(addprefix $(obj)/,$(patsubst %.o,%,$(filter %.o,$(bench-y))))
+endif
+
+# Add executables for tools
+ifneq ($(strip $(tool-y)),)
+__clean-files	+= $(addprefix $(obj)/,$(patsubst %.o,%,$(filter %.o,$(tool-y))))
+endif
+
+# ==========================================================================
+
+quiet_cmd_clean = CLEAN   $(obj)
+      cmd_clean = rm -f $(__clean-files)
+
+__clean: $(subdir-y)
+ifneq ($(strip $(__clean-files)),)
+	$(call cmd,clean)
+else
+# If no Kbuild file, clean standard patterns
+	$(Q)$(if $(wildcard $(obj)/*.o), rm -f $(obj)/*.o)
+	$(Q)$(if $(wildcard $(obj)/*.a), rm -f $(obj)/*.a)
+	$(Q)$(if $(wildcard $(obj)/built-in.a), rm -f $(obj)/built-in.a)
+endif
+# Remove .cmd files
+	$(Q)find $(obj) -name '.*cmd' -type f -delete 2>/dev/null || true
+# Remove .d dependency files
+	$(Q)find $(obj) -name '.*.d' -type f -delete 2>/dev/null || true
+	$(Q)find $(obj) -name '.*.d_' -type f -delete 2>/dev/null || true
+
+# Descend into subdirectories
+$(subdir-y):
+	$(Q)$(MAKE) $(clean)=$@
+
+PHONY += FORCE
+
+FORCE:
+
+.PHONY: $(PHONY)

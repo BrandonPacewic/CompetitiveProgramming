@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) Brandon Pacewic
+#
+# scripts/Makefile.lib
+# This file contains helper functions and flag definitions for
+# compiling C++ source files.
+
+# Backward compatibility
+asflags-y  += $(EXTRA_AFLAGS)
+ccflags-y  += $(EXTRA_CFLAGS)
+cppflags-y += $(EXTRA_CPPFLAGS)
+cxxflags-y += $(EXTRA_CXXFLAGS)
+ldflags-y  += $(EXTRA_LDFLAGS)
+
+# flags that take effect in current and sub directories
+export KBUILD_CPPFLAGS KBUILD_CFLAGS KBUILD_CXXFLAGS KBUILD_AFLAGS
+
+# Read in dependencies to all obj-y objects
+# This handles the .o -> .cpp dependency
+ifneq ($(wildcard $(obj)/.depend),)
+include $(obj)/.depend
+endif
+
+# Figure out what we need to build from the various variables
+# =============================================================
+
+# Add subdir prefix
+addprefix-y = $(addprefix $(obj)/,$(1))
+
+# Filter CONFIG_* variables
+# If CONFIG_FOO=y, then obj-$(CONFIG_FOO) becomes obj-y
+# If CONFIG_FOO=m, then obj-$(CONFIG_FOO) becomes obj-m
+# If CONFIG_FOO is not set, obj-$(CONFIG_FOO) is empty
+
+__obj-y := $(obj-y)
+obj-y := $(filter-out %/, $(obj-y))
+
+# Expand subdirectories
+__subdir-y := $(filter %/, $(__obj-y))
+subdir-y += $(patsubst %/,%,$(__subdir-y))
+
+# Handle multi-part objects
+# foo-objs := foo_a.o foo_b.o  means foo.o is made from foo_a.o and foo_b.o
+multi-used-y := $(sort $(foreach m,$(obj-y), $(if $(strip $($(m:.o=-objs)) $($(m:.o=-y))),$(m))))
+multi-objs-y := $(foreach m, $(multi-used-y), $($(m:.o=-objs)) $($(m:.o=-y)))
+
+# Add prefix to all objects
+obj-y := $(call addprefix-y, $(obj-y))
+subdir-y := $(call addprefix-y, $(subdir-y))
+multi-objs-y := $(call addprefix-y, $(multi-objs-y))
+
+# Flags
+# =============================================================
+
+# Default flags
+# -MD: Generate dependency file alongside compilation
+# -MP: Add phony targets for each dependency to avoid errors when headers are removed
+c_flags = -Wp,-MD,$(depfile) -Wp,-MP $(NOSTDINC_FLAGS) $(CPLINCLUDES) \
+          $(CPPFLAGS) $(KBUILD_CFLAGS) $(ccflags-y) \
+          $(CFLAGS_$(basetarget).o)
+
+cxx_flags = -Wp,-MD,$(depfile) -Wp,-MP $(NOSTDINC_FLAGS) $(CPLINCLUDES) \
+            $(CPPFLAGS) $(KBUILD_CXXFLAGS) $(cxxflags-y) \
+            $(CXXFLAGS_$(basetarget).o)
+
+a_flags = -Wp,-MD,$(depfile) -Wp,-MP $(NOSTDINC_FLAGS) $(CPLINCLUDES) \
+          $(CPPFLAGS) $(KBUILD_AFLAGS) $(asflags-y) \
+          $(AFLAGS_$(basetarget).o)
+
+ld_flags = $(LDFLAGS) $(ldflags-y)
+
+# Dependency file for current target
+depfile = $(subst $(comma),_,$(dot-target).d)
+basetarget = $(basename $(notdir $@))
+
+# Useful for describing the dependency of composite objects
+# Usage:
+#   $(call multi_depend, multi_used_targets, suffix_to_remove, suffix_to_add)
+define multi_depend
+$(foreach m, $(notdir $1), \
+	$(eval $(obj)/$m: \
+	$(addprefix $(obj)/, $(foreach s, $3, $($(m:%$(strip $2)=%$(s)))))))
+endef
+
+# Commands to generate dependency files
+# These are used by GCC's -MD flag
+cpp_flags = $(KBUILD_CPPFLAGS) $(cppflags-y) $(CPPFLAGS_$(@F))
+
+# Handle test executables
+# test-y lists test executables to build
+test-y := $(call addprefix-y, $(test-y))
+
+# Handle benchmark executables
+bench-y := $(call addprefix-y, $(bench-y))
+
+# Handle tool executables
+tool-y := $(call addprefix-y, $(tool-y))

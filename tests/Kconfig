@@ -1,0 +1,121 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# CPL Test Suite Configuration
+
+menuconfig CPL_TESTS
+	bool "CPL Test Suite"
+	default y
+	help
+	  Enable building and running tests for the CPL library.
+	  Tests verify the correctness of library components.
+
+if CPL_TESTS
+
+comment "Container Tests"
+
+config TEST_CONTAINER_ALTERNATING_INSERTION
+	bool "Container alternating insertion test"
+	default y
+	depends on CPL_CONTAINER
+	help
+	  Test alternating insertion operations on containers.
+
+config TEST_CONTAINER_DEBUG_OUTPUT
+	bool "Container debug output test"
+	default y
+	depends on CPL_CONTAINER
+	help
+	  Test ostream overloads for std::pair and standard containers.
+
+config TEST_CONTAINER_ENCODING
+	bool "Container encoding test"
+	default y
+	depends on CPL_CONTAINER
+	help
+	  Test container encoding and serialization utilities.
+
+config TEST_CONTAINER_IS_CONTAINER_VALIDATION
+	bool "Container type validation test"
+	default y
+	depends on CPL_CONTAINER
+	help
+	  Test compile-time container type trait validation.
+
+config TEST_CONTAINER_MERGE_SORT
+	bool "Container merge sort test"
+	default y
+	depends on CPL_CONTAINER
+	help
+	  Test merge sort implementation on containers.
+
+config TEST_CONTAINER_RANGE_MERGE_SORT
+	bool "Container range merge sort test"
+	default y
+	depends on CPL_CONTAINER
+	help
+	  Test merge sort on container ranges.
+
+config TEST_CONTAINER_RANGE_REV_SORT
+	bool "Container range reverse sort test"
+	default y
+	depends on CPL_CONTAINER
+	help
+	  Test reverse sorting on container ranges.
+
+config TEST_CONTAINER_REV_SORT
+	bool "Container reverse sort test"
+	default y
+	depends on CPL_CONTAINER
+	help
+	  Test reverse sorting operations on containers.
+
+comment "Graph and Tree Tests"
+
+config TEST_DISJOINT_SET
+	bool "Disjoint set (Union-Find) test"
+	default y
+	depends on CPL_TREE
+	help
+	  Test disjoint set data structure implementation.
+
+config TEST_EDGE_COMPARISON
+	bool "Edge comparison test"
+	default y
+	depends on CPL_TREE
+	help
+	  Test graph edge comparison operations.
+
+config TEST_BORUVKA_MST
+	bool "Borůvka MST test"
+	default y
+	depends on CPL_TREE
+	help
+	  Test Borůvka's algorithm for minimum spanning tree.
+
+config TEST_KRUSKAL_MST
+	bool "Kruskal MST test"
+	default y
+	depends on CPL_TREE
+	help
+	  Test Kruskal's algorithm for minimum spanning tree.
+
+comment "Matrix Tests"
+
+config TEST_MATRIX_TRACE
+	bool "Matrix trace test"
+	default y
+	depends on CPL_MATRIX
+	help
+	  Test matrix trace computation (sum of diagonal elements).
+
+comment "Core Utility Tests"
+
+config TEST_Y_COMBINATOR
+	bool "Y combinator test"
+	default y
+	depends on CPL_CORE
+	help
+	  Test y_combinator utility for lambda recursion.
+
+endif # CPL_TESTS

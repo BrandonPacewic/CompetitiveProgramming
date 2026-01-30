@@ -1,0 +1,64 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# CPL Library Module Configuration
+
+menuconfig CPL_LIB
+	bool "CPL Library Support"
+	default y
+	help
+	  Enable the CPL (Competitive Programming Library) core library.
+	  This is a header-only C++ library for competitive programming
+	  with data structures and algorithms.
+
+if CPL_LIB
+
+config CPL_CORE
+	bool "Core utilities (xcore, xutility)"
+	default y
+	help
+	  Enable core CPL utilities including namespace macros (xcore)
+	  and functional programming utilities like y_combinator (xutility).
+	  Required by most other CPL modules.
+
+config CPL_CONTAINER
+	bool "Container utilities"
+	default y
+	depends on CPL_CORE
+	help
+	  Enable container helper utilities including:
+	  - ostream overloads for std::pair and standard containers
+	  - Container manipulation functions
+	  - Debugging output utilities
+
+config CPL_MATRIX
+	bool "Matrix library"
+	default y
+	depends on CPL_CORE
+	help
+	  Enable matrix data structures and operations including:
+	  - basic_uniform_matrix: Fixed-size square matrix
+	  - Matrix arithmetic operations
+	  - Matrix transformations and algorithms
+
+config CPL_MOD
+	bool "Modular arithmetic types"
+	default y
+	depends on CPL_CORE
+	help
+	  Enable modular arithmetic types for competitive programming:
+	  - mod_type<T>: Generic modular arithmetic wrapper
+	  - Automatic modulo operations
+	  - Useful for problems requiring MOD arithmetic
+
+config CPL_TREE
+	bool "Tree and graph algorithms"
+	default y
+	depends on CPL_CORE
+	help
+	  Enable tree and graph data structures including:
+	  - Disjoint set (Union-Find) implementation
+	  - Graph traversal utilities
+	  - Tree algorithms
+
+endif # CPL_LIB

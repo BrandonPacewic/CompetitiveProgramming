@@ -1,0 +1,42 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+mainmenu "CPL Competitive Programming Library Configuration"
+
+config CPL_VERSION
+	string
+	default "1.0.0"
+
+menu "Build Targets"
+	source "tests/Kconfig"
+	source "benchmarks/Kconfig"
+	source "tools/Kconfig"
+endmenu
+
+menu "Compiler Options"
+	config CC_OPTIMIZE_FOR_PERFORMANCE
+		bool "Optimize for performance (-O2)"
+		default y
+
+	config CC_OPTIMIZE_FOR_SIZE
+		bool "Optimize for size (-Os)"
+
+	config DEBUG_INFO
+		bool "Include debug information (-g)"
+		default y
+
+	config ASAN
+		bool "Enable AddressSanitizer"
+		depends on !RELEASE
+
+	config UBSAN
+		bool "Enable UndefinedBehaviorSanitizer"
+		depends on !RELEASE
+
+	config RELEASE
+		bool "Release build (strip debug, max optimization)"
+endmenu
+
+menu "Library Modules"
+	source "cpl/Kconfig"
+endmenu

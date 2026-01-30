@@ -1,0 +1,235 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) Brandon Pacewic
+#
+# This file contains common code for all Kbuild Makefiles.
+# It defines the basic macros used by the kernel build system.
+
+####
+# Name of target with directory and extension stripped
+# Example: obj-y := foo/bar.o => basename_target = bar
+#
+basename_target = $(notdir $(basename $@))
+
+####
+# Escape single quote for use in echo statements
+# Example: echo-cmd "It's a test" => echo "It'\''s a test"
+#
+escsq = $(subst $(squote),'\''$(squote)'\'',$1)
+
+####
+# Easy to use macros for printing various messages
+# Usage:
+#   $(echo-cmd) will echo the command being run
+#   $(cmd) will actually run the command
+#
+squote := '
+pound := \#
+
+####
+# echo-cmd
+# Short version for quiet output. Shows the command being run with
+# a prefix indicating the tool (CXX, AR, LD, etc.)
+#
+# Usage:
+#   $(call echo-cmd,<prefix>)
+#
+# Example:
+#   $(call echo-cmd,CXX)
+#   => "  CXX     path/to/file.o"
+#
+echo-cmd = $(if $($(quiet)cmd_$(1)),echo '  $(call escsq,$($(quiet)cmd_$(1)))';)
+
+####
+# cmd
+# Execute a command, possibly with quiet output
+#
+# Usage:
+#   $(call cmd,<cmd_name>)
+#
+# Example:
+#   cmd_cxx_o_cpp = $(CXX) $(CXXFLAGS) -c -o $@ $<
+#   $(call cmd,cxx_o_cpp)
+#
+cmd = @set -e; $(echo-cmd) $(cmd_$(1))
+
+####
+# if_changed
+# Execute command if:
+# 1) Rule is forced (@)
+# 2) Target doesn't exist
+# 3) Command line has changed
+#
+# This is the core rebuild detection mechanism. It stores the command
+# line used to build each target in a .cmd file, and rebuilds if the
+# command changes.
+#
+# Usage:
+#   $(call if_changed,<cmd_name>)
+#
+# Example in a rule:
+#   foo.o: foo.cpp FORCE
+#       $(call if_changed,cxx_o_cpp)
+#
+if_changed = $(if $(if-changed-cond),$(cmd_and_record),@:)
+
+# Helper for if_changed
+if-changed-cond = $(filter-out FORCE $(wildcard $^),$^)$(filter-out $(cmd_$(1)),$(cmd_$@))$(filter-out $(cmd_$@),$(cmd_$(1)))
+
+# Execute command and record to .cmd file
+cmd_and_record = $(cmd) && echo 'cmd_$@ := $(make-cmd)' > $(dot-target).cmd
+
+# Hidden dependency tracking file
+dot-target = $(dir $@).$(notdir $@)
+
+# Make command suitable for storing
+make-cmd = $(call escsq,$(cmd_$(1)))
+
+####
+# if_changed_dep
+# Like if_changed, but also handles dependency files (.d files)
+# This is used for C/C++ compilation where GCC generates dependency info
+#
+# Usage:
+#   $(call if_changed_dep,<cmd_name>)
+#
+if_changed_dep = $(if $(if-changed-cond),$(cmd_and_fixdep),@:)
+
+cmd_and_fixdep = $(cmd) && $(FIXDEP) $@ '$(make-cmd)' > $(dot-target).cmd
+
+# FIXDEP will be a script that processes dependency files
+# For now, we'll use a simple version
+FIXDEP = scripts/basic/fixdep
+
+####
+# filechk
+# Execute a command and update target file only if the output has changed
+# This prevents unnecessary rebuilds when a generated file's content is the same
+#
+# Usage:
+#   define filechk_<name>
+#       <command>
+#   endef
+#   target: source FORCE
+#       $(call filechk,<name>)
+#
+# Example:
+#   define filechk_version
+#       echo "$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)"
+#   endef
+#   include/config/kernel.release: FORCE
+#       $(call filechk,version)
+#
+filechk = $(filechk_$(1))
+
+####
+# Shorthand for building subdirectories
+# This is the most commonly used macro in Kbuild files
+#
+# Usage:
+#   $(MAKE) $(build)=<dir> [target]
+#
+# Example:
+#   $(MAKE) $(build)=cpl
+#   $(MAKE) $(clean)=cpl
+#
+build := -f $(srctree)/scripts/Makefile.build obj
+clean := -f $(srctree)/scripts/Makefile.clean obj
+
+####
+# Convenience variables for verbosity
+# These are used to show/hide command output based on V= parameter
+#
+# Usage:
+#   $(Q)$(CXX) ...  # @ prefix in quiet mode, nothing in verbose mode
+#
+ifeq ($(KBUILD_VERBOSE),1)
+  quiet =
+  Q =
+else
+  quiet = quiet_
+  Q = @
+endif
+
+# If make -s (silent mode) is used, suppress everything
+ifneq ($(findstring s,$(filter-out --%,$(MAKEFLAGS))),)
+  quiet = silent_
+endif
+
+export quiet Q KBUILD_VERBOSE
+
+####
+# Useful string functions
+#
+
+# $(1) list of directories
+# Convert list to absolute paths
+make-absolute = $(foreach d,$(1),$(if $(filter /%,$(d)),$(d),$(CURDIR)/$(d)))
+
+####
+# Build target path helpers
+#
+
+# Get the directory part of a target
+target-dir = $(dir $@)
+
+####
+# Dependencies on generated files
+# Used to ensure configuration is generated before building
+#
+
+# Check if .config exists
+config-targets := 0
+mixed-targets  := 0
+
+ifneq ($(filter config %config,$(MAKECMDGOALS)),)
+	config-targets := 1
+endif
+
+####
+# Clean up functions
+#
+
+# Descend into a directory and clean
+# Usage: $(Q)$(MAKE) $(clean)=<dir>
+#
+
+####
+# Generic macro definitions
+#
+
+# Prefix all paths in a list with $(obj)/
+prefix-obj = $(addprefix $(obj)/,$(1))
+
+# Add $(obj)/ prefix to object files listed in obj-y, obj-m, etc.
+modobj = $(addprefix $(obj)/,$(1))
+
+# Create dependency on directory existing
+mkdir-p = $(shell mkdir -p $(1))
+
+####
+# Toolchain utilities
+#
+
+# Check if a command exists
+# Usage: $(call command-exists,<command>)
+#
+command-exists = $(if $(shell command -v $(1) 2>/dev/null),y,)
+
+####
+# Color output (optional, for better readability)
+#
+
+# ANSI color codes
+COLOR_RESET   := \033[0m
+COLOR_BOLD    := \033[1m
+COLOR_RED     := \033[31m
+COLOR_GREEN   := \033[32m
+COLOR_YELLOW  := \033[33m
+COLOR_BLUE    := \033[34m
+
+# Usage in echo statements:
+# @echo -e "$(COLOR_GREEN)  SUCCESS$(COLOR_RESET)"
+
+####
+# Include $(srctree)/scripts/Kbuild.include only once
+kbuild-include-included := 1

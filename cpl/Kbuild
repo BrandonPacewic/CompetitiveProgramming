@@ -1,0 +1,9 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# CPL Library Kbuild file
+#
+# This file lists the source files to build into the CPL library
+
+# Build all source files in src/
+obj-y += src/output_empty_matrix.o

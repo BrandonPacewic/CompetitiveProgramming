@@ -6,3 +6,8 @@
 
 # Ensure that all C++ headers are counted as C++ and not C
 *.h linguist-language=C++
+
+# Build system files
+Makefile* linguist-language=Makefile
+Kconfig* linguist-language=Kconfig
+Kbuild* linguist-language=Kconfig
