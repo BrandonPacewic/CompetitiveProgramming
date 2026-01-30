@@ -1,0 +1,27 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# CPL Tools Configuration
+
+menuconfig CPL_TOOLS
+	bool "CPL Utility Tools"
+	default y
+	help
+	  Enable building utility tools for the CPL library.
+	  Tools provide auxiliary functionality like test case generation
+	  and analysis scripts.
+
+if CPL_TOOLS
+
+comment "Case Generation Tools"
+
+config TOOL_GRAPH_CASEGEN
+	bool "Graph case generator"
+	default y
+	depends on CPL_TREE
+	help
+	  Build the graph test case generator tool for creating graph-based
+	  competitive programming test inputs. Useful for testing graph
+	  algorithms and generating edge cases.
+
+endif # CPL_TOOLS

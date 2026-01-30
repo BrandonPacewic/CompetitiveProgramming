@@ -56,8 +56,9 @@ AR	  := $(if $(AR),$(AR),ar)
 LD	  := $(CXX)
 CPP	  := $(CXX) -E
 STRIP := $(if $(STRIP),$(STRIP),strip)
+PYTHON3 := $(if $(PYTHON3),$(PYTHON3),python3)
 
-export CXX AR LD CPP STRIP
+export CXX AR LD CPP STRIP PYTHON3
 
 # Use USERINCLUDE when you must reference the UAPI directories only.
 USERINCLUDE = \
@@ -350,6 +351,11 @@ PHONY += scripts
 scripts:
 	@:
 
+# Configuration targets
+PHONY += menuconfig
+menuconfig:
+	@$(PYTHON3) $(srctree)/scripts/menuconfig.py $(KCONFIG_CONFIG)
+
 # Help target
 PHONY += help
 help:
@@ -357,6 +363,9 @@ help:
 	@echo  '  clean           - Remove most generated files but keep the config'
 	@echo  '  mrproper        - Remove all generated files + config + various backup files'
 	@echo  '  distclean       - mrproper + remove editor backup files, patch leftover files and the like'
+	@echo  ''
+	@echo  'Configuration targets:'
+	@echo  '  menuconfig      - Update configuration using a menu-based interface'
 	@echo  ''
 	@echo  'Build targets:'
 	@echo  '  all             - Build cpl library, tests, and tools (default)'
