@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "Makefile*": "makefile",
+        "Kconfig*": "kconfig",
+        "Kbuild*": "kconfig"
+    }
+}
