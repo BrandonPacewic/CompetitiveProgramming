@@ -46,7 +46,7 @@ multi-objs-y := $(foreach m, $(multi-used-y), $($(m:.o=-objs)) $($(m:.o=-y)))
 
 # Add prefix to all objects
 obj-y := $(call addprefix-y, $(obj-y))
-subdir-y := $(call addprefix-y, $(subdir-y))
+# Note: subdir-y should NOT be prefixed here, as Makefile.build handles the path
 multi-objs-y := $(call addprefix-y, $(multi-objs-y))
 
 # Flags

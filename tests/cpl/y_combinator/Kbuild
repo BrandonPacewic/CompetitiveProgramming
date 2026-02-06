@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Y Combinator Test
+
+obj-$(CONFIG_TEST_Y_COMBINATOR) += test.o

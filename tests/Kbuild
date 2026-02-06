@@ -1,0 +1,13 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# CPL Tests Kbuild file
+#
+# This file manages building test executables for the CPL library.
+# Tests are conditionally built based on Kconfig selections.
+
+# test-y lists test executables to build
+# Each test is a standalone executable that links against the CPL library
+
+# Descend into subdirectories for test builds
+subdir-$(CONFIG_CPL_TESTS) += cpl

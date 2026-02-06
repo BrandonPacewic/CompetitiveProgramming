@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Merge Sort Benchmark
+
+obj-$(CONFIG_BENCH_CONTAINER_MERGE_SORT) += bench.o

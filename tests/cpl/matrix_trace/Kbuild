@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Matrix Trace Test
+
+obj-$(CONFIG_TEST_MATRIX_TRACE) += test.o

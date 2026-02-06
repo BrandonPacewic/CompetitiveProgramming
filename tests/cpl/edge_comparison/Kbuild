@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Edge Comparison Test
+
+obj-$(CONFIG_TEST_EDGE_COMPARISON) += test.o

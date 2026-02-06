@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Container Range Merge Sort Test
+
+obj-$(CONFIG_TEST_CONTAINER_RANGE_MERGE_SORT) += test.o

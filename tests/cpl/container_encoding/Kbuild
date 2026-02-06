@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Container Encoding Test
+
+obj-$(CONFIG_TEST_CONTAINER_ENCODING) += test.o

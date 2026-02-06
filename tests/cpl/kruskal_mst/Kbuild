@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Kruskal MST Test
+
+obj-$(CONFIG_TEST_KRUSKAL_MST) += test.o

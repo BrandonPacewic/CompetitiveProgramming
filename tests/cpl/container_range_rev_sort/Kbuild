@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Container Range Reverse Sort Test
+
+obj-$(CONFIG_TEST_CONTAINER_RANGE_REV_SORT) += test.o

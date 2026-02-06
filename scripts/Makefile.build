@@ -50,6 +50,10 @@ quiet_cmd_ar = AR      $@
 quiet_cmd_link_o_target = LD      $@
       cmd_link_o_target = $(CXX) $(LDFLAGS) -o $@ $(filter-out FORCE,$^) $(LIBS)
 
+# Link test executable
+quiet_cmd_link_test = LD      $@
+      cmd_link_test = $(CXX) $(ld_flags) -o $@ $(filter-out FORCE,$^) $(srctree)/cpl/built-in.a
+
 # Handle built-in.a for library archiving
 # If we have obj-y, create built-in.a
 ifneq ($(strip $(obj-y)),)
@@ -57,6 +61,19 @@ targets += $(obj)/built-in.a
 __build: $(obj)/built-in.a
 $(obj)/built-in.a: $(obj-y) FORCE
 	$(call if_changed,ar)
+endif
+
+# Handle test executables
+# Each test directory should have test.o which gets linked into a test executable
+ifneq ($(strip $(obj-y)),)
+ifeq ($(notdir $(obj-y)),test.o)
+# This directory contains a test.o, create test executable
+test-target := $(obj)/test
+targets += $(test-target)
+__build: $(test-target)
+$(test-target): $(obj-y) $(srctree)/cpl/built-in.a FORCE
+	$(call if_changed,link_test)
+endif
 endif
 
 # Compile C++ source files to object files

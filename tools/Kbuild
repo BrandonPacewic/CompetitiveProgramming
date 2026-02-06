@@ -1,0 +1,13 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# CPL Tools Kbuild file
+#
+# This file manages building tool executables for the CPL library.
+# Tools are conditionally built based on Kconfig selections.
+
+# tool-y lists tool executables to build
+# Each tool is a standalone executable that may link against the CPL library
+
+# Descend into subdirectories for tool builds
+subdir-$(CONFIG_CPL_TOOLS) += graph_casegen

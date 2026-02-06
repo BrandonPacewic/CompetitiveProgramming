@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Container Debug Output Test
+
+obj-$(CONFIG_TEST_CONTAINER_DEBUG_OUTPUT) += test.o

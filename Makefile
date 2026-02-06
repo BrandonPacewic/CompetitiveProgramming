@@ -286,6 +286,100 @@ build-tools:
 	$(Q)$(MAKE) $(build)=tools
 
 ###
+# Testing targets
+# Aggregate test runner - finds and executes all test binaries
+# Supports TEST= variable for filtering (e.g., TEST=disjoint_set or TEST=container_*)
+PHONY += test
+test:
+	@echo 'Building tests...'
+	@$(MAKE) -k build-tests 2>&1 | grep -E '(LD|PASS|FAIL|Error)' || true
+	@echo ''
+ifdef TEST
+	@echo 'Running tests matching: $(TEST)'
+else
+	@echo 'Running all tests...'
+endif
+	@echo '========================================'
+	@passed=0; failed=0; \
+	test_pattern='$(TEST)'; \
+	find tests -type f -name 'test' -executable | while read testbin; do \
+		testname=$$(dirname $$testbin | sed 's|tests/cpl/||'); \
+		if [ -n "$$test_pattern" ]; then \
+			case "$$testname" in \
+				$$test_pattern) ;; \
+				*) continue ;; \
+			esac; \
+		fi; \
+		printf "%-40s" "$$testname"; \
+		if $$testbin > /dev/null 2>&1; then \
+			echo "PASS"; \
+			passed=$$((passed + 1)); \
+		else \
+			echo "FAIL"; \
+			failed=$$((failed + 1)); \
+		fi; \
+		echo "$$passed $$failed"; \
+	done | { \
+		passed=0; failed=0; \
+		while read line; do \
+			if echo "$$line" | grep -q '^[0-9]'; then \
+				read passed failed <<< "$$line"; \
+			else \
+				echo "$$line"; \
+			fi; \
+		done; \
+		echo '========================================'; \
+		total=$$((passed + failed)); \
+		echo "Total: $$total  Passed: $$passed  Failed: $$failed"; \
+		if [ $$total -eq 0 ]; then \
+			echo "Result: NO TESTS MATCHED"; \
+			exit 1; \
+		elif [ $$failed -gt 0 ]; then \
+			echo "Result: FAILED"; \
+			exit 1; \
+		else \
+			echo "Result: SUCCESS"; \
+		fi; \
+	}
+	@echo ''
+
+# Individual test targets
+# Usage: make test-<testname>
+# Example: make test-disjoint_set
+PHONY += test-%
+test-%:
+	@if [ ! -d "tests/cpl/$*" ]; then \
+		echo "Error: Test '$*' not found in tests/cpl/"; \
+		exit 1; \
+	fi
+	@echo 'Building test $*...'
+	@$(MAKE) $(build)=tests/cpl/$* 2>&1 | grep -E '(LD|Error)' || true
+	@echo ''
+	@if [ -x "tests/cpl/$*/test" ]; then \
+		echo 'Running test $*...'; \
+		echo '========================================'; \
+		printf "%-40s" "$*"; \
+		if tests/cpl/$*/test > /dev/null 2>&1; then \
+			echo "PASS"; \
+			result=0; \
+		else \
+			echo "FAIL"; \
+			result=1; \
+		fi; \
+		echo '========================================'; \
+		if [ $$result -eq 0 ]; then \
+			echo "Result: SUCCESS"; \
+		else \
+			echo "Result: FAILED"; \
+		fi; \
+		echo ''; \
+		exit $$result; \
+	else \
+		echo "Error: Test executable tests/cpl/$*/test not found or not executable"; \
+		exit 1; \
+	fi
+
+###
 # Cleaning is done on three levels.
 # make clean     Delete most generated files
 #                Leave enough to build external modules
@@ -404,6 +498,11 @@ help:
 	@echo  '  benchmarks      - Build all benchmarks'
 	@echo  '  tools           - Build all tools'
 	@echo  ''
+	@echo  'Testing targets:'
+	@echo  '  test            - Run all tests and show PASS/FAIL results'
+	@echo  '  test-<name>     - Build and run a specific test (e.g., test-disjoint_set)'
+	@echo  '  TEST=<pattern>  - Filter tests by pattern (e.g., TEST=container_*, TEST=*_mst)'
+	@echo  ''
 	@echo  'Other generic targets:'
 	@echo  '  help            - This help message'
 	@echo  ''
@@ -413,11 +512,13 @@ help:
 	@echo  '  V=0|1|2         - 0 => quiet build (default), 1 => verbose build, 2 => give reason for rebuild'
 	@echo  '  O=dir           - Output directory for out-of-tree builds'
 	@echo  '  C=1|2           - Run checker on re-compiled (1) or all (2) files'
+	@echo  '  TEST=<pattern>  - Filter tests by shell pattern (e.g., TEST=container_*, TEST=*_mst)'
 	@echo  '  CROSS_COMPILE=prefix - Prefix for cross-compilation tools (e.g., aarch64-linux-gnu-)'
 	@echo  ''
 	@echo  'Example:'
 	@echo  '  make V=1        - Build with verbose output'
 	@echo  '  make O=build    - Build out-of-tree in ./build directory'
+	@echo  '  make test TEST=container_* - Run only container tests'
 	@echo  '  make clean      - Clean generated files'
 
 # Single targets

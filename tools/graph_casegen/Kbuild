@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Graph Case Generator Tool
+
+obj-$(CONFIG_TOOL_GRAPH_CASEGEN) += graph_casegen.o

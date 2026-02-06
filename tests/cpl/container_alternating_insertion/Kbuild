@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Container Alternating Insertion Test
+
+obj-$(CONFIG_TEST_CONTAINER_ALTERNATING_INSERTION) += test.o

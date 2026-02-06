@@ -1,0 +1,29 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# CPL Tests - CPL subdirectory Kbuild
+#
+# Descend into each test subdirectory to build individual tests
+# Each test has its own Kbuild file that conditionally builds based on Kconfig
+
+# Container tests
+subdir-$(CONFIG_TEST_CONTAINER_ALTERNATING_INSERTION) += container_alternating_insertion
+subdir-$(CONFIG_TEST_CONTAINER_DEBUG_OUTPUT) += container_debug_output
+subdir-$(CONFIG_TEST_CONTAINER_ENCODING) += container_encoding
+subdir-$(CONFIG_TEST_CONTAINER_IS_CONTAINER_VALIDATION) += container_is_container_validation
+subdir-$(CONFIG_TEST_CONTAINER_MERGE_SORT) += container_merge_sort
+subdir-$(CONFIG_TEST_CONTAINER_RANGE_MERGE_SORT) += container_range_merge_sort
+subdir-$(CONFIG_TEST_CONTAINER_RANGE_REV_SORT) += container_range_rev_sort
+subdir-$(CONFIG_TEST_CONTAINER_REV_SORT) += container_rev_sort
+
+# Graph and tree tests
+subdir-$(CONFIG_TEST_DISJOINT_SET) += disjoint_set
+subdir-$(CONFIG_TEST_EDGE_COMPARISON) += edge_comparison
+subdir-$(CONFIG_TEST_BORUVKA_MST) += boruvka_mst
+subdir-$(CONFIG_TEST_KRUSKAL_MST) += kruskal_mst
+
+# Matrix tests
+subdir-$(CONFIG_TEST_MATRIX_TRACE) += matrix_trace
+
+# Core utility tests
+subdir-$(CONFIG_TEST_Y_COMBINATOR) += y_combinator

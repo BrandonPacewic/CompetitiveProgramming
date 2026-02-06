@@ -1,0 +1,11 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# CPL Benchmarks - CPL subdirectory Kbuild
+#
+# Descend into each benchmark subdirectory to build individual benchmarks
+# Each benchmark has its own Kbuild file that conditionally builds based on Kconfig
+
+# Container benchmarks
+subdir-$(CONFIG_BENCH_CONTAINER_MERGE_SORT) += merge_sort
+subdir-$(CONFIG_BENCH_CONTAINER_RUN_LENGTH_ENCODING) += run_length_encoding

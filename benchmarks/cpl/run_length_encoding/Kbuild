@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Run Length Encoding Benchmark
+
+obj-$(CONFIG_BENCH_CONTAINER_RUN_LENGTH_ENCODING) += bench.o

@@ -1,0 +1,14 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# CPL Benchmarks Kbuild file
+#
+# This file manages building benchmark executables for the CPL library.
+# Benchmarks are conditionally built based on Kconfig selections.
+
+# bench-y lists benchmark executables to build
+# Each benchmark is a standalone executable that links against the CPL library
+# and Google Benchmark framework
+
+# Descend into subdirectories for benchmark builds
+subdir-$(CONFIG_CPL_BENCHMARKS) += cpl

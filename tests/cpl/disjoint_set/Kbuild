@@ -1,0 +1,6 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+
+# Disjoint Set (Union-Find) Test
+
+obj-$(CONFIG_TEST_DISJOINT_SET) += test.o
