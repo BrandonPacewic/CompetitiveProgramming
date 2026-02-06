@@ -1,0 +1,33 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+#
+# Release configuration for CPL
+# Optimized for production use with maximum performance
+
+# Compiler Options
+CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE=y
+# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
+# CONFIG_DEBUG_INFO is not set
+# CONFIG_ASAN is not set
+# CONFIG_UBSAN is not set
+CONFIG_RELEASE=y
+
+# Library Modules
+CONFIG_CPL_LIB=y
+CONFIG_CPL_CORE=y
+CONFIG_CPL_CONTAINER=y
+CONFIG_CPL_MATRIX=y
+CONFIG_CPL_MOD=y
+CONFIG_CPL_TREE=y
+
+# Test Suite
+# CONFIG_CPL_TESTS is not set
+
+# Benchmark Suite
+CONFIG_CPL_BENCHMARKS=y
+CONFIG_BENCH_CONTAINER_MERGE_SORT=y
+CONFIG_BENCH_CONTAINER_RUN_LENGTH_ENCODING=y
+
+# Tools
+CONFIG_CPL_TOOLS=y
+CONFIG_TOOL_GRAPH_CASEGEN=y

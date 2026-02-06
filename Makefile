@@ -341,10 +341,14 @@ distclean: mrproper
 		-o -name 'core' \) \
 		-type f -print | xargs rm -f
 
-# Prepare step - currently minimal
+# Prepare step - ensure config files are generated
 PHONY += prepare
-prepare:
+prepare: include/config/auto.conf
 	@:
+
+# Generate auto.conf and autoconf.h from .config
+include/config/auto.conf: .config
+	$(Q)$(PYTHON3) $(srctree)/scripts/conf.py Kconfig .config
 
 # Scripts target - for building host programs needed during build
 PHONY += scripts
@@ -355,6 +359,25 @@ scripts:
 PHONY += menuconfig
 menuconfig:
 	@$(PYTHON3) $(srctree)/scripts/menuconfig.py $(KCONFIG_CONFIG)
+	@$(PYTHON3) $(srctree)/scripts/conf.py Kconfig .config
+
+PHONY += syncconfig
+syncconfig:
+	@$(PYTHON3) $(srctree)/scripts/conf.py Kconfig .config
+
+# Configuration file presets
+# Load a preset configuration from configs/
+%_defconfig:
+	@echo "  CONFIG  $@"
+	@cp configs/$@ .config
+	@$(PYTHON3) $(srctree)/scripts/conf.py Kconfig .config
+
+# Handle allnoconfig, allyesconfig, etc (configs without _defconfig suffix)
+.PHONY: defconfig allnoconfig allyesconfig
+defconfig allnoconfig allyesconfig:
+	@echo "  CONFIG  $@"
+	@cp configs/$@ .config
+	@$(PYTHON3) $(srctree)/scripts/conf.py Kconfig .config
 
 # Help target
 PHONY += help
@@ -366,6 +389,13 @@ help:
 	@echo  ''
 	@echo  'Configuration targets:'
 	@echo  '  menuconfig      - Update configuration using a menu-based interface'
+	@echo  '  syncconfig      - Regenerate auto.conf and autoconf.h from .config'
+	@echo  '  defconfig       - Default configuration (balanced, most features enabled)'
+	@echo  '  allnoconfig     - Minimal configuration (all features disabled)'
+	@echo  '  allyesconfig    - Full configuration (all features enabled)'
+	@echo  '  debug_defconfig - Debug configuration (sanitizers, debug info)'
+	@echo  '  release_defconfig - Release configuration (optimized, no debug)'
+	@echo  '  minimal_defconfig - Minimal library configuration (core only)'
 	@echo  ''
 	@echo  'Build targets:'
 	@echo  '  all             - Build cpl library, tests, and tools (default)'

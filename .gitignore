@@ -8,3 +8,4 @@ __pycache__/
 /out/
 /specs/
 compile_commands.json
+/configs/

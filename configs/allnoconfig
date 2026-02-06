@@ -1,0 +1,25 @@
+# Copyright (c) Brandon Pacewic
+# SPDX-License-Identifier: MIT
+#
+# Minimal configuration for CPL
+# All features disabled - useful for testing minimal builds
+
+# Compiler Options
+# CONFIG_CC_OPTIMIZE_FOR_PERFORMANCE is not set
+# CONFIG_CC_OPTIMIZE_FOR_SIZE is not set
+# CONFIG_DEBUG_INFO is not set
+# CONFIG_ASAN is not set
+# CONFIG_UBSAN is not set
+# CONFIG_RELEASE is not set
+
+# Library Modules
+# CONFIG_CPL_LIB is not set
+
+# Test Suite
+# CONFIG_CPL_TESTS is not set
+
+# Benchmark Suite
+# CONFIG_CPL_BENCHMARKS is not set
+
+# Tools
+# CONFIG_CPL_TOOLS is not set
