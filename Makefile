@@ -80,7 +80,8 @@ USERINCLUDE = \
 
 # Use CPLINCLUDES when you must reference library headers
 CPLINCLUDES = \
-		-I$(srctree)/cpl/inc
+		-I$(srctree)/cpl/inc \
+		-I$(srctree)/tests/include
 
 # Benchmark includes (available when building benchmarks)
 BENCHMARK_INCLUDES = \

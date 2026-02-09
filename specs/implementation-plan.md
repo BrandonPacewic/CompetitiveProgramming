@@ -62,3 +62,6 @@
 - [x] 8.2 Add BUILD.md with detailed Kbuild documentation
 - [x] 8.3 Ensure CMake still works as fallback
 - [x] 8.4 Update .gitignore for new generated files
+
+#### Phase 9: Bug Fixes
+- [x] 9.1 Fix missing tests/include path in CPLINCLUDES for test compilation
