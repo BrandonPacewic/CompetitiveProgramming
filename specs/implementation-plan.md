@@ -49,8 +49,8 @@
 
 #### Phase 6: Install and Utilities
 - [ ] 6.1 Implement make install for headers
-- [ ] 6.2 Implement make clean, distclean, mrproper
-- [ ] 6.3 Implement make help with categorized output
+- [x] 6.2 Implement make clean, distclean, mrproper
+- [x] 6.3 Implement make help with categorized output
 - [ ] 6.4 Implement make format (clang-format wrapper)
 
 #### Phase 7: Cross-Compilation

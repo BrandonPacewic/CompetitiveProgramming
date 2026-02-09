@@ -35,8 +35,11 @@ include scripts/Makefile.lib
 __clean-files	:= $(obj-y) $(test-y) $(bench-y) $(tool-y)
 __clean-files	:= $(filter-out $(subdir-y), $(__clean-files))
 
-# subdir-y lists subdirectories to descend into
-__clean-dirs	:= $(subdir-y)
+# For cleaning, we need to descend into ALL subdirectories, not just those
+# enabled by Kconfig. This ensures we clean artifacts from previous configs.
+# Find all subdirectories that have a Kbuild or Makefile
+__clean-dirs	:= $(sort $(dir $(wildcard $(obj)/*/Kbuild $(obj)/*/Makefile)))
+__clean-dirs	:= $(patsubst $(obj)/%/,%,$(__clean-dirs))
 
 # Add any additional clean files from clean-files variable
 __clean-files	+= $(clean-files)
@@ -45,7 +48,7 @@ __clean-files	+= $(clean-files)
 # We need to convert them to full paths like "cpl/src/foo.o"
 # Only add prefix if the path is not already absolute
 __clean-files	:= $(foreach f,$(__clean-files),$(if $(filter /%,$(f)),$(f),$(obj)/$(f)))
-__clean-dirs	:= $(foreach f,$(__clean-dirs),$(if $(filter /%,$(f)),$(f),$(obj)/$(f)))
+# __clean-dirs are already found relative to $(obj), so don't prefix them again
 
 # Add built-in.a if present
 ifneq ($(strip $(obj-y)),)
@@ -72,14 +75,16 @@ endif
 quiet_cmd_clean = CLEAN   $(obj)
       cmd_clean = rm -f $(__clean-files)
 
-__clean: $(subdir-y)
+__clean: $(__clean-dirs)
 ifneq ($(strip $(__clean-files)),)
 	$(call cmd,clean)
 else
-# If no Kbuild file, clean standard patterns
+# If no Kbuild file or disabled by config, clean standard patterns
 	$(Q)$(if $(wildcard $(obj)/*.o), rm -f $(obj)/*.o)
 	$(Q)$(if $(wildcard $(obj)/*.a), rm -f $(obj)/*.a)
 	$(Q)$(if $(wildcard $(obj)/built-in.a), rm -f $(obj)/built-in.a)
+	$(Q)$(if $(wildcard $(obj)/test), rm -f $(obj)/test)
+	$(Q)$(if $(wildcard $(obj)/bench), rm -f $(obj)/bench)
 endif
 # Remove .cmd files
 	$(Q)find $(obj) -name '.*cmd' -type f -delete 2>/dev/null || true
@@ -88,8 +93,10 @@ endif
 	$(Q)find $(obj) -name '.*.d_' -type f -delete 2>/dev/null || true
 
 # Descend into subdirectories
-$(subdir-y):
-	$(Q)$(MAKE) $(clean)=$@
+# The pattern rule matches subdirectory names and prefixes them with $(obj)/
+.PHONY: $(__clean-dirs)
+$(__clean-dirs):
+	$(Q)$(MAKE) $(clean)=$(obj)/$@
 
 PHONY += FORCE
 
