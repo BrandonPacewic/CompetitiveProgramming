@@ -45,7 +45,7 @@
 
 #### Phase 5: Benchmark Integration
 - [x] 5.1 Integrate Google Benchmark submodule via Kbuild
-- [ ] 5.2 Implement make bench target
+- [x] 5.2 Implement make bench target
 
 #### Phase 6: Install and Utilities
 - [ ] 6.1 Implement make install for headers

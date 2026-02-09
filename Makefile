@@ -347,6 +347,58 @@ endif
 	}
 	@echo ''
 
+###
+# Benchmarking targets
+# Aggregate benchmark runner - finds and executes all benchmark binaries
+# Supports BENCH= variable for filtering (e.g., BENCH=merge_sort or BENCH=container_*)
+PHONY += bench
+bench:
+	@echo 'Building benchmarks...'
+	@$(MAKE) -k build-benchmarks 2>&1 | grep -E '(LD|Error)' || true
+	@echo ''
+ifdef BENCH
+	@echo 'Running benchmarks matching: $(BENCH)'
+else
+	@echo 'Running all benchmarks...'
+endif
+	@echo '========================================'
+	@bench_pattern='$(BENCH)'; \
+	count=0; \
+	find benchmarks -type f -name 'bench' -executable | while read benchbin; do \
+		benchname=$$(dirname $$benchbin | sed 's|benchmarks/cpl/||'); \
+		if [ -n "$$bench_pattern" ]; then \
+			case "$$benchname" in \
+				$$bench_pattern) ;; \
+				*) continue ;; \
+			esac; \
+		fi; \
+		count=$$((count + 1)); \
+		echo "$$count"; \
+		echo ""; \
+		echo "Running benchmark: $$benchname"; \
+		echo "----------------------------------------"; \
+		$$benchbin; \
+		echo ""; \
+	done | { \
+		count=0; \
+		while read line; do \
+			if echo "$$line" | grep -q '^[0-9]\+$$'; then \
+				count=$$line; \
+			else \
+				echo "$$line"; \
+			fi; \
+		done; \
+		echo '========================================'; \
+		if [ $$count -eq 0 ]; then \
+			echo "Result: NO BENCHMARKS MATCHED"; \
+			exit 1; \
+		else \
+			echo "Total benchmarks run: $$count"; \
+			echo "Result: COMPLETE"; \
+		fi; \
+	}
+	@echo ''
+
 # Individual test targets
 # Usage: make test-<testname>
 # Example: make test-disjoint_set
@@ -380,6 +432,30 @@ test-%:
 		exit $$result; \
 	else \
 		echo "Error: Test executable tests/cpl/$*/test not found or not executable"; \
+		exit 1; \
+	fi
+
+# Individual benchmark targets
+# Usage: make bench-<benchname>
+# Example: make bench-merge_sort
+PHONY += bench-%
+bench-%:
+	@if [ ! -d "benchmarks/cpl/$*" ]; then \
+		echo "Error: Benchmark '$*' not found in benchmarks/cpl/"; \
+		exit 1; \
+	fi
+	@echo 'Building benchmark $*...'
+	@$(MAKE) $(build)=benchmarks/cpl/$* 2>&1 | grep -E '(LD|Error)' || true
+	@echo ''
+	@if [ -x "benchmarks/cpl/$*/bench" ]; then \
+		echo 'Running benchmark $*...'; \
+		echo '========================================'; \
+		benchmarks/cpl/$*/bench; \
+		echo '========================================'; \
+		echo 'Result: COMPLETE'; \
+		echo ''; \
+	else \
+		echo "Error: Benchmark executable benchmarks/cpl/$*/bench not found or not executable"; \
 		exit 1; \
 	fi
 
@@ -507,6 +583,11 @@ help:
 	@echo  '  test-<name>     - Build and run a specific test (e.g., test-disjoint_set)'
 	@echo  '  TEST=<pattern>  - Filter tests by pattern (e.g., TEST=container_*, TEST=*_mst)'
 	@echo  ''
+	@echo  'Benchmarking targets:'
+	@echo  '  bench           - Run all benchmarks'
+	@echo  '  bench-<name>    - Build and run a specific benchmark (e.g., bench-merge_sort)'
+	@echo  '  BENCH=<pattern> - Filter benchmarks by pattern (e.g., BENCH=container_*, BENCH=*_sort)'
+	@echo  ''
 	@echo  'Other generic targets:'
 	@echo  '  help            - This help message'
 	@echo  ''
@@ -517,12 +598,14 @@ help:
 	@echo  '  O=dir           - Output directory for out-of-tree builds'
 	@echo  '  C=1|2           - Run checker on re-compiled (1) or all (2) files'
 	@echo  '  TEST=<pattern>  - Filter tests by shell pattern (e.g., TEST=container_*, TEST=*_mst)'
+	@echo  '  BENCH=<pattern> - Filter benchmarks by shell pattern (e.g., BENCH=*_sort)'
 	@echo  '  CROSS_COMPILE=prefix - Prefix for cross-compilation tools (e.g., aarch64-linux-gnu-)'
 	@echo  ''
-	@echo  'Example:'
+	@echo  'Examples:'
 	@echo  '  make V=1        - Build with verbose output'
 	@echo  '  make O=build    - Build out-of-tree in ./build directory'
 	@echo  '  make test TEST=container_* - Run only container tests'
+	@echo  '  make bench BENCH=merge_sort - Run only merge_sort benchmark'
 	@echo  '  make clean      - Clean generated files'
 
 # Single targets
