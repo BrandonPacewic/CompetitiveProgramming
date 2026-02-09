@@ -51,7 +51,7 @@
 - [ ] 6.1 Implement make install for headers
 - [x] 6.2 Implement make clean, distclean, mrproper
 - [x] 6.3 Implement make help with categorized output
-- [ ] 6.4 Implement make format (clang-format wrapper)
+- [x] 6.4 Implement make format (clang-format wrapper)
 
 #### Phase 7: Cross-Compilation
 - [ ] 7.1 Implement CROSS_COMPILE= prefix handling

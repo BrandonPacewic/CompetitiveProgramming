@@ -553,6 +553,30 @@ defconfig allnoconfig allyesconfig:
 	@cp configs/$@ .config
 	@$(PYTHON3) $(srctree)/scripts/conf.py Kconfig .config
 
+###
+# Code formatting target
+# Format all C++ source and header files using clang-format
+PHONY += format
+format:
+	@echo 'Formatting C++ files...'
+	@$(MAKE) -s format-internal
+	@echo 'Formatting complete!'
+
+PHONY += format-internal
+format-internal:
+	@find cpl tests tools \
+		\( -name '*.cpp' -o -name '*.h' \) \
+		-not -path '*/benchmark/*' \
+		-not -path '*/kconfig-frontends/*' \
+		-print0 | while IFS= read -r -d '' file; do \
+		if [ "$(KBUILD_VERBOSE)" = "0" ]; then \
+			printf "  %-8s %s\n" "FORMAT" "$$file"; \
+		else \
+			echo "clang-format -i -style=file $$file"; \
+		fi; \
+		clang-format -i -style=file "$$file"; \
+	done
+
 # Help target
 PHONY += help
 help:
@@ -588,6 +612,9 @@ help:
 	@echo  '  bench-<name>    - Build and run a specific benchmark (e.g., bench-merge_sort)'
 	@echo  '  BENCH=<pattern> - Filter benchmarks by pattern (e.g., BENCH=container_*, BENCH=*_sort)'
 	@echo  ''
+	@echo  'Code quality targets:'
+	@echo  '  format          - Format all C++ source files with clang-format'
+	@echo  ''
 	@echo  'Other generic targets:'
 	@echo  '  help            - This help message'
 	@echo  ''
@@ -606,6 +633,7 @@ help:
 	@echo  '  make O=build    - Build out-of-tree in ./build directory'
 	@echo  '  make test TEST=container_* - Run only container tests'
 	@echo  '  make bench BENCH=merge_sort - Run only merge_sort benchmark'
+	@echo  '  make format     - Format all C++ files'
 	@echo  '  make clean      - Clean generated files'
 
 # Single targets
