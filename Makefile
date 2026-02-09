@@ -51,11 +51,21 @@ unexport GREP_OPTIONS
 SHELL := bash
 
 # Make variables (CC, etc...)
-CXX	  := $(if $(CXX),$(CXX),g++)
-AR	  := $(if $(AR),$(AR),ar)
-LD	  := $(CXX)
-CPP	  := $(CXX) -E
-STRIP := $(if $(STRIP),$(STRIP),strip)
+# CROSS_COMPILE specifies the prefix for cross-compilation tools
+# For example, CROSS_COMPILE=aarch64-linux-gnu- will use aarch64-linux-gnu-g++
+# If a tool is explicitly set (e.g., CXX=clang++), the user override takes precedence
+# Otherwise, apply CROSS_COMPILE prefix to the default tool
+ifeq ($(origin CXX), default)
+CXX := $(CROSS_COMPILE)g++
+endif
+ifeq ($(origin AR), default)
+AR := $(CROSS_COMPILE)ar
+endif
+LD := $(CXX)
+CPP := $(CXX) -E
+ifeq ($(origin STRIP), default)
+STRIP := $(CROSS_COMPILE)strip
+endif
 PYTHON3 := $(if $(PYTHON3),$(PYTHON3),python3)
 
 # Installation variables

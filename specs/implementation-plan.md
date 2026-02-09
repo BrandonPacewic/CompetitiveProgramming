@@ -54,7 +54,7 @@
 - [x] 6.4 Implement make format (clang-format wrapper)
 
 #### Phase 7: Cross-Compilation
-- [ ] 7.1 Implement CROSS_COMPILE= prefix handling
+- [x] 7.1 Implement CROSS_COMPILE= prefix handling
 - [ ] 7.2 Test cross-compilation with different toolchains
 
 #### Phase 8: Documentation and Polish
