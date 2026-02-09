@@ -55,10 +55,10 @@
 
 #### Phase 7: Cross-Compilation
 - [x] 7.1 Implement CROSS_COMPILE= prefix handling
-- [ ] 7.2 Test cross-compilation with different toolchains
+- [x] 7.2 Test cross-compilation with different toolchains
 
 #### Phase 8: Documentation and Polish
 - [x] 8.1 Update project README.md with new build instructions
 - [ ] 8.2 Add BUILD.md with detailed Kbuild documentation
-- [ ] 8.3 Ensure CMake still works as fallback
-- [ ] 8.4 Update .gitignore for new generated files
+- [x] 8.3 Ensure CMake still works as fallback
+- [x] 8.4 Update .gitignore for new generated files
