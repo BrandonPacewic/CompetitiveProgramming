@@ -54,6 +54,10 @@ quiet_cmd_link_o_target = LD      $@
 quiet_cmd_link_test = LD      $@
       cmd_link_test = $(CXX) $(ld_flags) -o $@ $(filter-out FORCE,$^) $(srctree)/cpl/built-in.a
 
+# Link benchmark executable
+quiet_cmd_link_bench = LD      $@
+      cmd_link_bench = $(CXX) $(ld_flags) -o $@ $(filter-out FORCE,$^) $(srctree)/cpl/built-in.a $(srctree)/benchmarks/benchmark/built-in.a -lpthread
+
 # Handle built-in.a for library archiving
 # If we have obj-y, create built-in.a
 ifneq ($(strip $(obj-y)),)
@@ -73,6 +77,19 @@ targets += $(test-target)
 __build: $(test-target)
 $(test-target): $(obj-y) $(srctree)/cpl/built-in.a FORCE
 	$(call if_changed,link_test)
+endif
+endif
+
+# Handle benchmark executables
+# Each benchmark directory should have bench.o which gets linked into a benchmark executable
+ifneq ($(strip $(obj-y)),)
+ifeq ($(notdir $(obj-y)),bench.o)
+# This directory contains a bench.o, create benchmark executable
+bench-target := $(obj)/bench
+targets += $(bench-target)
+__build: $(bench-target)
+$(bench-target): $(obj-y) $(srctree)/cpl/built-in.a $(srctree)/benchmarks/benchmark/built-in.a FORCE
+	$(call if_changed,link_bench)
 endif
 endif
 

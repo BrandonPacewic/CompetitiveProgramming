@@ -68,11 +68,15 @@ USERINCLUDE = \
 CPLINCLUDES = \
 		-I$(srctree)/cpl/inc
 
+# Benchmark includes (available when building benchmarks)
+BENCHMARK_INCLUDES = \
+		-I$(srctree)/benchmarks/benchmark/include
+
 CPPFLAGS := -D__CPL__ $(CPLINCLUDES)
 
 KBUILD_CXXFLAGS := -std=c++20 -Wall -Wextra
 
-export CPPFLAGS KBUILD_CXXFLAGS CPLINCLUDES
+export CPPFLAGS KBUILD_CXXFLAGS CPLINCLUDES BENCHMARK_INCLUDES
 
 # Read KERNELRELEASE from include/config/kernel.release (if it exists)
 KERNELRELEASE = $(shell cat include/config/kernel.release 2> /dev/null)

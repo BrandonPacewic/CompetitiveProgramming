@@ -59,7 +59,14 @@ c_flags = -Wp,-MD,$(depfile) -Wp,-MP $(NOSTDINC_FLAGS) $(CPLINCLUDES) \
           $(CPPFLAGS) $(KBUILD_CFLAGS) $(ccflags-y) \
           $(CFLAGS_$(basetarget).o)
 
-cxx_flags = -Wp,-MD,$(depfile) -Wp,-MP $(NOSTDINC_FLAGS) $(CPLINCLUDES) \
+# Add benchmark includes when building benchmarks
+ifneq ($(findstring benchmarks,$(obj)),)
+bench_includes := $(BENCHMARK_INCLUDES)
+else
+bench_includes :=
+endif
+
+cxx_flags = -Wp,-MD,$(depfile) -Wp,-MP $(NOSTDINC_FLAGS) $(CPLINCLUDES) $(bench_includes) \
             $(CPPFLAGS) $(KBUILD_CXXFLAGS) $(cxxflags-y) \
             $(CXXFLAGS_$(basetarget).o)
 

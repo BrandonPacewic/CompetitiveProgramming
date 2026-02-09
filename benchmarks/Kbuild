@@ -10,5 +10,8 @@
 # Each benchmark is a standalone executable that links against the CPL library
 # and Google Benchmark framework
 
+# Build Google Benchmark library first
+subdir-$(CONFIG_CPL_BENCHMARKS) += benchmark
+
 # Descend into subdirectories for benchmark builds
 subdir-$(CONFIG_CPL_BENCHMARKS) += cpl
