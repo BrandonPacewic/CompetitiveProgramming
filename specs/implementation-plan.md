@@ -48,7 +48,7 @@
 - [x] 5.2 Implement make bench target
 
 #### Phase 6: Install and Utilities
-- [ ] 6.1 Implement make install for headers
+- [x] 6.1 Implement make install for headers
 - [x] 6.2 Implement make clean, distclean, mrproper
 - [x] 6.3 Implement make help with categorized output
 - [x] 6.4 Implement make format (clang-format wrapper)

@@ -58,7 +58,11 @@ CPP	  := $(CXX) -E
 STRIP := $(if $(STRIP),$(STRIP),strip)
 PYTHON3 := $(if $(PYTHON3),$(PYTHON3),python3)
 
-export CXX AR LD CPP STRIP PYTHON3
+# Installation variables
+PREFIX ?= /usr/local
+DESTDIR ?=
+
+export CXX AR LD CPP STRIP PYTHON3 PREFIX DESTDIR
 
 # Use USERINCLUDE when you must reference the UAPI directories only.
 USERINCLUDE = \
@@ -577,6 +581,31 @@ format-internal:
 		clang-format -i -style=file "$$file"; \
 	done
 
+###
+# Installation target
+# Install library headers to PREFIX/include/cpl/
+# Use DESTDIR for staging directory (useful for packaging)
+PHONY += install
+install:
+	@echo 'Installing CPL headers...'
+	@install_dir="$(DESTDIR)$(PREFIX)/include/cpl"; \
+	if [ "$(KBUILD_VERBOSE)" = "0" ]; then \
+		printf "  %-8s %s\n" "INSTALL" "$$install_dir"; \
+	else \
+		echo "mkdir -p $$install_dir"; \
+	fi; \
+	mkdir -p "$$install_dir"; \
+	for header in $(srctree)/cpl/inc/*.h; do \
+		if [ "$(KBUILD_VERBOSE)" = "0" ]; then \
+			printf "  %-8s %s\n" "INSTALL" "$$(basename $$header)"; \
+		else \
+			echo "install -m 644 $$header $$install_dir/"; \
+		fi; \
+		install -m 644 "$$header" "$$install_dir/"; \
+	done
+	@echo 'Installation complete!'
+	@echo 'Headers installed to: $(DESTDIR)$(PREFIX)/include/cpl/'
+
 # Help target
 PHONY += help
 help:
@@ -615,6 +644,9 @@ help:
 	@echo  'Code quality targets:'
 	@echo  '  format          - Format all C++ source files with clang-format'
 	@echo  ''
+	@echo  'Installation targets:'
+	@echo  '  install         - Install library headers to PREFIX/include/cpl/'
+	@echo  ''
 	@echo  'Other generic targets:'
 	@echo  '  help            - This help message'
 	@echo  ''
@@ -627,6 +659,8 @@ help:
 	@echo  '  TEST=<pattern>  - Filter tests by shell pattern (e.g., TEST=container_*, TEST=*_mst)'
 	@echo  '  BENCH=<pattern> - Filter benchmarks by shell pattern (e.g., BENCH=*_sort)'
 	@echo  '  CROSS_COMPILE=prefix - Prefix for cross-compilation tools (e.g., aarch64-linux-gnu-)'
+	@echo  '  PREFIX=dir      - Installation prefix (default: /usr/local)'
+	@echo  '  DESTDIR=dir     - Staging directory for packaging (default: empty)'
 	@echo  ''
 	@echo  'Examples:'
 	@echo  '  make V=1        - Build with verbose output'
