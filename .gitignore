@@ -9,3 +9,17 @@ __pycache__/
 /specs/
 compile_commands.json
 /configs/
+
+# Kbuild artifacts
+*.o
+*.a
+*.cmd
+*.d_
+.config
+/include/config/
+/include/generated/
+built-in.a
+
+# Test and benchmark binaries
+tests/**/test
+benchmarks/**/bench
