@@ -58,7 +58,7 @@
 - [ ] 7.2 Test cross-compilation with different toolchains
 
 #### Phase 8: Documentation and Polish
-- [ ] 8.1 Update project README.md with new build instructions
+- [x] 8.1 Update project README.md with new build instructions
 - [ ] 8.2 Add BUILD.md with detailed Kbuild documentation
 - [ ] 8.3 Ensure CMake still works as fallback
 - [ ] 8.4 Update .gitignore for new generated files
