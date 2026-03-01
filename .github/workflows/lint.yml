@@ -10,12 +10,28 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Check Formatting
-        run: |
-          find cpl/inc cpl/src tests/cpl -regex '.*\.\(cpp\|h\|hpp\)' -exec clang-format -i --style=file {} +
-          git diff --exit-code || (echo 'Formatting issues found. Please run clang-format.' && exit 1)
+      - name: Install dependencies
+        run: sudo apt-get install -y clang-format cmake ccache
+
+      - name: Restore ccache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ccache
+          key: ccache-${{ runner.os }}-${{ hashFiles('cpl/inc/**', 'tests/**/*.cpp', 'CMakeLists.txt', 'cpl/CMakeLists.txt', 'tests/CMakeLists.txt') }}
+          restore-keys: ccache-${{ runner.os }}-
+
+      - name: Configure ccache
+        run: ccache --set-config max_size=500M
+
+      - name: Run lint
+        run: scripts/lint.sh
+
+      - name: Save ccache
+        uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: ~/.cache/ccache
+          key: ccache-${{ runner.os }}-${{ hashFiles('cpl/inc/**', 'tests/**/*.cpp', 'CMakeLists.txt', 'cpl/CMakeLists.txt', 'tests/CMakeLists.txt') }}
