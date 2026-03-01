@@ -19,7 +19,7 @@ CMAKE_FLAGS = \
   -DCMAKE_EXPORT_COMPILE_COMMANDS=$(COMPILE_COMMANDS)
 
 .PHONY: build test bench tools \
-        format clean distclean help
+        format install-hooks clean distclean help
 
 configure:
 	@mkdir -p "$(BUILD_DIR)"
@@ -53,6 +53,10 @@ tools: build
 format:
 	@clang-format -i -style=file $(shell git ls-files '*.hpp' '*.h' '*.cpp')
 
+install-hooks:
+	@ln -sf ../../scripts/pre-commit .git/hooks/pre-commit
+	@echo "Pre-commit hook installed"
+
 clean:
 	@cmake --build "$(BUILD_DIR)" --target clean || true
 
@@ -72,6 +76,7 @@ help:
 	@echo "  bench-out          - output the most recent benchmark run"
 	@echo "  tools              - build project-defined tools (BUILD_TOOLS=ON)"
 	@echo "  format             - run clang-format on all source files"
+	@echo "  install-hooks      - install pre-commit hook (calls scripts/lint.sh)"
 	@echo "  clean              - clean build artifacts"
 	@echo "  distclean          - clean entire build dir"
 	@echo ""
