@@ -2,11 +2,6 @@
 <p align="center">
   C++ Competitive Programming Library
 </h1>
-    <p align="center">
-        <a href="#about">About</a> •
-        <a href="#getting-started">Getting Started</a> •
-        <a href="#milestones">Milestones</a>
-    </p>
 </p>
 
 ## About
@@ -32,73 +27,8 @@ From there you can:
 3. Test against the provided test cases in `test/` for your own algorithm development.
 
 > [!NOTE]
-> Additional instructions and support for importing the library and using the test cases is
-> planned to be added in the future.
-
-## Milestones
-
-As with every single one of my projects, this is still very much a work in progress. The following is a list
-of goals I have for this project before I consider it to be complete, in no particular order:
-
-|  #  | Goal                                                      | Status |
-| :-: | --------------------------------------------------------- | :----: |
-|  1  | Refactor old code to match current standards              |   ⚠️   |
-|  2  | Full test coverage                                        |   ⚠️   |
-|  3  | Performance with supporting benchmarks                    |   ⚠️   |
-|  4  | Codebase Atomizer                                         |   ❌   |
-|  5  | Full implementation of the CPH                            |   ❌️   |
-
-A more detailed description of each goal can be found below:
-
-### Refactor Old Code to Match Current Standards
-
-This is my longest standing project in terms of the initial creation date. As such, the earlier code does
-not reflect my current standards. One of the current goals is to revise such code to improve quality.
-
-> [!NOTE]
-> I find the structure of the code in this repository to be quite volatile. I have probably re-written some
-> of the algorithms 10+ times as this library tends to evolve as I become a better programmer.
-> If something doesn't look quite right, it probably isn't.
-
-### Full Test Coverage
-
-While this library is meant for competitive programming (where tests don’t carry over), it should still have
-full test coverage — including tests derived from problems where I used components of this library to solve them.
-
-### Performance with Supporting Benchmarks
-
-In the spirit of competitive programming, while solving the problem is the main goal, performance is also
-a key component. Benchmarks should back up various design decisions when it comes to how I have chosen to
-structure and implement various key algorithms and data structures.
-
-> [!NOTE]
-> While I do want 100% test coverage, I'm less concerned about benchmarks. Benchmarks will be added
-> as I find them necessary to support design decisions.
-
-### Codebase Atomizer
-
-The *Atomizer* is a tool used to break down the codebase into smaller, more manageable pieces, that can be
-retrieved quickly. For example, if you want to use a specific function, say `output_container` to keep things
-simple. You can use the *Atomizer* output to retrieve that specific function via a file lookup, `output_container.cpp`.
-You can also use any supporting tool you want to paste that file buffer directly inline into your code. Rather than
-opening the container header file and copying the specific lines from the file that you need. This will also work
-with more complex algorithms that may require an additional data structure to function. For example, if you want to
-use Kruskal's algorithm, you can use the *Atomizer* to retrieve the `kruskal.cpp` file which will include the
-supporting `DisjointSet` class used within the algorithm. Again saving you from finding the specific lines of code
-within the header file that you need.
-
-### Full Implementation of the CPH (Competitive Programming Handbook)
-
-The [*Competitive Programming Handbook*](https://cses.fi/book/book.pdf) by Antti Laaksonen is an awesome, all in one,
-resource for everything competitive programming. It contains everything from compiling and reading input to sweep line
-algorithms including convex hulls. Its an eventual goal of mine to fully implement all the algorithms outlined
-in the book. This has the added benefit of an *complete* documentation source of all the algorithms in this
-library. This is a long term goal and will likely take a while to complete.
-
-> [!NOTE]
-> This is my endgame for this project. When its completed I will consider this project *done* as so far
-> as it will no longer be a major work in progress for me personally. I will still add things here and there
-> and work on it when I'm compelled to do so but the core goals of this project will be officially complete.
+> As of late, this project has shifted focus toward library design over contest utility.
+> The copy-paste guarantee may no longer apply and various sections will have internal dependencies.
 
 ## License
 
